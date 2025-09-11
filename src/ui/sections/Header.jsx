@@ -1,0 +1,179 @@
+import { useState } from "react"
+import { ShoppingCart, Heart, Globe, ChevronDown, Menu, X } from "lucide-react"
+import { useLocation } from "../contexts/LocationContext.jsx"
+
+export default function Header(){
+  const { effectiveCurrency, effectiveRegion, setManualCurrency, setManualRegion, location } = useLocation()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false)
+  const [isRegionOpen, setIsRegionOpen] = useState(false)
+
+  const currencies = [
+    { code: 'USD', symbol: '$', name: 'USD' },
+    { code: 'SAR', symbol: 'SAR', name: 'SAR' },
+    { code: 'EUR', symbol: '€', name: 'EUR' },
+    { code: 'GBP', symbol: '£', name: 'GBP' },
+    { code: 'AED', symbol: 'AED', name: 'AED' }
+  ]
+
+  const regions = [
+    'Global',
+    'Middle East',
+    'Europe',
+    'Americas',
+    'Asia Pacific'
+  ]
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-lg border-b border-stone-200/50">
+      <div className="container-xl flex items-center justify-between py-3">
+        {/* Left: brand */}
+        <div className="flex items-center gap-2">
+          <a href="#" className="text-xl font-bold tracking-tight">IVOLEX</a>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-stone-100">Leather</span>
+        </div>
+
+        {/* Center nav - Desktop */}
+        <nav className="hidden md:flex items-center gap-6 text-sm">
+          <a className="hover:text-brand-600 transition-colors" href="#">Home</a>
+          <a className="hover:text-brand-600 transition-colors" href="#shop">Shop</a>
+          <a className="hover:text-brand-600 transition-colors" href="#categories">Categories</a>
+          <a className="hover:text-brand-600 transition-colors" href="#customize">Customize</a>
+          <a className="hover:text-brand-600 transition-colors" href="#about">About</a>
+        </nav>
+
+        {/* Mobile menu button */}
+        <button
+          className="md:hidden"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+
+        {/* Right controls */}
+        <div className="hidden md:flex items-center gap-3">
+          {/* Region Selector */}
+          <div className="relative">
+            <button
+              onClick={() => setIsRegionOpen(!isRegionOpen)}
+              className="flex items-center gap-1 text-sm border rounded-xl px-3 py-1.5 hover:bg-stone-50 transition-colors"
+            >
+              <Globe size={16}/>
+              <span>{effectiveRegion || 'Global'}</span>
+              <ChevronDown size={14}/>
+            </button>
+            {isRegionOpen && (
+              <div className="absolute top-full mt-1 bg-white border rounded-xl shadow-lg py-1 min-w-[120px] z-10">
+                {regions.map(region => (
+                  <button
+                    key={region}
+                    onClick={() => {
+                      setManualRegion(region === 'Global' ? null : region)
+                      setIsRegionOpen(false)
+                    }}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-stone-50 transition-colors"
+                  >
+                    {region}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Currency Selector */}
+          <div className="relative">
+            <button
+              onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
+              className="flex items-center gap-1 text-sm border rounded-xl px-3 py-1.5 hover:bg-stone-50 transition-colors"
+            >
+              <span>{effectiveCurrency}</span>
+              <ChevronDown size={14}/>
+            </button>
+            {isCurrencyOpen && (
+              <div className="absolute top-full mt-1 bg-white border rounded-xl shadow-lg py-1 min-w-[80px] z-10">
+                {currencies.map(currency => (
+                  <button
+                    key={currency.code}
+                    onClick={() => {
+                      setManualCurrency(currency.code)
+                      setIsCurrencyOpen(false)
+                    }}
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-stone-50 transition-colors"
+                  >
+                    {currency.code}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button aria-label="Wishlist" className="hover:text-brand-600 transition-colors">
+            <Heart size={20}/>
+          </button>
+          <button aria-label="Cart" className="hover:text-brand-600 transition-colors">
+            <ShoppingCart size={20}/>
+          </button>
+          <button className="btn btn-outline">Sign in</button>
+        </div>
+
+        {/* Mobile right controls */}
+        <div className="md:hidden flex items-center gap-2">
+          <button aria-label="Wishlist" className="hover:text-brand-600 transition-colors">
+            <Heart size={18}/>
+          </button>
+          <button aria-label="Cart" className="hover:text-brand-600 transition-colors">
+            <ShoppingCart size={18}/>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white border-t border-stone-200">
+          <div className="container-xl py-4 space-y-4">
+            <nav className="flex flex-col gap-4 text-sm">
+              <a className="hover:text-brand-600 transition-colors" href="#" onClick={() => setIsMenuOpen(false)}>Home</a>
+              <a className="hover:text-brand-600 transition-colors" href="#shop" onClick={() => setIsMenuOpen(false)}>Shop</a>
+              <a className="hover:text-brand-600 transition-colors" href="#categories" onClick={() => setIsMenuOpen(false)}>Categories</a>
+              <a className="hover:text-brand-600 transition-colors" href="#customize" onClick={() => setIsMenuOpen(false)}>Customize</a>
+              <a className="hover:text-brand-600 transition-colors" href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
+            </nav>
+
+            <div className="flex flex-col gap-3 pt-4 border-t border-stone-200">
+              {/* Mobile Region Selector */}
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Region:</span>
+                <select
+                  value={effectiveRegion || 'Global'}
+                  onChange={(e) => setManualRegion(e.target.value === 'Global' ? null : e.target.value)}
+                  className="text-sm border rounded-lg px-2 py-1"
+                >
+                  {regions.map(region => (
+                    <option key={region} value={region}>{region}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Mobile Currency Selector */}
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Currency:</span>
+                <select
+                  value={effectiveCurrency}
+                  onChange={(e) => setManualCurrency(e.target.value)}
+                  className="text-sm border rounded-lg px-2 py-1"
+                >
+                  {currencies.map(currency => (
+                    <option key={currency.code} value={currency.code}>{currency.code}</option>
+                  ))}
+                </select>
+              </div>
+
+              <button className="btn btn-outline w-full">Sign in</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  )
+}
