@@ -39,6 +39,17 @@ npm run e2e       # e2e tests (after setup)
 See `SUMMARY.md` (overview) and `TODO.md` (actionable, prioritized list).
 
 ## Production Build & Deploy
+
+### Vercel Deployment
+1. Connect your GitHub repository to Vercel
+2. Vercel will automatically detect the project settings:
+   - Framework: Vite
+   - Build command: `npm run build`
+   - Output directory: `dist`
+3. The `vercel.json` file handles SPA routing
+4. Deploy and enjoy!
+
+### Manual Deployment
 - Build: `npm run build` (outputs to `dist/`)
 - Nginx example in `nginx.conf`
 - GitHub Pages workflow: `.github/workflows/deploy-gh-pages.yml`
