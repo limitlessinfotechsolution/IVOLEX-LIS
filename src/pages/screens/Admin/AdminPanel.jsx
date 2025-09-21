@@ -21,6 +21,9 @@ import {
 } from 'lucide-react'
 import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
 import { useSegment } from '../../../ui/contexts/SegmentContext.jsx'
+import { useAuth } from '../../../ui/contexts/AuthContext.jsx'
+
+import AdminRoute from '../../../ui/components/AdminRoute.jsx'
 import {
   AdminDashboard,
   ProductCatalog,
@@ -132,17 +135,22 @@ const ADMIN_MENU = [
   },
 ]
 
-export default function AdminPanel() {
+const AdminPanelContent = () => {
   const [activeSection, setActiveSection] = useState('dashboard')
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-
+  const { logout } = useAuth()
   const { t, isRTL } = useI18n()
   const { theme } = useSegment()
 
   const ActiveComponent =
     ADMIN_MENU.find(item => item.id === activeSection)?.component ||
     AdminDashboard
+
+  const handleLogout = () => {
+    logout()
+    // Navigation will be handled by the AdminRoute component
+  }
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -217,6 +225,7 @@ export default function AdminPanel() {
             {/* User Section */}
             <div className="p-4 border-t border-border">
               <button
+                onClick={handleLogout}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 text-foreground/70 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all ${
                   isRTL ? 'flex-row-reverse text-right' : 'text-left'
                 }`}
@@ -307,3 +316,13 @@ export default function AdminPanel() {
     </div>
   )
 }
+
+const AdminPanel = () => {
+  return (
+    <AdminRoute>
+      <AdminPanelContent />
+    </AdminRoute>
+  )
+}
+
+export default AdminPanel

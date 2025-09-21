@@ -3,11 +3,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import Container from '../../../ui/components/Container.jsx'
 import { SEO } from '../../../components/SEO'
 import { Eye, EyeOff, Mail, Lock, User, Check } from 'lucide-react'
+import { useAuth } from '../../../ui/contexts/AuthContext.jsx'
 import toast from 'react-hot-toast'
 
 export default function RegisterScreen() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { register } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -65,11 +67,21 @@ export default function RegisterScreen() {
     setIsLoading(true)
 
     try {
-      // Simulate registration API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      const userData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+      }
 
-      toast.success('Account created successfully! Welcome to IVOLEX!')
-      navigate(from, { replace: true })
+      const result = await register(userData)
+
+      if (result.success) {
+        toast.success('Account created successfully! Welcome to IVOLEX!')
+        navigate(from, { replace: true })
+      } else {
+        toast.error(result.error || 'Registration failed. Please try again.')
+      }
     } catch {
       toast.error('Registration failed. Please try again.')
     } finally {

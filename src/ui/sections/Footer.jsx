@@ -220,6 +220,11 @@ export default function Footer() {
               © 2024 IVOLEX. All rights reserved.
             </div>
 
+            {/* Developer Information */}
+            <div className="text-sm text-stone-500">
+              Developed by Limitless Infotech Solution Pvt Ltd.
+            </div>
+
             {/* Payment Methods */}
             <div className="flex items-center gap-3">
               <div className="text-xs text-stone-500 mr-2">We accept:</div>

@@ -14,5 +14,32 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
+  ],
+  "domains": [
+    {
+      "domain": "ivolex.vercel.app"
+    },
+    {
+      "domain": "ivolex.com"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Developed-By",
+          "value": "Limitless Infotech Solution Pvt Ltd."
+        },
+        {
+          "key": "X-Domain-Primary",
+          "value": "https://ivolex.com"
+        },
+        {
+          "key": "X-Domain-Vercel",
+          "value": "https://ivolex.vercel.app"
+        }
+      ]
+    }
   ]
 }

@@ -46,6 +46,7 @@ const MyAccount = lazy(() => import('../pages/screens/Account'))
 const RequestTracking = lazy(() => import('../pages/screens/Tracking'))
 const TrackingPage = lazy(() => import('../pages/screens/TrackingPage'))
 const AdminPanel = lazy(() => import('../pages/screens/Admin/AdminPanel'))
+const AdminLogin = lazy(() => import('../pages/screens/Admin/AdminLogin'))
 const NotFound = lazy(() => import('../pages/screens/NotFound'))
 
 // Loading component
@@ -176,6 +177,10 @@ export default function App() {
                                                     element={
                                                       <OrderConfirmation />
                                                     }
+                                                  />
+                                                  <Route
+                                                    path="/admin/login"
+                                                    element={<AdminLogin />}
                                                   />
                                                   <Route
                                                     path="/admin/*"
