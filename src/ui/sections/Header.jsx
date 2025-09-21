@@ -1,27 +1,35 @@
 import { useState } from 'react'
-import { ShoppingCart, Heart, Globe, ChevronDown, Menu, X, User, LogOut, Settings, Package } from 'lucide-react'
+import {
+  ShoppingCart,
+  Heart,
+  Globe,
+  ChevronDown,
+  Menu,
+  X,
+  User,
+  LogOut,
+  Settings,
+  Package,
+} from 'lucide-react'
 import { useLocation } from '../contexts/LocationContext.jsx'
 import { useAuth } from '../contexts/AuthContext.jsx'
 import { Link, useNavigate } from 'react-router-dom'
 import ThemeToggle from '../components/ThemeToggle.jsx'
 
 export default function Header() {
-  const {
-    effectiveRegion,
-    setManualRegion,
-  } = useLocation()
+  const { effectiveRegion, setManualRegion } = useLocation()
   const { isAuthenticated, user, logout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isRegionOpen, setIsRegionOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const navigate = useNavigate()
-  
+
   // Accessibility IDs (kept for future accessibility improvements)
   // const navId = useAccessibleId('main-nav')
   // const mobileNavId = useAccessibleId('mobile-nav')
   // const regionMenuId = useAccessibleId('region-menu')
   // const userMenuId = useAccessibleId('user-menu')
-  
+
   // Refs for focus management (kept for future accessibility improvements)
   // const mobileMenuButtonRef = useRef(null)
   // const regionButtonRef = useRef(null)
@@ -126,7 +134,7 @@ export default function Header() {
             <ShoppingCart size={20} />
           </button>
           <ThemeToggle />
-          
+
           {/* User Authentication */}
           {isAuthenticated ? (
             <div className="relative">
@@ -138,7 +146,7 @@ export default function Header() {
                 <span>{user?.firstName || 'Profile'}</span>
                 <ChevronDown size={14} />
               </button>
-              
+
               {isUserMenuOpen && (
                 <div className="absolute top-full mt-1 right-0 bg-white border rounded-xl shadow-lg py-1 min-w-[180px] z-10">
                   <Link
@@ -181,7 +189,9 @@ export default function Header() {
               )}
             </div>
           ) : (
-            <Link to="/login" className="btn btn-outline">Sign in</Link>
+            <Link to="/login" className="btn btn-outline">
+              Sign in
+            </Link>
           )}
         </div>
 
@@ -305,7 +315,9 @@ export default function Header() {
                   </button>
                 </div>
               ) : (
-                <Link to="/login" className="btn btn-outline w-full">Sign in</Link>
+                <Link to="/login" className="btn btn-outline w-full">
+                  Sign in
+                </Link>
               )}
             </div>
           </div>

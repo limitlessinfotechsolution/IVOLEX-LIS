@@ -5,10 +5,10 @@ import { CURRENCIES, REGIONS } from '../contexts/LocationContext.jsx'
 
 // Currency selector component with rollback completed
 
-export default function CurrencySelector({ 
+export default function CurrencySelector({
   variant = 'default', // 'default', 'footer', 'profile'
   showRegion = true,
-  className = ''
+  className = '',
 }) {
   const {
     effectiveCurrency,
@@ -16,16 +16,16 @@ export default function CurrencySelector({
     setManualCurrency,
     setManualRegion,
   } = useLocation()
-  
+
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false)
   const [isRegionOpen, setIsRegionOpen] = useState(false)
-  
+
   const currencyRef = useRef(null)
   const regionRef = useRef(null)
-  
+
   // Close dropdowns when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (currencyRef.current && !currencyRef.current.contains(event.target)) {
         setIsCurrencyOpen(false)
       }
@@ -33,18 +33,20 @@ export default function CurrencySelector({
         setIsRegionOpen(false)
       }
     }
-    
+
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
-  
+
   // Get current currency info
-  const currentCurrency = CURRENCIES.find(c => c.code === effectiveCurrency) || CURRENCIES[0]
-  
+  const currentCurrency =
+    CURRENCIES.find(c => c.code === effectiveCurrency) || CURRENCIES[0]
+
   // Variant-specific styling
   const getButtonClasses = () => {
-    const baseClasses = 'flex items-center gap-2 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500'
-    
+    const baseClasses =
+      'flex items-center gap-2 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500'
+
     switch (variant) {
       case 'footer':
         return `${baseClasses} text-stone-300 hover:text-white px-3 py-2 text-sm border border-stone-700 rounded-lg hover:border-stone-500`
@@ -54,10 +56,11 @@ export default function CurrencySelector({
         return `${baseClasses} text-sm border rounded-xl px-3 py-1.5 hover:bg-stone-50`
     }
   }
-  
+
   const getDropdownClasses = () => {
-    const baseClasses = 'absolute z-50 mt-1 bg-white border rounded-xl shadow-lg'
-    
+    const baseClasses =
+      'absolute z-50 mt-1 bg-white border rounded-xl shadow-lg'
+
     switch (variant) {
       case 'footer':
         return `${baseClasses} border-stone-600 bg-stone-800 text-stone-200 min-w-[280px] max-h-80 overflow-hidden`
@@ -67,23 +70,25 @@ export default function CurrencySelector({
         return `${baseClasses} min-w-[280px] max-h-80 overflow-hidden`
     }
   }
-  
+
   const getItemClasses = () => {
     const baseClasses = 'w-full text-left px-3 py-2 text-sm transition-colors'
-    
+
     return variant === 'footer'
       ? `${baseClasses} hover:bg-stone-700 text-stone-200`
       : `${baseClasses} hover:bg-stone-50`
   }
-  
+
   return (
     <div className={`space-y-3 ${className}`}>
       {/* Region Selector */}
       {showRegion && (
         <div className="relative" ref={regionRef}>
-          <label className={`block text-sm font-medium mb-2 ${
-            variant === 'footer' ? 'text-stone-300' : 'text-stone-700'
-          }`}>
+          <label
+            className={`block text-sm font-medium mb-2 ${
+              variant === 'footer' ? 'text-stone-300' : 'text-stone-700'
+            }`}
+          >
             Region:
           </label>
           <button
@@ -91,12 +96,17 @@ export default function CurrencySelector({
             className={getButtonClasses()}
           >
             <Globe size={16} />
-            <span className="flex-1 text-left">{effectiveRegion || 'Global'}</span>
-            <ChevronDown size={14} className={`transition-transform ${
-              isRegionOpen ? 'rotate-180' : ''
-            }`} />
+            <span className="flex-1 text-left">
+              {effectiveRegion || 'Global'}
+            </span>
+            <ChevronDown
+              size={14}
+              className={`transition-transform ${
+                isRegionOpen ? 'rotate-180' : ''
+              }`}
+            />
           </button>
-          
+
           {isRegionOpen && (
             <div className={getDropdownClasses()}>
               <div className="p-2 space-y-1 max-h-48 overflow-y-auto">
@@ -123,12 +133,14 @@ export default function CurrencySelector({
           )}
         </div>
       )}
-      
+
       {/* Currency Selector */}
       <div className="relative" ref={currencyRef}>
-        <label className={`block text-sm font-medium mb-2 ${
-          variant === 'footer' ? 'text-stone-300' : 'text-stone-700'
-        }`}>
+        <label
+          className={`block text-sm font-medium mb-2 ${
+            variant === 'footer' ? 'text-stone-300' : 'text-stone-700'
+          }`}
+        >
           Currency:
         </label>
         <button
@@ -139,11 +151,14 @@ export default function CurrencySelector({
           <span className="flex-1 text-left">
             {currentCurrency.code} - {currentCurrency.name}
           </span>
-          <ChevronDown size={14} className={`transition-transform ${
-            isCurrencyOpen ? 'rotate-180' : ''
-          }`} />
+          <ChevronDown
+            size={14}
+            className={`transition-transform ${
+              isCurrencyOpen ? 'rotate-180' : ''
+            }`}
+          />
         </button>
-        
+
         {isCurrencyOpen && (
           <div className={getDropdownClasses()}>
             <div className="max-h-64 overflow-y-auto p-2 space-y-1">
@@ -167,9 +182,13 @@ export default function CurrencySelector({
                   </span>
                   <div className="flex-1 text-left">
                     <div className="font-medium">{currency.code}</div>
-                    <div className={`text-xs ${
-                      variant === 'footer' ? 'text-stone-400' : 'text-stone-500'
-                    }`}>
+                    <div
+                      className={`text-xs ${
+                        variant === 'footer'
+                          ? 'text-stone-400'
+                          : 'text-stone-500'
+                      }`}
+                    >
                       {currency.name}
                     </div>
                   </div>

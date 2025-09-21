@@ -27,7 +27,9 @@ export function usePerformance() {
       // First Contentful Paint
       const fcpObserver = new PerformanceObserver(list => {
         const entries = list.getEntries()
-        const fcp = entries.find(entry => entry.name === 'first-contentful-paint')
+        const fcp = entries.find(
+          entry => entry.name === 'first-contentful-paint'
+        )
         if (fcp) {
           setMetrics(prev => ({ ...prev, fcp: fcp.startTime }))
         }
@@ -44,9 +46,9 @@ export function usePerformance() {
       const fidObserver = new PerformanceObserver(list => {
         const entries = list.getEntries()
         const firstEntry = entries[0]
-        setMetrics(prev => ({ 
-          ...prev, 
-          fid: firstEntry.processingStart - firstEntry.startTime 
+        setMetrics(prev => ({
+          ...prev,
+          fid: firstEntry.processingStart - firstEntry.startTime,
         }))
       })
 
@@ -54,13 +56,13 @@ export function usePerformance() {
       const clsObserver = new PerformanceObserver(list => {
         let clsValue = 0
         const entries = list.getEntries()
-        
+
         for (const entry of entries) {
           if (!entry.hadRecentInput) {
             clsValue += entry.value
           }
         }
-        
+
         setMetrics(prev => ({ ...prev, cls: clsValue }))
       })
 
@@ -86,8 +88,16 @@ export function usePerformance() {
   useEffect(() => {
     if (import.meta.env?.DEV && Object.values(metrics).some(Boolean)) {
       console.group('🚀 Performance Metrics')
-      console.log('First Contentful Paint (FCP):', metrics.fcp?.toFixed(2), 'ms')
-      console.log('Largest Contentful Paint (LCP):', metrics.lcp?.toFixed(2), 'ms')
+      console.log(
+        'First Contentful Paint (FCP):',
+        metrics.fcp?.toFixed(2),
+        'ms'
+      )
+      console.log(
+        'Largest Contentful Paint (LCP):',
+        metrics.lcp?.toFixed(2),
+        'ms'
+      )
       console.log('First Input Delay (FID):', metrics.fid?.toFixed(2), 'ms')
       console.log('Cumulative Layout Shift (CLS):', metrics.cls?.toFixed(4))
       console.log('Time to First Byte (TTFB):', metrics.ttfb?.toFixed(2), 'ms')
@@ -113,7 +123,7 @@ export function useResourceTiming() {
         duration: entry.duration,
         startTime: entry.startTime,
       }))
-      
+
       setResources(prev => [...prev, ...resourceData])
     })
 

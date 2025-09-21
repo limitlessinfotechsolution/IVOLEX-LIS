@@ -4,7 +4,13 @@ import { useNotifications } from '../../ui/contexts/NotificationContext'
 import { useI18n } from '../../ui/contexts/I18nContext'
 
 const NotificationBell = () => {
-  const { notifications, getUnreadCount, markAsRead, markAllAsRead, deleteNotification } = useNotifications()
+  const {
+    notifications,
+    getUnreadCount,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+  } = useNotifications()
   const { t, language, isRTL } = useI18n()
   const [isOpen, setIsOpen] = useState(false)
   const [filter, setFilter] = useState('all')
@@ -15,7 +21,7 @@ const NotificationBell = () => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (bellRef.current && !bellRef.current.contains(event.target)) {
         setIsOpen(false)
       }
@@ -27,7 +33,7 @@ const NotificationBell = () => {
     }
   }, [isOpen])
 
-  const formatTimeAgo = (timestamp) => {
+  const formatTimeAgo = timestamp => {
     const now = new Date()
     const notificationTime = new Date(timestamp)
     const diffInMinutes = Math.floor((now - notificationTime) / (1000 * 60))
@@ -35,7 +41,9 @@ const NotificationBell = () => {
     if (diffInMinutes < 1) {
       return language === 'ar' ? 'الآن' : 'now'
     } else if (diffInMinutes < 60) {
-      return language === 'ar' ? `منذ ${diffInMinutes} دقيقة` : `${diffInMinutes}m ago`
+      return language === 'ar'
+        ? `منذ ${diffInMinutes} دقيقة`
+        : `${diffInMinutes}m ago`
     } else if (diffInMinutes < 1440) {
       const hours = Math.floor(diffInMinutes / 60)
       return language === 'ar' ? `منذ ${hours} ساعة` : `${hours}h ago`
@@ -47,12 +55,21 @@ const NotificationBell = () => {
 
   const filteredNotifications = notifications.filter(notification => {
     if (filter === 'unread') return !notification.read
-    if (filter === 'orders') return notification.type.includes('order') || notification.type.includes('payment') || notification.type.includes('shipping')
-    if (filter === 'customization') return notification.type.includes('customization')
+    if (filter === 'orders')
+      return (
+        notification.type.includes('order') ||
+        notification.type.includes('payment') ||
+        notification.type.includes('shipping')
+      )
+    if (filter === 'customization')
+      return notification.type.includes('customization')
     return true
   })
 
-  const displayedNotifications = filteredNotifications.slice(0, maxDisplayNotifications)
+  const displayedNotifications = filteredNotifications.slice(
+    0,
+    maxDisplayNotifications
+  )
 
   return (
     <div className="relative" ref={bellRef}>
@@ -65,11 +82,30 @@ const NotificationBell = () => {
       >
         <motion.div
           animate={unreadCount > 0 ? { rotate: [0, -10, 10, -10, 0] } : {}}
-          transition={{ duration: 0.5, repeat: unreadCount > 0 ? 2 : 0, repeatDelay: 3 }}
+          transition={{
+            duration: 0.5,
+            repeat: unreadCount > 0 ? 2 : 0,
+            repeatDelay: 3,
+          }}
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM4 19v-7a6 6 0 0112 0v7" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 21c0 .6.4 1 1 1h4c.6 0 1-.4 1-1" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 17h5l-5 5v-5zM4 19v-7a6 6 0 0112 0v7"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 21c0 .6.4 1 1 1h4c.6 0 1-.4 1-1"
+            />
           </svg>
         </motion.div>
 
@@ -96,7 +132,9 @@ const NotificationBell = () => {
           >
             {/* Header */}
             <div className="p-4 border-b border-border">
-              <div className={`flex items-center justify-between mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div
+                className={`flex items-center justify-between mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
                 <h3 className="font-semibold text-foreground">
                   {t('notifications.title', 'Notifications')}
                 </h3>
@@ -113,13 +151,18 @@ const NotificationBell = () => {
               </div>
 
               {/* Filter Tabs */}
-              <div className={`flex gap-1 bg-background/50 p-1 rounded-lg ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div
+                className={`flex gap-1 bg-background/50 p-1 rounded-lg ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
                 {[
                   { key: 'all', label: t('notifications.all', 'All') },
                   { key: 'unread', label: t('notifications.unread', 'Unread') },
                   { key: 'orders', label: t('notifications.orders', 'Orders') },
-                  { key: 'customization', label: t('notifications.customization', 'Custom') }
-                ].map((tab) => (
+                  {
+                    key: 'customization',
+                    label: t('notifications.customization', 'Custom'),
+                  },
+                ].map(tab => (
                   <button
                     key={tab.key}
                     onClick={() => setFilter(tab.key)}
@@ -141,15 +184,17 @@ const NotificationBell = () => {
                 <div className="p-8 text-center">
                   <div className="text-4xl mb-2">🔔</div>
                   <p className="text-foreground/60">
-                    {filter === 'unread' 
+                    {filter === 'unread'
                       ? t('notifications.noUnread', 'No unread notifications')
-                      : t('notifications.noNotifications', 'No notifications yet')
-                    }
+                      : t(
+                          'notifications.noNotifications',
+                          'No notifications yet'
+                        )}
                   </p>
                 </div>
               ) : (
                 <div className="divide-y divide-border">
-                  {displayedNotifications.map((notification) => (
+                  {displayedNotifications.map(notification => (
                     <motion.div
                       key={notification.id}
                       initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
@@ -157,9 +202,13 @@ const NotificationBell = () => {
                       className={`p-4 hover:bg-background/50 transition-colors cursor-pointer ${
                         !notification.read ? 'bg-primary/5' : ''
                       }`}
-                      onClick={() => !notification.read && markAsRead(notification.id)}
+                      onClick={() =>
+                        !notification.read && markAsRead(notification.id)
+                      }
                     >
-                      <div className={`flex gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <div
+                        className={`flex gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+                      >
                         <div className="flex-shrink-0">
                           <span className="text-xl">{notification.icon}</span>
                           {!notification.read && (
@@ -167,26 +216,44 @@ const NotificationBell = () => {
                           )}
                         </div>
 
-                        <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
-                          <div className={`flex items-start justify-between gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                            <h4 className={`font-medium text-foreground truncate ${!notification.read ? 'font-semibold' : ''}`}>
+                        <div
+                          className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}
+                        >
+                          <div
+                            className={`flex items-start justify-between gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+                          >
+                            <h4
+                              className={`font-medium text-foreground truncate ${!notification.read ? 'font-semibold' : ''}`}
+                            >
                               {notification.title}
                             </h4>
-                            <div className={`flex items-center gap-2 flex-shrink-0 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                            <div
+                              className={`flex items-center gap-2 flex-shrink-0 ${isRTL ? 'flex-row-reverse' : ''}`}
+                            >
                               <span className="text-xs text-foreground/50">
                                 {formatTimeAgo(notification.createdAt)}
                               </span>
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                onClick={(e) => {
+                                onClick={e => {
                                   e.stopPropagation()
                                   deleteNotification(notification.id)
                                 }}
                                 className="text-foreground/40 hover:text-red-500 transition-colors"
                               >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
                                 </svg>
                               </motion.button>
                             </div>

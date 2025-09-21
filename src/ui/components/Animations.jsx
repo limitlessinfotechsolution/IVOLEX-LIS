@@ -4,43 +4,43 @@ import { motion, AnimatePresence } from 'framer-motion'
 export const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 }
+  exit: { opacity: 0, y: -20 },
 }
 
 export const fadeInDown = {
   initial: { opacity: 0, y: -20 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 20 }
+  exit: { opacity: 0, y: 20 },
 }
 
 export const fadeInLeft = {
   initial: { opacity: 0, x: -20 },
   animate: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: 20 }
+  exit: { opacity: 0, x: 20 },
 }
 
 export const fadeInRight = {
   initial: { opacity: 0, x: 20 },
   animate: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -20 }
+  exit: { opacity: 0, x: -20 },
 }
 
 export const scaleIn = {
   initial: { opacity: 0, scale: 0.8 },
   animate: { opacity: 1, scale: 1 },
-  exit: { opacity: 0, scale: 0.8 }
+  exit: { opacity: 0, scale: 0.8 },
 }
 
 export const slideUp = {
   initial: { y: '100%' },
   animate: { y: 0 },
-  exit: { y: '100%' }
+  exit: { y: '100%' },
 }
 
 export const slideDown = {
   initial: { y: '-100%' },
   animate: { y: 0 },
-  exit: { y: '-100%' }
+  exit: { y: '-100%' },
 }
 
 // Stagger container for list animations
@@ -48,38 +48,44 @@ export const staggerContainer = {
   initial: {},
   animate: {
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 }
 
 export const staggerChild = {
   initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 }
+  animate: { opacity: 1, y: 0 },
 }
 
 // Page transition variants
 export const pageTransition = {
   initial: { opacity: 0, x: 20 },
   animate: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -20 }
+  exit: { opacity: 0, x: -20 },
 }
 
 // Modal/overlay variants
 export const modalOverlay = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
-  exit: { opacity: 0 }
+  exit: { opacity: 0 },
 }
 
 export const modalContent = {
   initial: { opacity: 0, scale: 0.9, y: 20 },
   animate: { opacity: 1, scale: 1, y: 0 },
-  exit: { opacity: 0, scale: 0.9, y: 20 }
+  exit: { opacity: 0, scale: 0.9, y: 20 },
 }
 
 // Reusable animated components
-export function FadeIn({ children, delay = 0, duration = 0.5, className = '', ...props }) {
+export function FadeIn({
+  children,
+  delay = 0,
+  duration = 0.5,
+  className = '',
+  ...props
+}) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -93,12 +99,18 @@ export function FadeIn({ children, delay = 0, duration = 0.5, className = '', ..
   )
 }
 
-export function SlideIn({ children, direction = 'up', delay = 0, className = '', ...props }) {
+export function SlideIn({
+  children,
+  direction = 'up',
+  delay = 0,
+  className = '',
+  ...props
+}) {
   const directions = {
     up: { y: 20 },
     down: { y: -20 },
     left: { x: 20 },
-    right: { x: -20 }
+    right: { x: -20 },
   }
 
   return (
@@ -128,7 +140,12 @@ export function ScaleIn({ children, delay = 0, className = '', ...props }) {
   )
 }
 
-export function StaggerChildren({ children, className = '', stagger = 0.1, ...props }) {
+export function StaggerChildren({
+  children,
+  className = '',
+  stagger = 0.1,
+  ...props
+}) {
   return (
     <motion.div
       initial="initial"
@@ -145,18 +162,19 @@ export function StaggerChildren({ children, className = '', stagger = 0.1, ...pr
 
 export function StaggerChild({ children, className = '', ...props }) {
   return (
-    <motion.div
-      variants={staggerChild}
-      className={className}
-      {...props}
-    >
+    <motion.div variants={staggerChild} className={className} {...props}>
       {children}
     </motion.div>
   )
 }
 
 // Hover animations
-export function HoverScale({ children, scale = 1.05, className = '', ...props }) {
+export function HoverScale({
+  children,
+  scale = 1.05,
+  className = '',
+  ...props
+}) {
   return (
     <motion.div
       whileHover={{ scale }}
@@ -250,18 +268,18 @@ export function ModalWrapper({ children, isOpen, onClose }) {
 export function LoadingDots({ className = '' }) {
   return (
     <div className={`flex space-x-1 ${className}`}>
-      {[0, 1, 2].map((i) => (
+      {[0, 1, 2].map(i => (
         <motion.div
           key={i}
           className="w-2 h-2 bg-brand-600 rounded-full"
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.7, 1, 0.7]
+            opacity: [0.7, 1, 0.7],
           }}
           transition={{
             duration: 1,
             repeat: Infinity,
-            delay: i * 0.2
+            delay: i * 0.2,
           }}
         />
       ))}
@@ -274,12 +292,12 @@ export function Pulse({ children, className = '', ...props }) {
   return (
     <motion.div
       animate={{
-        scale: [1, 1.02, 1]
+        scale: [1, 1.02, 1],
       }}
       transition={{
         duration: 2,
         repeat: Infinity,
-        ease: 'easeInOut'
+        ease: 'easeInOut',
       }}
       className={className}
       {...props}

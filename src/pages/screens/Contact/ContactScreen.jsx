@@ -18,45 +18,45 @@ export default function ContactScreen() {
       icon: Mail,
       title: 'Email',
       value: 'hello@ivolex.com',
-      link: 'mailto:hello@ivolex.com'
+      link: 'mailto:hello@ivolex.com',
     },
     {
       icon: Phone,
       title: 'Phone',
       value: '+1 (555) 123-4567',
-      link: 'tel:+15551234567'
+      link: 'tel:+15551234567',
     },
     {
       icon: MapPin,
       title: 'Address',
       value: '123 E-commerce St, Digital City, DC 12345',
-      link: null
+      link: null,
     },
     {
       icon: Clock,
       title: 'Business Hours',
       value: 'Mon-Fri: 9AM-6PM EST',
-      link: null
-    }
+      link: null,
+    },
   ]
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     setIsSubmitting(true)
 
     try {
       // Simulate form submission
       await new Promise(resolve => setTimeout(resolve, 1500))
-      
-      toast.success('Message sent successfully! We\'ll get back to you soon.')
+
+      toast.success("Message sent successfully! We'll get back to you soon.")
       setFormData({
         name: '',
         email: '',
@@ -73,7 +73,7 @@ export default function ContactScreen() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Contact Us - IVOLEX"
         description="Get in touch with IVOLEX. We're here to help with any questions about our products or services."
         keywords="contact ivolex, customer support, help, questions"
@@ -85,8 +85,9 @@ export default function ContactScreen() {
             <div className="text-center mb-16">
               <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
               <p className="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed">
-                Have a question, suggestion, or need assistance? We&apos;d love to hear from you. 
-                Our team is here to help make your shopping experience exceptional.
+                Have a question, suggestion, or need assistance? We&apos;d love
+                to hear from you. Our team is here to help make your shopping
+                experience exceptional.
               </p>
             </div>
 
@@ -103,7 +104,7 @@ export default function ContactScreen() {
                       <div>
                         <h3 className="font-medium mb-1">{title}</h3>
                         {link ? (
-                          <a 
+                          <a
                             href={link}
                             className="text-stone-600 hover:text-brand-600 transition-colors"
                           >
@@ -121,7 +122,7 @@ export default function ContactScreen() {
                 <div className="mt-8 p-6 bg-stone-50 rounded-2xl">
                   <h3 className="font-semibold mb-2">Quick Help</h3>
                   <p className="text-stone-600 text-sm mb-4">
-                    Looking for immediate answers? Check out our FAQ section for 
+                    Looking for immediate answers? Check out our FAQ section for
                     common questions about orders, shipping, and returns.
                   </p>
                   <a href="/faq" className="btn btn-outline btn-sm">
@@ -133,11 +134,16 @@ export default function ContactScreen() {
               {/* Contact Form */}
               <div className="lg:col-span-2">
                 <form onSubmit={handleSubmit} className="card p-8">
-                  <h2 className="text-2xl font-semibold mb-6">Send us a Message</h2>
-                  
+                  <h2 className="text-2xl font-semibold mb-6">
+                    Send us a Message
+                  </h2>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-2">
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-medium mb-2"
+                      >
                         Full Name *
                       </label>
                       <input
@@ -152,7 +158,10 @@ export default function ContactScreen() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-2">
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium mb-2"
+                      >
                         Email Address *
                       </label>
                       <input
@@ -169,7 +178,10 @@ export default function ContactScreen() {
                   </div>
 
                   <div className="mb-6">
-                    <label htmlFor="subject" className="block text-sm font-medium mb-2">
+                    <label
+                      htmlFor="subject"
+                      className="block text-sm font-medium mb-2"
+                    >
                       Subject *
                     </label>
                     <select
@@ -186,13 +198,18 @@ export default function ContactScreen() {
                       <option value="product">Product Question</option>
                       <option value="shipping">Shipping & Returns</option>
                       <option value="technical">Technical Issue</option>
-                      <option value="partnership">Partnership Opportunity</option>
+                      <option value="partnership">
+                        Partnership Opportunity
+                      </option>
                       <option value="other">Other</option>
                     </select>
                   </div>
 
                   <div className="mb-6">
-                    <label htmlFor="message" className="block text-sm font-medium mb-2">
+                    <label
+                      htmlFor="message"
+                      className="block text-sm font-medium mb-2"
+                    >
                       Message *
                     </label>
                     <textarea
@@ -226,7 +243,8 @@ export default function ContactScreen() {
                   </button>
 
                   <p className="text-sm text-stone-500 mt-4">
-                    * Required fields. We typically respond within 24 hours during business days.
+                    * Required fields. We typically respond within 24 hours
+                    during business days.
                   </p>
                 </form>
               </div>

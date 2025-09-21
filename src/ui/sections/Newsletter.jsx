@@ -4,7 +4,12 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { newsletterSchema } from '../../validation/schemas'
-import { showSuccess, showError, showLoading, dismissToast } from '../components/ToastProvider'
+import {
+  showSuccess,
+  showError,
+  showLoading,
+  dismissToast,
+} from '../components/ToastProvider'
 
 export default function Newsletter() {
   const [isSubscribed, setIsSubscribed] = useState(false)
@@ -17,21 +22,21 @@ export default function Newsletter() {
     resolver: zodResolver(newsletterSchema),
   })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     const toastId = showLoading('Subscribing to newsletter...')
-    
+
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000))
-      
+
       // Mock API response - in real app, call your newsletter service
       console.log('Newsletter subscription:', data)
-      
+
       dismissToast(toastId)
       showSuccess('Successfully subscribed to our newsletter!')
       setIsSubscribed(true)
       reset()
-      
+
       // Reset success state after 5 seconds
       setTimeout(() => {
         setIsSubscribed(false)
@@ -111,7 +116,7 @@ export default function Newsletter() {
                   </motion.button>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-2 text-left">
                 <input
                   {...register('terms')}

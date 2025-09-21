@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Shield, 
-  Monitor, 
-  Smartphone, 
-  Globe, 
-  Clock, 
+import {
+  Shield,
+  Monitor,
+  Smartphone,
+  Globe,
+  Clock,
   X,
   AlertTriangle,
   CheckCircle,
   MapPin,
-  Settings
+  Settings,
 } from 'lucide-react'
 import { useI18n } from '../../../../ui/contexts/I18nContext.jsx'
 import { useAdminSecurity } from '../../../../ui/contexts/AdminSecurityContext.jsx'
@@ -37,7 +37,7 @@ const SessionManager = () => {
         location: {
           country: 'India',
           city: 'Mumbai',
-          coordinates: { lat: 19.0760, lng: 72.8777 }
+          coordinates: { lat: 19.076, lng: 72.8777 },
         },
         startTime: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
         lastActivity: new Date(Date.now() - 5 * 60 * 1000), // 5 minutes ago
@@ -46,11 +46,20 @@ const SessionManager = () => {
         securityScore: 98,
         riskLevel: 'low',
         activities: [
-          { action: 'Dashboard View', time: new Date(Date.now() - 5 * 60 * 1000) },
-          { action: 'System Administration', time: new Date(Date.now() - 15 * 60 * 1000) },
-          { action: 'Security Management', time: new Date(Date.now() - 30 * 60 * 1000) }
-        ]
-      }
+          {
+            action: 'Dashboard View',
+            time: new Date(Date.now() - 5 * 60 * 1000),
+          },
+          {
+            action: 'System Administration',
+            time: new Date(Date.now() - 15 * 60 * 1000),
+          },
+          {
+            action: 'Security Management',
+            time: new Date(Date.now() - 30 * 60 * 1000),
+          },
+        ],
+      },
     ]
 
     setTimeout(() => {
@@ -59,62 +68,85 @@ const SessionManager = () => {
     }, 1000)
   }, [])
 
-  const terminateSession = async (sessionId) => {
-    if (window.confirm(t('security.confirmTerminate', 'Are you sure you want to terminate this session?'))) {
+  const terminateSession = async sessionId => {
+    if (
+      window.confirm(
+        t(
+          'security.confirmTerminate',
+          'Are you sure you want to terminate this session?'
+        )
+      )
+    ) {
       setSessions(prev => prev.filter(s => s.id !== sessionId))
       await logSecurityEvent(SECURITY_EVENTS.SESSION_TERMINATED, {
         sessionId,
         reason: 'Admin termination',
-        terminatedBy: 'admin'
+        terminatedBy: 'admin',
       })
     }
   }
 
   const terminateAllSessions = async () => {
-    if (window.confirm(t('security.confirmTerminateAll', 'Terminate all other sessions? This will log out all other devices.'))) {
+    if (
+      window.confirm(
+        t(
+          'security.confirmTerminateAll',
+          'Terminate all other sessions? This will log out all other devices.'
+        )
+      )
+    ) {
       const currentSessionId = sessions.find(s => s.isCurrentSession)?.id
       setSessions(prev => prev.filter(s => s.id === currentSessionId))
       await logSecurityEvent(SECURITY_EVENTS.BULK_SESSION_TERMINATION, {
         reason: 'Security cleanup',
-        terminatedCount: sessions.length - 1
+        terminatedCount: sessions.length - 1,
       })
     }
   }
 
-  const getDeviceIcon = (deviceType) => {
+  const getDeviceIcon = deviceType => {
     switch (deviceType) {
-      case 'mobile': return Smartphone
-      case 'tablet': return Smartphone
-      default: return Monitor
+      case 'mobile':
+        return Smartphone
+      case 'tablet':
+        return Smartphone
+      default:
+        return Monitor
     }
   }
 
-  const getRiskColor = (riskLevel) => {
+  const getRiskColor = riskLevel => {
     switch (riskLevel) {
-      case 'high': return 'text-red-600 bg-red-100'
-      case 'medium': return 'text-yellow-600 bg-yellow-100'
-      default: return 'text-green-600 bg-green-100'
+      case 'high':
+        return 'text-red-600 bg-red-100'
+      case 'medium':
+        return 'text-yellow-600 bg-yellow-100'
+      default:
+        return 'text-green-600 bg-green-100'
     }
   }
 
-  const getStatusColor = (status) => {
+  const getStatusColor = status => {
     switch (status) {
-      case 'suspicious': return 'text-red-600 bg-red-100'
-      case 'expired': return 'text-gray-600 bg-gray-100'
-      default: return 'text-green-600 bg-green-100'
+      case 'suspicious':
+        return 'text-red-600 bg-red-100'
+      case 'expired':
+        return 'text-gray-600 bg-gray-100'
+      default:
+        return 'text-green-600 bg-green-100'
     }
   }
 
-  const formatTimeAgo = (date) => {
+  const formatTimeAgo = date => {
     const now = new Date()
     const diffInMinutes = Math.floor((now - date) / (1000 * 60))
-    
+
     if (diffInMinutes < 1) return t('time.justNow', 'Just now')
     if (diffInMinutes < 60) return t('time.minutesAgo', `${diffInMinutes}m ago`)
-    
+
     const diffInHours = Math.floor(diffInMinutes / 60)
     if (diffInHours < 24) return t('time.hoursAgo', `${diffInHours}h ago`)
-    
+
     const diffInDays = Math.floor(diffInHours / 24)
     return t('time.daysAgo', `${diffInDays}d ago`)
   }
@@ -130,14 +162,19 @@ const SessionManager = () => {
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
       {/* Header */}
-      <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <div
+        className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+      >
         <div className={isRTL ? 'text-right' : 'text-left'}>
           <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
             <Shield className="h-8 w-8 text-primary" />
             {t('security.sessionManager', 'Session Manager')}
           </h1>
           <p className="text-foreground/60">
-            {t('security.sessionDescription', 'Monitor and control active admin sessions across all devices')}
+            {t(
+              'security.sessionDescription',
+              'Monitor and control active admin sessions across all devices'
+            )}
           </p>
         </div>
 
@@ -154,38 +191,56 @@ const SessionManager = () => {
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-surface border border-border rounded-xl p-4">
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div
+            className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
             <div className="p-2 bg-blue-100 rounded-lg">
               <Shield className="text-blue-600" size={20} />
             </div>
             <div className={isRTL ? 'text-right' : 'text-left'}>
-              <div className="text-sm text-foreground/60">{t('security.activeSessions', 'Active Sessions')}</div>
-              <div className="text-xl font-bold text-foreground">{sessions.filter(s => s.status === 'active').length}</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-surface border border-border rounded-xl p-4">
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <div className="p-2 bg-green-100 rounded-lg">
-              <CheckCircle className="text-green-600" size={20} />
-            </div>
-            <div className={isRTL ? 'text-right' : 'text-left'}>
-              <div className="text-sm text-foreground/60">{t('security.secureScore', 'Avg Security Score')}</div>
+              <div className="text-sm text-foreground/60">
+                {t('security.activeSessions', 'Active Sessions')}
+              </div>
               <div className="text-xl font-bold text-foreground">
-                {Math.round(sessions.reduce((sum, s) => sum + s.securityScore, 0) / sessions.length)}%
+                {sessions.filter(s => s.status === 'active').length}
               </div>
             </div>
           </div>
         </div>
 
         <div className="bg-surface border border-border rounded-xl p-4">
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div
+            className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
+            <div className="p-2 bg-green-100 rounded-lg">
+              <CheckCircle className="text-green-600" size={20} />
+            </div>
+            <div className={isRTL ? 'text-right' : 'text-left'}>
+              <div className="text-sm text-foreground/60">
+                {t('security.secureScore', 'Avg Security Score')}
+              </div>
+              <div className="text-xl font-bold text-foreground">
+                {Math.round(
+                  sessions.reduce((sum, s) => sum + s.securityScore, 0) /
+                    sessions.length
+                )}
+                %
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-surface border border-border rounded-xl p-4">
+          <div
+            className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
             <div className="p-2 bg-yellow-100 rounded-lg">
               <AlertTriangle className="text-yellow-600" size={20} />
             </div>
             <div className={isRTL ? 'text-right' : 'text-left'}>
-              <div className="text-sm text-foreground/60">{t('security.suspiciousSessions', 'Suspicious')}</div>
+              <div className="text-sm text-foreground/60">
+                {t('security.suspiciousSessions', 'Suspicious')}
+              </div>
               <div className="text-xl font-bold text-foreground">
                 {sessions.filter(s => s.status === 'suspicious').length}
               </div>
@@ -194,12 +249,16 @@ const SessionManager = () => {
         </div>
 
         <div className="bg-surface border border-border rounded-xl p-4">
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div
+            className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
             <div className="p-2 bg-purple-100 rounded-lg">
               <Globe className="text-purple-600" size={20} />
             </div>
             <div className={isRTL ? 'text-right' : 'text-left'}>
-              <div className="text-sm text-foreground/60">{t('security.locations', 'Locations')}</div>
+              <div className="text-sm text-foreground/60">
+                {t('security.locations', 'Locations')}
+              </div>
               <div className="text-xl font-bold text-foreground">
                 {new Set(sessions.map(s => s.location.country)).size}
               </div>
@@ -217,27 +276,39 @@ const SessionManager = () => {
         </div>
 
         <div className="divide-y divide-border">
-          {sessions.map((session) => {
+          {sessions.map(session => {
             const DeviceIcon = getDeviceIcon(session.deviceType)
-            
+
             return (
               <motion.div
                 key={session.id}
                 layout
                 className="p-6 hover:bg-background/50 transition-colors"
               >
-                <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <div className={`flex items-center gap-4 flex-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div
+                  className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
+                  <div
+                    className={`flex items-center gap-4 flex-1 ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
                     {/* Device Icon */}
-                    <div className={`p-3 rounded-xl ${session.isCurrentSession ? 'bg-primary/20' : 'bg-background'}`}>
-                      <DeviceIcon 
-                        size={24} 
-                        className={session.isCurrentSession ? 'text-primary' : 'text-foreground/60'} 
+                    <div
+                      className={`p-3 rounded-xl ${session.isCurrentSession ? 'bg-primary/20' : 'bg-background'}`}
+                    >
+                      <DeviceIcon
+                        size={24}
+                        className={
+                          session.isCurrentSession
+                            ? 'text-primary'
+                            : 'text-foreground/60'
+                        }
                       />
                     </div>
 
                     {/* Session Info */}
-                    <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <div
+                      className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}
+                    >
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-semibold text-foreground">
                           {session.browser} on {session.os}
@@ -248,28 +319,39 @@ const SessionManager = () => {
                           </span>
                         )}
                       </div>
-                      
+
                       <div className="space-y-1 text-sm text-foreground/60">
                         <div className="flex items-center gap-2">
                           <MapPin size={14} />
-                          <span>{session.location.city}, {session.location.country}</span>
+                          <span>
+                            {session.location.city}, {session.location.country}
+                          </span>
                           <span className="text-foreground/40">•</span>
                           <span>{session.ipAddress}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock size={14} />
-                          <span>{t('security.lastActive', 'Last active')}: {formatTimeAgo(session.lastActivity)}</span>
+                          <span>
+                            {t('security.lastActive', 'Last active')}:{' '}
+                            {formatTimeAgo(session.lastActivity)}
+                          </span>
                         </div>
                       </div>
                     </div>
 
                     {/* Status & Risk */}
-                    <div className={`flex flex-col items-end gap-2 ${isRTL ? 'items-start' : 'items-end'}`}>
+                    <div
+                      className={`flex flex-col items-end gap-2 ${isRTL ? 'items-start' : 'items-end'}`}
+                    >
                       <div className="flex items-center gap-2">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(session.status)}`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(session.status)}`}
+                        >
                           {session.status}
                         </span>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRiskColor(session.riskLevel)}`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${getRiskColor(session.riskLevel)}`}
+                        >
                           {session.riskLevel} risk
                         </span>
                       </div>
@@ -280,7 +362,9 @@ const SessionManager = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className={`flex items-center gap-2 ml-4 ${isRTL ? 'mr-4 ml-0' : ''}`}>
+                  <div
+                    className={`flex items-center gap-2 ml-4 ${isRTL ? 'mr-4 ml-0' : ''}`}
+                  >
                     <button
                       onClick={() => {
                         setSelectedSession(session)
@@ -290,7 +374,7 @@ const SessionManager = () => {
                     >
                       <Settings size={16} />
                     </button>
-                    
+
                     {!session.isCurrentSession && (
                       <button
                         onClick={() => terminateSession(session.id)}
@@ -322,9 +406,11 @@ const SessionManager = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               className="bg-surface border border-border rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
             >
-              <div className={`flex items-center justify-between mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div
+                className={`flex items-center justify-between mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
                 <h3 className="text-lg font-semibold text-foreground">
                   {t('security.sessionDetails', 'Session Details')}
                 </h3>
@@ -339,30 +425,44 @@ const SessionManager = () => {
               <div className="space-y-6">
                 {/* Session Info */}
                 <div>
-                  <h4 className="font-medium text-foreground mb-3">{t('security.sessionInfo', 'Session Information')}</h4>
+                  <h4 className="font-medium text-foreground mb-3">
+                    {t('security.sessionInfo', 'Session Information')}
+                  </h4>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="text-foreground/60">{t('security.sessionId', 'Session ID')}:</span>
+                      <span className="text-foreground/60">
+                        {t('security.sessionId', 'Session ID')}:
+                      </span>
                       <p className="font-mono">{selectedSession.id}</p>
                     </div>
                     <div>
-                      <span className="text-foreground/60">{t('security.deviceType', 'Device Type')}:</span>
+                      <span className="text-foreground/60">
+                        {t('security.deviceType', 'Device Type')}:
+                      </span>
                       <p className="capitalize">{selectedSession.deviceType}</p>
                     </div>
                     <div>
-                      <span className="text-foreground/60">{t('security.browser', 'Browser')}:</span>
+                      <span className="text-foreground/60">
+                        {t('security.browser', 'Browser')}:
+                      </span>
                       <p>{selectedSession.browser}</p>
                     </div>
                     <div>
-                      <span className="text-foreground/60">{t('security.operatingSystem', 'OS')}:</span>
+                      <span className="text-foreground/60">
+                        {t('security.operatingSystem', 'OS')}:
+                      </span>
                       <p>{selectedSession.os}</p>
                     </div>
                     <div>
-                      <span className="text-foreground/60">{t('security.ipAddress', 'IP Address')}:</span>
+                      <span className="text-foreground/60">
+                        {t('security.ipAddress', 'IP Address')}:
+                      </span>
                       <p className="font-mono">{selectedSession.ipAddress}</p>
                     </div>
                     <div>
-                      <span className="text-foreground/60">{t('security.securityScore', 'Security Score')}:</span>
+                      <span className="text-foreground/60">
+                        {t('security.securityScore', 'Security Score')}:
+                      </span>
                       <p>{selectedSession.securityScore}%</p>
                     </div>
                   </div>
@@ -370,16 +470,26 @@ const SessionManager = () => {
 
                 {/* Location Info */}
                 <div>
-                  <h4 className="font-medium text-foreground mb-3">{t('security.locationInfo', 'Location Information')}</h4>
+                  <h4 className="font-medium text-foreground mb-3">
+                    {t('security.locationInfo', 'Location Information')}
+                  </h4>
                   <div className="text-sm space-y-2">
                     <p>
-                      <span className="text-foreground/60">{t('security.location', 'Location')}:</span>
-                      <span className="ml-2">{selectedSession.location.city}, {selectedSession.location.country}</span>
+                      <span className="text-foreground/60">
+                        {t('security.location', 'Location')}:
+                      </span>
+                      <span className="ml-2">
+                        {selectedSession.location.city},{' '}
+                        {selectedSession.location.country}
+                      </span>
                     </p>
                     <p>
-                      <span className="text-foreground/60">{t('security.coordinates', 'Coordinates')}:</span>
+                      <span className="text-foreground/60">
+                        {t('security.coordinates', 'Coordinates')}:
+                      </span>
                       <span className="ml-2 font-mono">
-                        {selectedSession.location.coordinates.lat}, {selectedSession.location.coordinates.lng}
+                        {selectedSession.location.coordinates.lat},{' '}
+                        {selectedSession.location.coordinates.lng}
                       </span>
                     </p>
                   </div>
@@ -387,12 +497,21 @@ const SessionManager = () => {
 
                 {/* Recent Activities */}
                 <div>
-                  <h4 className="font-medium text-foreground mb-3">{t('security.recentActivities', 'Recent Activities')}</h4>
+                  <h4 className="font-medium text-foreground mb-3">
+                    {t('security.recentActivities', 'Recent Activities')}
+                  </h4>
                   <div className="space-y-2">
                     {selectedSession.activities.map((activity, index) => (
-                      <div key={index} className="flex items-center justify-between text-sm">
-                        <span className="text-foreground">{activity.action}</span>
-                        <span className="text-foreground/60">{formatTimeAgo(activity.time)}</span>
+                      <div
+                        key={index}
+                        className="flex items-center justify-between text-sm"
+                      >
+                        <span className="text-foreground">
+                          {activity.action}
+                        </span>
+                        <span className="text-foreground/60">
+                          {formatTimeAgo(activity.time)}
+                        </span>
                       </div>
                     ))}
                   </div>

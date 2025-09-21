@@ -10,10 +10,10 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     setSystemTheme(mediaQuery.matches ? 'dark' : 'light')
-    
-    const handler = (e) => setSystemTheme(e.matches ? 'dark' : 'light')
+
+    const handler = e => setSystemTheme(e.matches ? 'dark' : 'light')
     mediaQuery.addEventListener('change', handler)
-    
+
     return () => mediaQuery.removeEventListener('change', handler)
   }, [])
 
@@ -28,7 +28,7 @@ export function ThemeProvider({ children }) {
   // Apply theme to document
   useEffect(() => {
     const effectiveTheme = theme === 'system' ? systemTheme : theme
-    
+
     if (effectiveTheme === 'dark') {
       document.documentElement.classList.add('dark')
     } else {
@@ -36,7 +36,7 @@ export function ThemeProvider({ children }) {
     }
   }, [theme, systemTheme])
 
-  const updateTheme = (newTheme) => {
+  const updateTheme = newTheme => {
     setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
   }
@@ -45,7 +45,7 @@ export function ThemeProvider({ children }) {
     theme,
     effectiveTheme: theme === 'system' ? systemTheme : theme,
     setTheme: updateTheme,
-    systemTheme
+    systemTheme,
   }
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

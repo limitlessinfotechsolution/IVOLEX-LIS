@@ -112,7 +112,11 @@ export default function Checkout() {
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <button type="submit" className="btn btn-primary w-full" disabled={isPlacingOrder}>
+              <button
+                type="submit"
+                className="btn btn-primary w-full"
+                disabled={isPlacingOrder}
+              >
                 {isPlacingOrder ? 'Processing...' : 'Place Order'}
               </button>
             </div>

@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion'
 import { Package, ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -21,8 +20,9 @@ const TrackingPage = () => {
             <ArrowLeft className="w-4 h-4" />
             <span>Back</span>
           </button>
-          
-          <div className={`text-center`}>&gt;
+
+          <div className={`text-center`}>
+            &gt;
             <div className="flex items-center justify-center gap-3 mb-4">
               <Package className="w-8 h-8 text-blue-500" />
               <h1 className={`text-3xl font-bold ${theme.text}`}>
@@ -30,7 +30,8 @@ const TrackingPage = () => {
               </h1>
             </div>
             <p className={`text-lg ${theme.textSecondary} max-w-2xl mx-auto`}>
-              Enter your tracking number to get real-time updates on your shipment status and estimated delivery time.
+              Enter your tracking number to get real-time updates on your
+              shipment status and estimated delivery time.
             </p>
           </div>
         </div>
@@ -54,7 +55,7 @@ const TrackingPage = () => {
           <h2 className={`text-xl font-semibold ${theme.text} mb-4`}>
             Need Help?
           </h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className={`font-medium ${theme.text} mb-2`}>
@@ -67,7 +68,7 @@ const TrackingPage = () => {
                 <li>• Contact customer support for assistance</li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className={`font-medium ${theme.text} mb-2`}>
                 Shipping Information
@@ -80,9 +81,11 @@ const TrackingPage = () => {
               </ul>
             </div>
           </div>
-          
+
           <div className="mt-6 text-center">
-            <button className={`px-6 py-3 rounded-lg ${theme.accent} text-white hover:opacity-90 transition-opacity`}>
+            <button
+              className={`px-6 py-3 rounded-lg ${theme.accent} text-white hover:opacity-90 transition-opacity`}
+            >
               Contact Customer Support
             </button>
           </div>

@@ -11,7 +11,13 @@
     "reviews": 127,
     "short": "Premium full-grain leather laptop bag with padded compartments.",
     "description": "Crafted from premium full-grain leather, this laptop bag combines style and functionality. Features padded compartments for up to 15-inch laptops, multiple organizational pockets, and a comfortable shoulder strap. Perfect for professionals who demand both elegance and practicality.",
-    "features": ["Full-grain leather construction", "Padded laptop compartment (up to 15\")", "Multiple organizational pockets", "Adjustable shoulder strap", "YKK zippers"],
+    "features": [
+      "Full-grain leather construction",
+      "Padded laptop compartment (up to 15\")",
+      "Multiple organizational pockets",
+      "Adjustable shoulder strap",
+      "YKK zippers"
+    ],
     "inStock": true,
     "stockCount": 25,
     "tags": ["Professional", "Business", "Travel"],
@@ -35,7 +41,13 @@
     "reviews": 89,
     "short": "Timeless black leather belt with premium buckle.",
     "description": "A classic addition to any wardrobe, this genuine leather belt features a sleek design with a premium metal buckle. The smooth leather finish and expert craftsmanship ensure durability and style that lasts for years.",
-    "features": ["Genuine leather", "Premium metal buckle", "Available in multiple sizes", "Smooth finish", "Classic design"],
+    "features": [
+      "Genuine leather",
+      "Premium metal buckle",
+      "Available in multiple sizes",
+      "Smooth finish",
+      "Classic design"
+    ],
     "inStock": true,
     "stockCount": 45,
     "tags": ["Classic", "Formal", "Everyday"],
@@ -59,7 +71,13 @@
     "reviews": 156,
     "short": "Handcrafted brown leather wallet with RFID protection.",
     "description": "This handcrafted wallet combines traditional craftsmanship with modern security features. Made from premium brown leather with RFID blocking technology to protect your cards from digital theft. Multiple card slots and a bill compartment provide ample storage.",
-    "features": ["RFID blocking technology", "Premium brown leather", "Multiple card slots", "Bill compartment", "Compact design"],
+    "features": [
+      "RFID blocking technology",
+      "Premium brown leather",
+      "Multiple card slots",
+      "Bill compartment",
+      "Compact design"
+    ],
     "inStock": true,
     "stockCount": 32,
     "tags": ["RFID", "Security", "Handcrafted"],
@@ -83,7 +101,13 @@
     "reviews": 73,
     "short": "Elegant brown leather keychain with vintage charm.",
     "description": "Add a touch of sophistication to your keys with this handcrafted leather keychain. Features a vintage-inspired design with quality hardware that ensures longevity. A perfect accessory for yourself or as a thoughtful gift.",
-    "features": ["Handcrafted leather", "Vintage design", "Quality hardware", "Perfect gift size", "Durable construction"],
+    "features": [
+      "Handcrafted leather",
+      "Vintage design",
+      "Quality hardware",
+      "Perfect gift size",
+      "Durable construction"
+    ],
     "inStock": true,
     "stockCount": 78,
     "tags": ["Vintage", "Gift", "Accessory"],
@@ -107,7 +131,13 @@
     "reviews": 234,
     "short": "Premium wireless headphones with active noise cancellation.",
     "description": "Experience unparalleled audio quality with these premium wireless headphones. Advanced noise-cancelling technology blocks out distractions while delivering crystal-clear sound. Perfect for music lovers, travelers, and professionals.",
-    "features": ["Active noise cancellation", "30-hour battery life", "Quick charge (15 min = 3 hours)", "Premium drivers", "Touch controls"],
+    "features": [
+      "Active noise cancellation",
+      "30-hour battery life",
+      "Quick charge (15 min = 3 hours)",
+      "Premium drivers",
+      "Touch controls"
+    ],
     "inStock": true,
     "stockCount": 45,
     "tags": ["Wireless", "Noise-Cancelling", "Premium"],
@@ -131,7 +161,13 @@
     "reviews": 178,
     "short": "Advanced fitness tracking with heart rate monitoring.",
     "description": "Track your fitness goals with this advanced smartwatch. Features heart rate monitoring, GPS tracking, sleep analysis, and water resistance. Compatible with both iOS and Android devices.",
-    "features": ["Heart rate monitoring", "GPS tracking", "Sleep analysis", "Water resistant (50m)", "7-day battery"],
+    "features": [
+      "Heart rate monitoring",
+      "GPS tracking",
+      "Sleep analysis",
+      "Water resistant (50m)",
+      "7-day battery"
+    ],
     "inStock": true,
     "stockCount": 62,
     "tags": ["Fitness", "Smart", "Health"],
@@ -155,7 +191,13 @@
     "reviews": 145,
     "short": "High-capacity power bank with fast charging technology.",
     "description": "Keep your devices powered with this high-capacity 20000mAh power bank. Features fast charging technology, multiple ports, and digital display. Perfect for travel, outdoor activities, and emergency backup.",
-    "features": ["20000mAh capacity", "Fast charging 18W", "Digital display", "Multiple ports", "Safety protection"],
+    "features": [
+      "20000mAh capacity",
+      "Fast charging 18W",
+      "Digital display",
+      "Multiple ports",
+      "Safety protection"
+    ],
     "inStock": true,
     "stockCount": 38,
     "tags": ["Portable", "Fast Charging", "Travel"],
@@ -179,7 +221,13 @@
     "reviews": 92,
     "short": "Professional 4K webcam for streaming and video calls.",
     "description": "Elevate your video calls and streaming with this professional 4K webcam. Features auto focus, low-light correction, and built-in microphone. Perfect for remote work, content creation, and online meetings.",
-    "features": ["4K resolution", "Auto focus", "Low-light correction", "Built-in microphone", "Plug & play"],
+    "features": [
+      "4K resolution",
+      "Auto focus",
+      "Low-light correction",
+      "Built-in microphone",
+      "Plug & play"
+    ],
     "inStock": true,
     "stockCount": 28,
     "tags": ["4K", "Professional", "Streaming"],
@@ -203,7 +251,13 @@
     "reviews": 167,
     "short": "Premium ergonomic office chair with lumbar support.",
     "description": "Enhance your workspace comfort with this premium ergonomic office chair. Features adjustable lumbar support, memory foam cushioning, and breathable mesh back. Designed for long hours of comfortable seating.",
-    "features": ["Adjustable lumbar support", "Memory foam cushion", "Breathable mesh", "360° swivel", "Height adjustment"],
+    "features": [
+      "Adjustable lumbar support",
+      "Memory foam cushion",
+      "Breathable mesh",
+      "360° swivel",
+      "Height adjustment"
+    ],
     "inStock": true,
     "stockCount": 15,
     "tags": ["Ergonomic", "Office", "Comfort"],
@@ -227,7 +281,13 @@
     "reviews": 134,
     "short": "Electric height-adjustable standing desk for healthy work.",
     "description": "Transform your workspace with this electric height-adjustable standing desk. Smooth motor operation, memory presets, and sturdy construction. Promote better health and productivity with sit-stand flexibility.",
-    "features": ["Electric height adjustment", "Memory presets", "Anti-collision", "Cable management", "Stable frame"],
+    "features": [
+      "Electric height adjustment",
+      "Memory presets",
+      "Anti-collision",
+      "Cable management",
+      "Stable frame"
+    ],
     "inStock": true,
     "stockCount": 22,
     "tags": ["Standing", "Electric", "Healthy"],
@@ -251,7 +311,13 @@
     "reviews": 98,
     "short": "Elegant 3-seater velvet sofa with premium comfort.",
     "description": "Add elegance to your living space with this luxury velvet sofa. Features premium velvet upholstery, high-density foam cushions, and solid wood frame. Perfect centerpiece for modern and classic interiors.",
-    "features": ["Premium velvet upholstery", "High-density foam", "Solid wood frame", "3-seater capacity", "Easy assembly"],
+    "features": [
+      "Premium velvet upholstery",
+      "High-density foam",
+      "Solid wood frame",
+      "3-seater capacity",
+      "Easy assembly"
+    ],
     "inStock": true,
     "stockCount": 8,
     "tags": ["Luxury", "Velvet", "Elegant"],
@@ -275,7 +341,13 @@
     "reviews": 156,
     "short": "5-tier industrial style bookshelf with metal frame.",
     "description": "Organize your space with this stylish industrial bookshelf. Features 5 spacious tiers, sturdy metal frame, and rustic wood shelves. Perfect for books, decor, and storage in any room.",
-    "features": ["5-tier design", "Metal frame", "Rustic wood shelves", "Easy assembly", "Versatile storage"],
+    "features": [
+      "5-tier design",
+      "Metal frame",
+      "Rustic wood shelves",
+      "Easy assembly",
+      "Versatile storage"
+    ],
     "inStock": true,
     "stockCount": 34,
     "tags": ["Industrial", "Storage", "Rustic"],

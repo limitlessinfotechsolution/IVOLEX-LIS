@@ -53,7 +53,7 @@ export const checkoutSchema = z.object({
     .string()
     .min(1, 'Phone number is required')
     .regex(/^[+]?[(]?[\d\s\-\(\)]{10,}$/, 'Please enter a valid phone number'),
-  
+
   // Shipping Address
   address: z
     .string()
@@ -63,17 +63,13 @@ export const checkoutSchema = z.object({
     .string()
     .min(1, 'City is required')
     .min(2, 'City must be at least 2 characters'),
-  state: z
-    .string()
-    .min(1, 'State/Province is required'),
+  state: z.string().min(1, 'State/Province is required'),
   zipCode: z
     .string()
     .min(1, 'ZIP/Postal code is required')
     .regex(/^[\d\w\s-]{3,10}$/, 'Please enter a valid ZIP/Postal code'),
-  country: z
-    .string()
-    .min(1, 'Country is required'),
-  
+  country: z.string().min(1, 'Country is required'),
+
   // Payment Information
   cardNumber: z
     .string()
@@ -82,7 +78,10 @@ export const checkoutSchema = z.object({
   expiryDate: z
     .string()
     .min(1, 'Expiry date is required')
-    .regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, 'Please enter a valid expiry date (MM/YY)'),
+    .regex(
+      /^(0[1-9]|1[0-2])\/([0-9]{2})$/,
+      'Please enter a valid expiry date (MM/YY)'
+    ),
   cvv: z
     .string()
     .min(1, 'CVV is required')

@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { 
-  Truck, 
-  Package, 
-  MapPin, 
-  Search, 
+import {
+  Truck,
+  Package,
+  MapPin,
+  Search,
   Filter,
   Plus,
   Edit3,
@@ -11,7 +11,7 @@ import {
   Settings,
   Download,
   CheckCircle,
-  Navigation
+  Navigation,
 } from 'lucide-react'
 
 const ShippingManagement = () => {
@@ -31,7 +31,7 @@ const ShippingManagement = () => {
       destination: 'Jeddah, Saudi Arabia',
       createdAt: '2024-01-15T10:00:00Z',
       estimatedDelivery: '2024-01-18T15:00:00Z',
-      value: 1299.99
+      value: 1299.99,
     },
     {
       id: 'SHIP_002',
@@ -46,31 +46,39 @@ const ShippingManagement = () => {
       createdAt: '2024-01-12T14:30:00Z',
       estimatedDelivery: '2024-01-17T12:00:00Z',
       deliveredAt: '2024-01-16T16:45:00Z',
-      value: 899.50
-    }
+      value: 899.5,
+    },
   ])
 
   // Get status badge
-  const getStatusBadge = (status) => {
+  const getStatusBadge = status => {
     const statusConfig = {
       pending: { color: 'bg-gray-100 text-gray-800', label: 'Pending' },
       picked_up: { color: 'bg-blue-100 text-blue-800', label: 'Picked Up' },
-      in_transit: { color: 'bg-yellow-100 text-yellow-800', label: 'In Transit' },
-      out_for_delivery: { color: 'bg-orange-100 text-orange-800', label: 'Out for Delivery' },
-      delivered: { color: 'bg-green-100 text-green-800', label: 'Delivered' }
+      in_transit: {
+        color: 'bg-yellow-100 text-yellow-800',
+        label: 'In Transit',
+      },
+      out_for_delivery: {
+        color: 'bg-orange-100 text-orange-800',
+        label: 'Out for Delivery',
+      },
+      delivered: { color: 'bg-green-100 text-green-800', label: 'Delivered' },
     }
 
     const config = statusConfig[status] || statusConfig.pending
 
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${config.color}`}>
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-medium ${config.color}`}
+      >
         {config.label}
       </span>
     )
   }
 
   // Get status icon
-  const getStatusIcon = (status) => {
+  const getStatusIcon = status => {
     switch (status) {
       case 'pending':
         return <Package className="w-4 h-4 text-gray-500" />
@@ -88,28 +96,33 @@ const ShippingManagement = () => {
   }
 
   // Filter shipments
-  const filteredShipments = shipments.filter(shipment =>
-    shipment.trackingNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    shipment.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    shipment.orderId.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredShipments = shipments.filter(
+    shipment =>
+      shipment.trackingNumber
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      shipment.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      shipment.orderId.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   // Get shipment statistics
   const stats = {
     total: shipments.length,
     pending: shipments.filter(s => s.status === 'pending').length,
-    inTransit: shipments.filter(s => ['picked_up', 'in_transit', 'out_for_delivery'].includes(s.status)).length,
+    inTransit: shipments.filter(s =>
+      ['picked_up', 'in_transit', 'out_for_delivery'].includes(s.status)
+    ).length,
     delivered: shipments.filter(s => s.status === 'delivered').length,
-    totalValue: shipments.reduce((sum, s) => sum + s.value, 0)
+    totalValue: shipments.reduce((sum, s) => sum + s.value, 0),
   }
 
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     })
   }
 
@@ -124,7 +137,8 @@ const ShippingManagement = () => {
                 Shipping Management
               </h1>
               <p className="text-sm text-gray-600 mt-1">
-                Manage shipping methods, track shipments, and monitor delivery performance
+                Manage shipping methods, track shipments, and monitor delivery
+                performance
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -146,7 +160,9 @@ const ShippingManagement = () => {
                 <Package className="w-8 h-8 text-blue-500" />
                 <div>
                   <p className="text-sm text-gray-600">Total Shipments</p>
-                  <p className="text-xl font-bold text-gray-900">{stats.total}</p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {stats.total}
+                  </p>
                 </div>
               </div>
             </div>
@@ -155,7 +171,9 @@ const ShippingManagement = () => {
                 <Truck className="w-8 h-8 text-yellow-500" />
                 <div>
                   <p className="text-sm text-gray-600">In Transit</p>
-                  <p className="text-xl font-bold text-gray-900">{stats.inTransit}</p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {stats.inTransit}
+                  </p>
                 </div>
               </div>
             </div>
@@ -164,7 +182,9 @@ const ShippingManagement = () => {
                 <CheckCircle className="w-8 h-8 text-green-500" />
                 <div>
                   <p className="text-sm text-gray-600">Delivered</p>
-                  <p className="text-xl font-bold text-gray-900">{stats.delivered}</p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {stats.delivered}
+                  </p>
                 </div>
               </div>
             </div>
@@ -173,7 +193,9 @@ const ShippingManagement = () => {
                 <MapPin className="w-8 h-8 text-purple-500" />
                 <div>
                   <p className="text-sm text-gray-600">Total Value</p>
-                  <p className="text-xl font-bold text-gray-900">₹{stats.totalValue.toLocaleString()}</p>
+                  <p className="text-xl font-bold text-gray-900">
+                    ₹{stats.totalValue.toLocaleString()}
+                  </p>
                 </div>
               </div>
             </div>
@@ -190,7 +212,7 @@ const ShippingManagement = () => {
                   type="text"
                   placeholder="Search by tracking number, customer, or order ID..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -203,32 +225,57 @@ const ShippingManagement = () => {
               </button>
             </div>
           </div>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="text-left p-4 text-gray-700 font-medium">Tracking Info</th>
-                  <th className="text-left p-4 text-gray-700 font-medium">Customer</th>
-                  <th className="text-left p-4 text-gray-700 font-medium">Route</th>
-                  <th className="text-left p-4 text-gray-700 font-medium">Status</th>
-                  <th className="text-left p-4 text-gray-700 font-medium">Value</th>
-                  <th className="text-left p-4 text-gray-700 font-medium">Actions</th>
+                  <th className="text-left p-4 text-gray-700 font-medium">
+                    Tracking Info
+                  </th>
+                  <th className="text-left p-4 text-gray-700 font-medium">
+                    Customer
+                  </th>
+                  <th className="text-left p-4 text-gray-700 font-medium">
+                    Route
+                  </th>
+                  <th className="text-left p-4 text-gray-700 font-medium">
+                    Status
+                  </th>
+                  <th className="text-left p-4 text-gray-700 font-medium">
+                    Value
+                  </th>
+                  <th className="text-left p-4 text-gray-700 font-medium">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {filteredShipments.map((shipment) => (
-                  <tr key={shipment.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                {filteredShipments.map(shipment => (
+                  <tr
+                    key={shipment.id}
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                  >
                     <td className="p-4">
                       <div>
-                        <div className="font-medium text-gray-900">{shipment.trackingNumber}</div>
-                        <div className="text-sm text-gray-500">Order: {shipment.orderId}</div>
-                        <div className="text-sm text-gray-500">{shipment.provider}</div>
+                        <div className="font-medium text-gray-900">
+                          {shipment.trackingNumber}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          Order: {shipment.orderId}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {shipment.provider}
+                        </div>
                       </div>
                     </td>
                     <td className="p-4">
-                      <div className="font-medium text-gray-900">{shipment.customer}</div>
-                      <div className="text-sm text-gray-500">{formatDate(shipment.createdAt)}</div>
+                      <div className="font-medium text-gray-900">
+                        {shipment.customer}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {formatDate(shipment.createdAt)}
+                      </div>
                     </td>
                     <td className="p-4">
                       <div className="text-sm text-gray-700">

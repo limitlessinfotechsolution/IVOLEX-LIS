@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Palette, 
-  Save, 
-  RotateCcw, 
-  Eye, 
+import {
+  Palette,
+  Save,
+  RotateCcw,
+  Eye,
   Download,
   Upload,
   Type,
@@ -17,7 +17,7 @@ import {
   Moon,
   Shuffle,
   Check,
-  X
+  X,
 } from 'lucide-react'
 import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
 import { useSegment } from '../../../ui/contexts/SegmentContext.jsx'
@@ -31,7 +31,7 @@ const COLOR_PRESETS = {
     accent: '#CD853F',
     background: '#FDF5E6',
     surface: '#FFFFFF',
-    foreground: '#2C1810'
+    foreground: '#2C1810',
   },
   electronics: {
     name: 'Tech Blue',
@@ -40,7 +40,7 @@ const COLOR_PRESETS = {
     accent: '#06B6D4',
     background: '#F8FAFC',
     surface: '#FFFFFF',
-    foreground: '#0F172A'
+    foreground: '#0F172A',
   },
   furniture: {
     name: 'Natural Wood',
@@ -49,7 +49,7 @@ const COLOR_PRESETS = {
     accent: '#F59E0B',
     background: '#FFFBEB',
     surface: '#FFFFFF',
-    foreground: '#1C1917'
+    foreground: '#1C1917',
   },
   modern: {
     name: 'Modern Dark',
@@ -58,7 +58,7 @@ const COLOR_PRESETS = {
     accent: '#EC4899',
     background: '#0F172A',
     surface: '#1E293B',
-    foreground: '#F1F5F9'
+    foreground: '#F1F5F9',
   },
   nature: {
     name: 'Nature Green',
@@ -67,8 +67,8 @@ const COLOR_PRESETS = {
     accent: '#34D399',
     background: '#F0FDF4',
     surface: '#FFFFFF',
-    foreground: '#064E3B'
-  }
+    foreground: '#064E3B',
+  },
 }
 
 // Typography presets
@@ -77,26 +77,26 @@ const TYPOGRAPHY_PRESETS = {
     name: 'Modern Sans',
     headings: 'Inter',
     body: 'Inter',
-    accent: 'Poppins'
+    accent: 'Poppins',
   },
   classic: {
     name: 'Classic Serif',
     headings: 'Playfair Display',
     body: 'Source Sans Pro',
-    accent: 'Playfair Display'
+    accent: 'Playfair Display',
   },
   minimal: {
     name: 'Minimal',
     headings: 'Roboto',
     body: 'Roboto',
-    accent: 'Roboto Mono'
+    accent: 'Roboto Mono',
   },
   elegant: {
     name: 'Elegant',
     headings: 'Merriweather',
     body: 'Open Sans',
-    accent: 'Dancing Script'
-  }
+    accent: 'Dancing Script',
+  },
 }
 
 // Spacing and layout presets
@@ -106,22 +106,22 @@ const LAYOUT_PRESETS = {
     containerPadding: '1rem',
     sectionSpacing: '2rem',
     cardPadding: '1rem',
-    borderRadius: '0.5rem'
+    borderRadius: '0.5rem',
   },
   comfortable: {
     name: 'Comfortable',
     containerPadding: '1.5rem',
     sectionSpacing: '3rem',
     cardPadding: '1.5rem',
-    borderRadius: '0.75rem'
+    borderRadius: '0.75rem',
   },
   spacious: {
     name: 'Spacious',
     containerPadding: '2rem',
     sectionSpacing: '4rem',
     cardPadding: '2rem',
-    borderRadius: '1rem'
-  }
+    borderRadius: '1rem',
+  },
 }
 
 export default function ThemeEditor() {
@@ -146,11 +146,11 @@ export default function ThemeEditor() {
   const handleColorChange = (colorKey, value) => {
     setCustomColors(prev => ({
       ...prev,
-      [colorKey]: value
+      [colorKey]: value,
     }))
   }
 
-  const handlePresetSelect = (presetKey) => {
+  const handlePresetSelect = presetKey => {
     setSelectedPreset(presetKey)
     setCustomColors(COLOR_PRESETS[presetKey])
   }
@@ -162,9 +162,9 @@ export default function ThemeEditor() {
       typography: TYPOGRAPHY_PRESETS[selectedTypography],
       layout: LAYOUT_PRESETS[selectedLayout],
       darkMode: isDarkMode,
-      segment: currentSegment
+      segment: currentSegment,
     }
-    
+
     console.log('Saving theme configuration:', themeConfig)
     setHasUnsavedChanges(false)
     // Here you would typically save to backend/localStorage
@@ -180,14 +180,17 @@ export default function ThemeEditor() {
 
   const handleGenerateTheme = async () => {
     setIsGenerating(true)
-    
+
     // Simulate AI theme generation
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    const randomPreset = Object.keys(COLOR_PRESETS)[Math.floor(Math.random() * Object.keys(COLOR_PRESETS).length)]
+
+    const randomPreset =
+      Object.keys(COLOR_PRESETS)[
+        Math.floor(Math.random() * Object.keys(COLOR_PRESETS).length)
+      ]
     setCustomColors(COLOR_PRESETS[randomPreset])
     setSelectedPreset(randomPreset)
-    
+
     setIsGenerating(false)
   }
 
@@ -196,29 +199,31 @@ export default function ThemeEditor() {
       <label className="text-sm font-medium text-foreground">{label}</label>
       <div className="relative">
         <button
-          onClick={() => setShowColorPicker(showColorPicker === colorKey ? null : colorKey)}
+          onClick={() =>
+            setShowColorPicker(showColorPicker === colorKey ? null : colorKey)
+          }
           className="w-full h-10 rounded-lg border border-border flex items-center gap-3 px-3 hover:border-primary transition-colors"
         >
-          <div 
+          <div
             className="w-6 h-6 rounded border border-border"
             style={{ backgroundColor: value }}
           />
           <span className="font-mono text-sm text-foreground">{value}</span>
         </button>
-        
+
         {showColorPicker === colorKey && (
           <div className="absolute top-full mt-2 z-50 bg-surface border border-border rounded-lg p-4 shadow-lg">
             <input
               type="color"
               value={value}
-              onChange={(e) => handleColorChange(colorKey, e.target.value)}
+              onChange={e => handleColorChange(colorKey, e.target.value)}
               className="w-full h-32 border border-border rounded cursor-pointer"
             />
             <div className="mt-3 space-y-2">
               <input
                 type="text"
                 value={value}
-                onChange={(e) => handleColorChange(colorKey, e.target.value)}
+                onChange={e => handleColorChange(colorKey, e.target.value)}
                 className="w-full px-3 py-2 border border-border rounded text-sm font-mono"
                 placeholder="#000000"
               />
@@ -245,42 +250,118 @@ export default function ThemeEditor() {
   )
 
   const PreviewComponent = () => (
-    <div className="space-y-4 p-6" style={{ backgroundColor: customColors.background, color: customColors.foreground }}>
+    <div
+      className="space-y-4 p-6"
+      style={{
+        backgroundColor: customColors.background,
+        color: customColors.foreground,
+      }}
+    >
       {/* Header Preview */}
-      <div className="flex items-center justify-between p-4 rounded-lg" style={{ backgroundColor: customColors.surface }}>
-        <h1 className="text-xl font-bold" style={{ color: customColors.primary }}>IVOLEX</h1>
+      <div
+        className="flex items-center justify-between p-4 rounded-lg"
+        style={{ backgroundColor: customColors.surface }}
+      >
+        <h1
+          className="text-xl font-bold"
+          style={{ color: customColors.primary }}
+        >
+          IVOLEX
+        </h1>
         <div className="flex gap-2">
-          <button className="px-4 py-2 rounded text-sm" style={{ backgroundColor: customColors.primary, color: customColors.background }}>
+          <button
+            className="px-4 py-2 rounded text-sm"
+            style={{
+              backgroundColor: customColors.primary,
+              color: customColors.background,
+            }}
+          >
             Primary
           </button>
-          <button className="px-4 py-2 rounded text-sm border" style={{ borderColor: customColors.secondary, color: customColors.secondary }}>
+          <button
+            className="px-4 py-2 rounded text-sm border"
+            style={{
+              borderColor: customColors.secondary,
+              color: customColors.secondary,
+            }}
+          >
             Secondary
           </button>
         </div>
       </div>
-      
+
       {/* Content Preview */}
-      <div className="p-4 rounded-lg" style={{ backgroundColor: customColors.surface }}>
-        <h2 className="text-lg font-semibold mb-2" style={{ color: customColors.foreground }}>Sample Content</h2>
-        <p className="text-sm mb-4" style={{ color: customColors.foreground + '99' }}>
-          This is how your content will look with the selected theme colors and typography.
+      <div
+        className="p-4 rounded-lg"
+        style={{ backgroundColor: customColors.surface }}
+      >
+        <h2
+          className="text-lg font-semibold mb-2"
+          style={{ color: customColors.foreground }}
+        >
+          Sample Content
+        </h2>
+        <p
+          className="text-sm mb-4"
+          style={{ color: customColors.foreground + '99' }}
+        >
+          This is how your content will look with the selected theme colors and
+          typography.
         </p>
-        <div className="inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: customColors.accent + '20', color: customColors.accent }}>
+        <div
+          className="inline-block px-3 py-1 rounded-full text-xs font-medium"
+          style={{
+            backgroundColor: customColors.accent + '20',
+            color: customColors.accent,
+          }}
+        >
           Accent Badge
         </div>
       </div>
-      
+
       {/* Cards Preview */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 rounded-lg border" style={{ backgroundColor: customColors.surface, borderColor: customColors.primary + '20' }}>
-          <div className="w-full h-20 rounded mb-3" style={{ backgroundColor: customColors.primary + '10' }}></div>
-          <h3 className="font-medium" style={{ color: customColors.foreground }}>Product Card</h3>
-          <p className="text-sm mt-1" style={{ color: customColors.accent }}>$99.99</p>
+        <div
+          className="p-4 rounded-lg border"
+          style={{
+            backgroundColor: customColors.surface,
+            borderColor: customColors.primary + '20',
+          }}
+        >
+          <div
+            className="w-full h-20 rounded mb-3"
+            style={{ backgroundColor: customColors.primary + '10' }}
+          ></div>
+          <h3
+            className="font-medium"
+            style={{ color: customColors.foreground }}
+          >
+            Product Card
+          </h3>
+          <p className="text-sm mt-1" style={{ color: customColors.accent }}>
+            $99.99
+          </p>
         </div>
-        <div className="p-4 rounded-lg border" style={{ backgroundColor: customColors.surface, borderColor: customColors.secondary + '20' }}>
-          <div className="w-full h-20 rounded mb-3" style={{ backgroundColor: customColors.secondary + '10' }}></div>
-          <h3 className="font-medium" style={{ color: customColors.foreground }}>Another Card</h3>
-          <p className="text-sm mt-1" style={{ color: customColors.accent }}>$149.99</p>
+        <div
+          className="p-4 rounded-lg border"
+          style={{
+            backgroundColor: customColors.surface,
+            borderColor: customColors.secondary + '20',
+          }}
+        >
+          <div
+            className="w-full h-20 rounded mb-3"
+            style={{ backgroundColor: customColors.secondary + '10' }}
+          ></div>
+          <h3
+            className="font-medium"
+            style={{ color: customColors.foreground }}
+          >
+            Another Card
+          </h3>
+          <p className="text-sm mt-1" style={{ color: customColors.accent }}>
+            $149.99
+          </p>
         </div>
       </div>
     </div>
@@ -295,17 +376,20 @@ export default function ThemeEditor() {
             {t('admin.themeEditor', 'Theme Editor')}
           </h1>
           <p className="text-foreground/60">
-            {t('admin.themeEditorSubtitle', 'Customize the visual appearance of your store')}
+            {t(
+              'admin.themeEditorSubtitle',
+              'Customize the visual appearance of your store'
+            )}
           </p>
         </div>
-        
+
         <div className="flex items-center gap-3">
           {hasUnsavedChanges && (
             <span className="text-xs text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">
               {t('admin.unsavedChanges', 'Unsaved changes')}
             </span>
           )}
-          
+
           <motion.button
             onClick={() => setShowPreview(!showPreview)}
             className="flex items-center gap-2 px-4 py-2 border border-border rounded-xl hover:bg-background transition-colors"
@@ -315,7 +399,7 @@ export default function ThemeEditor() {
             <Eye size={16} />
             {t('admin.preview', 'Preview')}
           </motion.button>
-          
+
           <motion.button
             onClick={handleSaveTheme}
             disabled={!hasUnsavedChanges}
@@ -352,60 +436,73 @@ export default function ThemeEditor() {
                 )}
               </button>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-3 mb-4">
               {Object.entries(COLOR_PRESETS).map(([key, preset]) => (
                 <button
                   key={key}
                   onClick={() => handlePresetSelect(key)}
                   className={`p-3 rounded-lg border-2 transition-all ${
-                    selectedPreset === key 
-                      ? 'border-primary bg-primary/5' 
+                    selectedPreset === key
+                      ? 'border-primary bg-primary/5'
                       : 'border-border hover:border-primary/50'
                   }`}
                 >
                   <div className="flex gap-1 mb-2">
-                    <div className="w-4 h-4 rounded" style={{ backgroundColor: preset.primary }}></div>
-                    <div className="w-4 h-4 rounded" style={{ backgroundColor: preset.secondary }}></div>
-                    <div className="w-4 h-4 rounded" style={{ backgroundColor: preset.accent }}></div>
+                    <div
+                      className="w-4 h-4 rounded"
+                      style={{ backgroundColor: preset.primary }}
+                    ></div>
+                    <div
+                      className="w-4 h-4 rounded"
+                      style={{ backgroundColor: preset.secondary }}
+                    ></div>
+                    <div
+                      className="w-4 h-4 rounded"
+                      style={{ backgroundColor: preset.accent }}
+                    ></div>
                   </div>
-                  <div className="text-xs font-medium text-foreground">{preset.name}</div>
+                  <div className="text-xs font-medium text-foreground">
+                    {preset.name}
+                  </div>
                 </button>
               ))}
             </div>
 
             {/* Custom Colors */}
             <div className="space-y-4">
-              <h4 className="font-medium text-foreground">{t('admin.customColors', 'Custom Colors')}</h4>
-              <ColorPicker 
-                label={t('admin.primaryColor', 'Primary')} 
-                colorKey="primary" 
-                value={customColors.primary} 
+              <h4 className="font-medium text-foreground">
+                {t('admin.customColors', 'Custom Colors')}
+              </h4>
+              <ColorPicker
+                label={t('admin.primaryColor', 'Primary')}
+                colorKey="primary"
+                value={customColors.primary}
               />
-              <ColorPicker 
-                label={t('admin.secondaryColor', 'Secondary')} 
-                colorKey="secondary" 
-                value={customColors.secondary} 
+              <ColorPicker
+                label={t('admin.secondaryColor', 'Secondary')}
+                colorKey="secondary"
+                value={customColors.secondary}
               />
-              <ColorPicker 
-                label={t('admin.accentColor', 'Accent')} 
-                colorKey="accent" 
-                value={customColors.accent} 
+              <ColorPicker
+                label={t('admin.accentColor', 'Accent')}
+                colorKey="accent"
+                value={customColors.accent}
               />
-              <ColorPicker 
-                label={t('admin.backgroundColor', 'Background')} 
-                colorKey="background" 
-                value={customColors.background} 
+              <ColorPicker
+                label={t('admin.backgroundColor', 'Background')}
+                colorKey="background"
+                value={customColors.background}
               />
-              <ColorPicker 
-                label={t('admin.surfaceColor', 'Surface')} 
-                colorKey="surface" 
-                value={customColors.surface} 
+              <ColorPicker
+                label={t('admin.surfaceColor', 'Surface')}
+                colorKey="surface"
+                value={customColors.surface}
               />
-              <ColorPicker 
-                label={t('admin.textColor', 'Text')} 
-                colorKey="foreground" 
-                value={customColors.foreground} 
+              <ColorPicker
+                label={t('admin.textColor', 'Text')}
+                colorKey="foreground"
+                value={customColors.foreground}
               />
             </div>
           </div>
@@ -416,19 +513,21 @@ export default function ThemeEditor() {
               <Type size={20} />
               {t('admin.typography', 'Typography')}
             </h3>
-            
+
             <div className="space-y-3">
               {Object.entries(TYPOGRAPHY_PRESETS).map(([key, preset]) => (
                 <button
                   key={key}
                   onClick={() => setSelectedTypography(key)}
                   className={`w-full p-3 rounded-lg border text-left transition-all ${
-                    selectedTypography === key 
-                      ? 'border-primary bg-primary/5' 
+                    selectedTypography === key
+                      ? 'border-primary bg-primary/5'
                       : 'border-border hover:border-primary/50'
                   }`}
                 >
-                  <div className="font-medium text-foreground">{preset.name}</div>
+                  <div className="font-medium text-foreground">
+                    {preset.name}
+                  </div>
                   <div className="text-xs text-foreground/60 mt-1">
                     {preset.headings} / {preset.body}
                   </div>
@@ -443,21 +542,24 @@ export default function ThemeEditor() {
               <Layout size={20} />
               {t('admin.layout', 'Layout')}
             </h3>
-            
+
             <div className="space-y-3">
               {Object.entries(LAYOUT_PRESETS).map(([key, preset]) => (
                 <button
                   key={key}
                   onClick={() => setSelectedLayout(key)}
                   className={`w-full p-3 rounded-lg border text-left transition-all ${
-                    selectedLayout === key 
-                      ? 'border-primary bg-primary/5' 
+                    selectedLayout === key
+                      ? 'border-primary bg-primary/5'
                       : 'border-border hover:border-primary/50'
                   }`}
                 >
-                  <div className="font-medium text-foreground">{preset.name}</div>
+                  <div className="font-medium text-foreground">
+                    {preset.name}
+                  </div>
                   <div className="text-xs text-foreground/60 mt-1">
-                    Spacing: {preset.sectionSpacing} | Radius: {preset.borderRadius}
+                    Spacing: {preset.sectionSpacing} | Radius:{' '}
+                    {preset.borderRadius}
                   </div>
                 </button>
               ))}
@@ -470,7 +572,7 @@ export default function ThemeEditor() {
               <Zap size={20} />
               {t('admin.actions', 'Actions')}
             </h3>
-            
+
             <div className="space-y-3">
               <button
                 onClick={handleResetTheme}
@@ -479,12 +581,12 @@ export default function ThemeEditor() {
                 <RotateCcw size={16} />
                 {t('admin.resetTheme', 'Reset to Default')}
               </button>
-              
+
               <button className="w-full flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-background transition-colors">
                 <Download size={16} />
                 {t('admin.exportTheme', 'Export Theme')}
               </button>
-              
+
               <button className="w-full flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-background transition-colors">
                 <Upload size={16} />
                 {t('admin.importTheme', 'Import Theme')}
@@ -502,14 +604,16 @@ export default function ThemeEditor() {
                 <h3 className="font-semibold text-foreground">
                   {t('admin.livePreview', 'Live Preview')}
                 </h3>
-                
+
                 <div className="flex items-center gap-2">
                   {/* Device Preview Toggle */}
                   <div className="flex bg-background border border-border rounded-lg overflow-hidden">
                     <button
                       onClick={() => setPreviewMode('desktop')}
                       className={`p-2 transition-colors ${
-                        previewMode === 'desktop' ? 'bg-primary text-white' : 'text-foreground/60 hover:text-foreground'
+                        previewMode === 'desktop'
+                          ? 'bg-primary text-white'
+                          : 'text-foreground/60 hover:text-foreground'
                       }`}
                     >
                       <Monitor size={16} />
@@ -517,7 +621,9 @@ export default function ThemeEditor() {
                     <button
                       onClick={() => setPreviewMode('tablet')}
                       className={`p-2 transition-colors ${
-                        previewMode === 'tablet' ? 'bg-primary text-white' : 'text-foreground/60 hover:text-foreground'
+                        previewMode === 'tablet'
+                          ? 'bg-primary text-white'
+                          : 'text-foreground/60 hover:text-foreground'
                       }`}
                     >
                       <Tablet size={16} />
@@ -525,13 +631,15 @@ export default function ThemeEditor() {
                     <button
                       onClick={() => setPreviewMode('mobile')}
                       className={`p-2 transition-colors ${
-                        previewMode === 'mobile' ? 'bg-primary text-white' : 'text-foreground/60 hover:text-foreground'
+                        previewMode === 'mobile'
+                          ? 'bg-primary text-white'
+                          : 'text-foreground/60 hover:text-foreground'
                       }`}
                     >
                       <Smartphone size={16} />
                     </button>
                   </div>
-                  
+
                   {/* Dark Mode Toggle */}
                   <button
                     onClick={() => setIsDarkMode(!isDarkMode)}
@@ -542,13 +650,17 @@ export default function ThemeEditor() {
                 </div>
               </div>
             </div>
-            
+
             {/* Preview Content */}
-            <div className={`${
-              previewMode === 'desktop' ? 'w-full' : 
-              previewMode === 'tablet' ? 'w-[768px] mx-auto' : 
-              'w-[375px] mx-auto'
-            } transition-all duration-300`}>
+            <div
+              className={`${
+                previewMode === 'desktop'
+                  ? 'w-full'
+                  : previewMode === 'tablet'
+                    ? 'w-[768px] mx-auto'
+                    : 'w-[375px] mx-auto'
+              } transition-all duration-300`}
+            >
               <PreviewComponent />
             </div>
           </div>

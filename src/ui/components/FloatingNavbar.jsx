@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, ShoppingBag, Menu, X, Globe, ChevronDown, Package, User } from 'lucide-react'
+import {
+  Search,
+  ShoppingBag,
+  Menu,
+  X,
+  Globe,
+  ChevronDown,
+  Package,
+  User,
+} from 'lucide-react'
 import { FloatingSegmentSwitcher } from './SegmentSwitcher.jsx'
 import { useSegment } from '../contexts/SegmentContext.jsx'
 import { useI18n } from '../contexts/I18nContext.jsx'
@@ -26,19 +35,19 @@ export default function FloatingNavbar() {
   const [isInventoryAlertsOpen, setIsInventoryAlertsOpen] = useState(false)
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false)
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false)
-  
+
   const { theme } = useSegment()
   const { alerts } = useInventory()
   const { user, isAuthenticated } = useAuth()
-  const { 
-    language, 
-    currency, 
-    languages, 
-    currencies, 
-    setLanguage, 
-    setCurrency, 
-    t, 
-    isRTL
+  const {
+    language,
+    currency,
+    languages,
+    currencies,
+    setLanguage,
+    setCurrency,
+    t,
+    isRTL,
   } = useI18n()
 
   // Handle scroll effect
@@ -46,35 +55,39 @@ export default function FloatingNavbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100)
     }
-    
+
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   // Close dropdowns when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       // Check if click is outside the dropdowns
       if (showCurrencyDropdown || showLanguageDropdown) {
-        let target = event.target;
-        let clickedInside = false;
-        
+        let target = event.target
+        let clickedInside = false
+
         // Traverse up the DOM to check if click is inside a dropdown
         while (target) {
-          if (target.classList && (target.classList.contains('relative') || target.tagName === 'BUTTON')) {
-            clickedInside = true;
-            break;
+          if (
+            target.classList &&
+            (target.classList.contains('relative') ||
+              target.tagName === 'BUTTON')
+          ) {
+            clickedInside = true
+            break
           }
-          target = target.parentElement;
+          target = target.parentElement
         }
-        
+
         if (!clickedInside) {
           setShowCurrencyDropdown(false)
           setShowLanguageDropdown(false)
         }
       }
     }
-    
+
     document.addEventListener('click', handleClickOutside)
     return () => document.removeEventListener('click', handleClickOutside)
   }, [showCurrencyDropdown, showLanguageDropdown])
@@ -90,16 +103,20 @@ export default function FloatingNavbar() {
       <div className="bg-foreground text-background py-2 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between text-sm">
           <div className="flex items-center gap-4">
-            <span>{t('header.freeShipping', 'Free shipping on orders over 500 SAR')}</span>
+            <span>
+              {t('header.freeShipping', 'Free shipping on orders over 500 SAR')}
+            </span>
             <span className="hidden md:inline">|</span>
-            <span className="hidden md:inline">{t('header.support', '24/7 Customer Support')}</span>
+            <span className="hidden md:inline">
+              {t('header.support', '24/7 Customer Support')}
+            </span>
           </div>
-          
+
           <div className="flex items-center gap-4">
             {/* Language Selector */}
             <div className="relative">
               <button
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation()
                   setShowLanguageDropdown(!showLanguageDropdown)
                   if (!showLanguageDropdown) setShowCurrencyDropdown(false)
@@ -108,9 +125,12 @@ export default function FloatingNavbar() {
               >
                 <Globe size={14} />
                 <span>{languages[language]?.nativeName}</span>
-                <ChevronDown size={12} className={`transform transition-transform ${showLanguageDropdown ? 'rotate-180' : ''}`} />
+                <ChevronDown
+                  size={12}
+                  className={`transform transition-transform ${showLanguageDropdown ? 'rotate-180' : ''}`}
+                />
               </button>
-              
+
               <AnimatePresence>
                 {showLanguageDropdown && (
                   <motion.div
@@ -121,7 +141,7 @@ export default function FloatingNavbar() {
                       isRTL ? 'left-0' : 'right-0'
                     }`}
                   >
-                    {Object.values(languages).map((lang) => (
+                    {Object.values(languages).map(lang => (
                       <button
                         key={lang.code}
                         onClick={() => {
@@ -140,11 +160,11 @@ export default function FloatingNavbar() {
                 )}
               </AnimatePresence>
             </div>
-            
+
             {/* Currency Selector */}
             <div className="relative">
               <button
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation()
                   setShowCurrencyDropdown(!showCurrencyDropdown)
                   if (!showCurrencyDropdown) setShowLanguageDropdown(false)
@@ -152,9 +172,12 @@ export default function FloatingNavbar() {
                 className="flex items-center gap-1 hover:opacity-80 transition-opacity"
               >
                 <span>{currency}</span>
-                <ChevronDown size={12} className={`transform transition-transform ${showCurrencyDropdown ? 'rotate-180' : ''}`} />
+                <ChevronDown
+                  size={12}
+                  className={`transform transition-transform ${showCurrencyDropdown ? 'rotate-180' : ''}`}
+                />
               </button>
-              
+
               <AnimatePresence>
                 {showCurrencyDropdown && (
                   <motion.div
@@ -165,7 +188,7 @@ export default function FloatingNavbar() {
                       isRTL ? 'left-0' : 'right-0'
                     }`}
                   >
-                    {Object.values(currencies).map((curr) => (
+                    {Object.values(currencies).map(curr => (
                       <button
                         key={curr.code}
                         onClick={() => {
@@ -177,7 +200,11 @@ export default function FloatingNavbar() {
                         } ${currency === curr.code ? 'bg-background/30' : ''}`}
                       >
                         <span className="font-medium">{curr.code}</span>
-                        <span className={`text-foreground/60 ${isRTL ? 'mr-2' : 'ml-2'}`}>({curr.symbol})</span>
+                        <span
+                          className={`text-foreground/60 ${isRTL ? 'mr-2' : 'ml-2'}`}
+                        >
+                          ({curr.symbol})
+                        </span>
                       </button>
                     ))}
                   </motion.div>
@@ -198,32 +225,38 @@ export default function FloatingNavbar() {
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
         <div className="max-w-7xl mx-auto">
-          <div 
+          <div
             className="backdrop-blur-xl bg-surface/80 border border-border/50 rounded-2xl shadow-segment-xl px-6 py-4"
             style={{
               background: `linear-gradient(135deg, ${theme.colors.surface}CC 0%, ${theme.colors.background}E6 100%)`,
               backdropFilter: 'blur(20px)',
             }}
           >
-            <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div
+              className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+            >
               {/* Logo */}
               <motion.div
                 className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <div 
+                <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-segment-md"
                   style={{ backgroundColor: theme.colors.primary }}
                 >
                   I
                 </div>
-                <span className="text-xl font-bold text-foreground">IVOLEX</span>
+                <span className="text-xl font-bold text-foreground">
+                  IVOLEX
+                </span>
               </motion.div>
 
               {/* Desktop Navigation */}
-              <div className={`hidden lg:flex items-center gap-8 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                {NAVIGATION_ITEMS.map((item) => (
+              <div
+                className={`hidden lg:flex items-center gap-8 ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
+                {NAVIGATION_ITEMS.map(item => (
                   <motion.a
                     key={item.label}
                     href={item.href}
@@ -242,7 +275,9 @@ export default function FloatingNavbar() {
               </div>
 
               {/* Actions */}
-              <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div
+                className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
                 {/* Notifications */}
                 <NotificationBell />
 
@@ -263,7 +298,11 @@ export default function FloatingNavbar() {
                         }`}
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 500,
+                          damping: 30,
+                        }}
                       >
                         {alerts.length}
                       </motion.span>
@@ -320,7 +359,11 @@ export default function FloatingNavbar() {
                       }`}
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 500,
+                        damping: 30,
+                      }}
                     >
                       {cartItemsCount}
                     </motion.span>
@@ -358,12 +401,15 @@ export default function FloatingNavbar() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -50, opacity: 0 }}
               className="w-full max-w-2xl mx-4"
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
             >
               <div className="bg-surface border border-border rounded-2xl shadow-segment-xl p-6">
-                <EnhancedSearch 
-                  placeholder={t('search.placeholder', 'Search products, categories, or brands...')}
-                  onResultSelect={(result) => {
+                <EnhancedSearch
+                  placeholder={t(
+                    'search.placeholder',
+                    'Search products, categories, or brands...'
+                  )}
+                  onResultSelect={result => {
                     console.log('Selected:', result)
                     setIsSearchOpen(false)
                   }}
@@ -384,7 +430,7 @@ export default function FloatingNavbar() {
             exit={{ opacity: 0, y: -20 }}
             className={`fixed top-28 z-30 lg:hidden ${isRTL ? 'right-4 left-4' : 'left-4 right-4'}`}
           >
-            <div 
+            <div
               className="backdrop-blur-xl border border-border/50 rounded-2xl shadow-segment-xl p-6"
               style={{
                 background: `linear-gradient(135deg, ${theme.colors.surface}CC 0%, ${theme.colors.background}E6 100%)`,
@@ -395,10 +441,10 @@ export default function FloatingNavbar() {
               <div className="mb-6">
                 <FloatingSegmentSwitcher className="justify-center" />
               </div>
-              
+
               {/* Mobile Navigation */}
               <div className="space-y-4">
-                {NAVIGATION_ITEMS.map((item) => (
+                {NAVIGATION_ITEMS.map(item => (
                   <motion.a
                     key={item.label}
                     href={item.href}
@@ -412,7 +458,7 @@ export default function FloatingNavbar() {
                   </motion.a>
                 ))}
               </div>
-              
+
               {/* Mobile Profile/Login */}
               <div className="mt-6 pt-4 border-t border-border">
                 {isAuthenticated ? (
@@ -452,7 +498,7 @@ export default function FloatingNavbar() {
 
       {/* Inventory Alerts - Only show for admin users */}
       {isAdmin && (
-        <InventoryAlerts 
+        <InventoryAlerts
           isOpen={isInventoryAlertsOpen}
           onClose={() => setIsInventoryAlertsOpen(false)}
         />

@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Package, 
-  AlertTriangle, 
-  TrendingUp, 
-  TrendingDown, 
-  Plus, 
+import {
+  Package,
+  AlertTriangle,
+  TrendingUp,
+  TrendingDown,
+  Plus,
   Minus,
   Search,
   Bell,
@@ -14,24 +14,24 @@ import {
   Check,
   X,
   RefreshCw,
-  Download
+  Download,
 } from 'lucide-react'
 import { useInventory } from '../../../ui/contexts/InventoryContext'
 
 const InventoryManagement = () => {
-  const { 
-    inventory, 
-    alerts, 
-    settings, 
+  const {
+    inventory,
+    alerts,
+    settings,
     loading,
     updateStock,
     acknowledgeAlert,
     clearAlerts,
     updateSettings,
     getStockStatus,
-    getInventorySummary
+    getInventorySummary,
   } = useInventory()
-  
+
   const [searchQuery, setSearchQuery] = useState('')
   const [filterType, setFilterType] = useState('all')
   const [showSettings, setShowSettings] = useState(false)
@@ -48,13 +48,14 @@ const InventoryManagement = () => {
 
   // Filter products based on search and filter type
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.id.toLowerCase().includes(searchQuery.toLowerCase())
-    
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.id.toLowerCase().includes(searchQuery.toLowerCase())
+
     if (!matchesSearch) return false
 
     const stockStatus = getStockStatus(product.id)
-    
+
     switch (filterType) {
       case 'out_of_stock':
         return stockStatus.status === 'out_of_stock'
@@ -76,12 +77,15 @@ const InventoryManagement = () => {
 
   // Handle quick stock adjustment
   const handleQuickAdjust = (productId, adjustment) => {
-    const newStock = Math.max(0, (inventory[productId]?.stock || 0) + adjustment)
+    const newStock = Math.max(
+      0,
+      (inventory[productId]?.stock || 0) + adjustment
+    )
     updateStock(productId, { stock: newStock })
   }
 
   // Get stock status color
-  const getStatusColor = (status) => {
+  const getStatusColor = status => {
     switch (status) {
       case 'out_of_stock':
         return 'text-red-500'
@@ -97,23 +101,25 @@ const InventoryManagement = () => {
   }
 
   // Get stock status badge
-  const getStatusBadge = (status) => {
+  const getStatusBadge = status => {
     const colors = {
       out_of_stock: 'bg-red-100 text-red-800',
       critical: 'bg-orange-100 text-orange-800',
       low: 'bg-yellow-100 text-yellow-800',
-      in_stock: 'bg-green-100 text-green-800'
+      in_stock: 'bg-green-100 text-green-800',
     }
 
     const labels = {
       out_of_stock: 'Out of Stock',
       critical: 'Critical',
       low: 'Low Stock',
-      in_stock: 'In Stock'
+      in_stock: 'In Stock',
     }
 
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[status] || 'bg-gray-100 text-gray-800'}`}>
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-medium ${colors[status] || 'bg-gray-100 text-gray-800'}`}
+      >
         {labels[status] || 'Unknown'}
       </span>
     )
@@ -138,7 +144,7 @@ const InventoryManagement = () => {
     cardBackground: 'bg-white',
     border: 'border border-gray-200',
     borderHover: 'border-gray-300',
-    accent: 'bg-blue-600'
+    accent: 'bg-blue-600',
   }
 
   return (
@@ -162,7 +168,9 @@ const InventoryManagement = () => {
               >
                 <Settings className="w-5 h-5" />
               </button>
-              <button className={`px-4 py-2 rounded-lg ${themeClasses.accent} text-white hover:opacity-90 transition-opacity`}>
+              <button
+                className={`px-4 py-2 rounded-lg ${themeClasses.accent} text-white hover:opacity-90 transition-opacity`}
+              >
                 <Download className="w-4 h-4 inline mr-2" />
                 Export Report
               </button>
@@ -193,16 +201,22 @@ const InventoryManagement = () => {
                   </button>
                 </div>
                 <div className="space-y-2">
-                  {alerts.slice(0, 3).map((alert) => (
+                  {alerts.slice(0, 3).map(alert => (
                     <div
                       key={alert.id}
                       className={`flex items-center justify-between p-3 rounded-lg ${
-                        alert.type === 'critical' ? 'bg-red-50 border border-red-200' : 'bg-yellow-50 border border-yellow-200'
+                        alert.type === 'critical'
+                          ? 'bg-red-50 border border-red-200'
+                          : 'bg-yellow-50 border border-yellow-200'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <AlertTriangle className={`w-4 h-4 ${alert.type === 'critical' ? 'text-red-500' : 'text-yellow-500'}`} />
-                        <span className="text-sm font-medium">{alert.message}</span>
+                        <AlertTriangle
+                          className={`w-4 h-4 ${alert.type === 'critical' ? 'text-red-500' : 'text-yellow-500'}`}
+                        />
+                        <span className="text-sm font-medium">
+                          {alert.message}
+                        </span>
                       </div>
                       <button
                         onClick={() => acknowledgeAlert(alert.id)}
@@ -219,39 +233,63 @@ const InventoryManagement = () => {
 
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div className={`p-4 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border}`}>
+            <div
+              className={`p-4 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border}`}
+            >
               <div className="flex items-center gap-3">
                 <Package className="w-8 h-8 text-blue-500" />
                 <div>
-                  <p className={`text-sm ${themeClasses.textSecondary}`}>Total Products</p>
-                  <p className={`text-xl font-bold ${themeClasses.text}`}>{summary.totalProducts}</p>
+                  <p className={`text-sm ${themeClasses.textSecondary}`}>
+                    Total Products
+                  </p>
+                  <p className={`text-xl font-bold ${themeClasses.text}`}>
+                    {summary.totalProducts}
+                  </p>
                 </div>
               </div>
             </div>
-            <div className={`p-4 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border}`}>
+            <div
+              className={`p-4 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border}`}
+            >
               <div className="flex items-center gap-3">
                 <TrendingDown className="w-8 h-8 text-red-500" />
                 <div>
-                  <p className={`text-sm ${themeClasses.textSecondary}`}>Out of Stock</p>
-                  <p className={`text-xl font-bold ${themeClasses.text}`}>{summary.outOfStock}</p>
+                  <p className={`text-sm ${themeClasses.textSecondary}`}>
+                    Out of Stock
+                  </p>
+                  <p className={`text-xl font-bold ${themeClasses.text}`}>
+                    {summary.outOfStock}
+                  </p>
                 </div>
               </div>
             </div>
-            <div className={`p-4 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border}`}>
+            <div
+              className={`p-4 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border}`}
+            >
               <div className="flex items-center gap-3">
                 <AlertTriangle className="w-8 h-8 text-orange-500" />
                 <div>
-                  <p className={`text-sm ${themeClasses.textSecondary}`}>Low Stock</p>
-                  <p className={`text-xl font-bold ${themeClasses.text}`}>{summary.criticalStock + summary.lowStock}</p>
+                  <p className={`text-sm ${themeClasses.textSecondary}`}>
+                    Low Stock
+                  </p>
+                  <p className={`text-xl font-bold ${themeClasses.text}`}>
+                    {summary.criticalStock + summary.lowStock}
+                  </p>
                 </div>
               </div>
             </div>
-            <div className={`p-4 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border}`}>
+            <div
+              className={`p-4 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border}`}
+            >
               <div className="flex items-center gap-3">
                 <TrendingUp className="w-8 h-8 text-green-500" />
                 <div>
-                  <p className={`text-sm ${themeClasses.textSecondary}`}>In Stock</p>
-                  <p className={`text-xl font-bold ${themeClasses.text}`}>{summary.inStock}</p>
+                  <p className={`text-sm ${themeClasses.textSecondary}`}>
+                    In Stock
+                  </p>
+                  <p className={`text-xl font-bold ${themeClasses.text}`}>
+                    {summary.inStock}
+                  </p>
                 </div>
               </div>
             </div>
@@ -267,14 +305,14 @@ const InventoryManagement = () => {
                 type="text"
                 placeholder="Search products..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className={`w-full pl-10 pr-4 py-2 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border} focus:${themeClasses.borderHover} outline-none transition-colors`}
               />
             </div>
           </div>
           <select
             value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
+            onChange={e => setFilterType(e.target.value)}
             className={`px-4 py-2 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border} focus:${themeClasses.borderHover} outline-none transition-colors`}
           >
             <option value="all">All Products</option>
@@ -287,8 +325,12 @@ const InventoryManagement = () => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((product) => {
-            const stockInfo = inventory[product.id] || { stock: 0, reserved: 0, incoming: 0 }
+          {filteredProducts.map(product => {
+            const stockInfo = inventory[product.id] || {
+              stock: 0,
+              reserved: 0,
+              incoming: 0,
+            }
             const stockStatus = getStockStatus(product.id)
             const available = stockInfo.stock - stockInfo.reserved
 
@@ -303,8 +345,12 @@ const InventoryManagement = () => {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className={`font-semibold ${themeClasses.text} mb-1`}>{product.name}</h3>
-                    <p className={`text-sm ${themeClasses.textSecondary} mb-2`}>ID: {product.id}</p>
+                    <h3 className={`font-semibold ${themeClasses.text} mb-1`}>
+                      {product.name}
+                    </h3>
+                    <p className={`text-sm ${themeClasses.textSecondary} mb-2`}>
+                      ID: {product.id}
+                    </p>
                     {getStatusBadge(stockStatus.status)}
                   </div>
                   <img
@@ -316,18 +362,30 @@ const InventoryManagement = () => {
 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className={`text-sm ${themeClasses.textSecondary}`}>Available:</span>
-                    <span className={`font-semibold ${getStatusColor(stockStatus.status)}`}>
+                    <span className={`text-sm ${themeClasses.textSecondary}`}>
+                      Available:
+                    </span>
+                    <span
+                      className={`font-semibold ${getStatusColor(stockStatus.status)}`}
+                    >
                       {available}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className={`text-sm ${themeClasses.textSecondary}`}>Reserved:</span>
-                    <span className={`font-medium ${themeClasses.text}`}>{stockInfo.reserved}</span>
+                    <span className={`text-sm ${themeClasses.textSecondary}`}>
+                      Reserved:
+                    </span>
+                    <span className={`font-medium ${themeClasses.text}`}>
+                      {stockInfo.reserved}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className={`text-sm ${themeClasses.textSecondary}`}>Incoming:</span>
-                    <span className={`font-medium ${themeClasses.text}`}>{stockInfo.incoming}</span>
+                    <span className={`text-sm ${themeClasses.textSecondary}`}>
+                      Incoming:
+                    </span>
+                    <span className={`font-medium ${themeClasses.text}`}>
+                      {stockInfo.incoming}
+                    </span>
                   </div>
 
                   {editingStock === product.id ? (
@@ -335,7 +393,7 @@ const InventoryManagement = () => {
                       <input
                         type="number"
                         value={stockInput}
-                        onChange={(e) => setStockInput(e.target.value)}
+                        onChange={e => setStockInput(e.target.value)}
                         className={`flex-1 px-2 py-1 text-sm rounded ${themeClasses.cardBackground} ${themeClasses.border} focus:${themeClasses.borderHover} outline-none`}
                         min="0"
                       />
@@ -394,7 +452,9 @@ const InventoryManagement = () => {
         {filteredProducts.length === 0 && (
           <div className="text-center py-12">
             <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className={`text-lg font-medium ${themeClasses.text} mb-2`}>No products found</h3>
+            <h3 className={`text-lg font-medium ${themeClasses.text} mb-2`}>
+              No products found
+            </h3>
             <p className={`${themeClasses.textSecondary}`}>
               Try adjusting your search or filter criteria
             </p>
@@ -416,67 +476,89 @@ const InventoryManagement = () => {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
               className={`w-full max-w-md p-6 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border}`}
             >
               <h3 className={`text-lg font-semibold ${themeClasses.text} mb-4`}>
                 Inventory Settings
               </h3>
-              
+
               <div className="space-y-4">
                 <div>
-                  <label className={`block text-sm font-medium ${themeClasses.text} mb-2`}>
+                  <label
+                    className={`block text-sm font-medium ${themeClasses.text} mb-2`}
+                  >
                     Low Stock Threshold
                   </label>
                   <input
                     type="number"
                     value={settings.lowStockThreshold}
-                    onChange={(e) => updateSettings({ lowStockThreshold: parseInt(e.target.value) || 0 })}
+                    onChange={e =>
+                      updateSettings({
+                        lowStockThreshold: parseInt(e.target.value) || 0,
+                      })
+                    }
                     className={`w-full px-3 py-2 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border} focus:${themeClasses.borderHover} outline-none`}
                     min="1"
                   />
                 </div>
-                
+
                 <div>
-                  <label className={`block text-sm font-medium ${themeClasses.text} mb-2`}>
+                  <label
+                    className={`block text-sm font-medium ${themeClasses.text} mb-2`}
+                  >
                     Critical Stock Threshold
                   </label>
                   <input
                     type="number"
                     value={settings.criticalStockThreshold}
-                    onChange={(e) => updateSettings({ criticalStockThreshold: parseInt(e.target.value) || 0 })}
+                    onChange={e =>
+                      updateSettings({
+                        criticalStockThreshold: parseInt(e.target.value) || 0,
+                      })
+                    }
                     className={`w-full px-3 py-2 rounded-lg ${themeClasses.cardBackground} ${themeClasses.border} focus:${themeClasses.borderHover} outline-none`}
                     min="0"
                   />
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <input
                     type="checkbox"
                     id="enableAlerts"
                     checked={settings.enableAlerts}
-                    onChange={(e) => updateSettings({ enableAlerts: e.target.checked })}
+                    onChange={e =>
+                      updateSettings({ enableAlerts: e.target.checked })
+                    }
                     className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="enableAlerts" className={`text-sm ${themeClasses.text}`}>
+                  <label
+                    htmlFor="enableAlerts"
+                    className={`text-sm ${themeClasses.text}`}
+                  >
                     Enable inventory alerts
                   </label>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <input
                     type="checkbox"
                     id="autoReorder"
                     checked={settings.autoReorderEnabled}
-                    onChange={(e) => updateSettings({ autoReorderEnabled: e.target.checked })}
+                    onChange={e =>
+                      updateSettings({ autoReorderEnabled: e.target.checked })
+                    }
                     className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="autoReorder" className={`text-sm ${themeClasses.text}`}>
+                  <label
+                    htmlFor="autoReorder"
+                    className={`text-sm ${themeClasses.text}`}
+                  >
                     Enable auto-reorder alerts
                   </label>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-3 mt-6">
                 <button
                   onClick={() => setShowSettings(false)}

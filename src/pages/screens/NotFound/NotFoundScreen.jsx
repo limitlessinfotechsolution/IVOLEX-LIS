@@ -12,17 +12,20 @@ const NotFoundScreen = () => {
   const suggestions = [
     { label: t('nav.home', 'Home'), path: '/', icon: Home },
     { label: t('nav.products', 'Products'), path: '/shop', icon: Search },
-    { label: t('nav.about', 'About'), path: '/about', icon: FileQuestion }
+    { label: t('nav.about', 'About'), path: '/about', icon: FileQuestion },
   ]
 
   return (
     <>
-      <SEO 
+      <SEO
         title={t('error.404.title', 'Page Not Found - 404')}
-        description={t('error.404.description', 'The page you are looking for could not be found.')}
+        description={t(
+          'error.404.description',
+          'The page you are looking for could not be found.'
+        )}
         noindex={true}
       />
-      
+
       <section className="py-20">
         <Container>
           <div className="max-w-2xl mx-auto text-center">
@@ -57,7 +60,10 @@ const NotFoundScreen = () => {
                 {t('error.404.heading', 'Oops! Page Not Found')}
               </h1>
               <p className="text-lg text-foreground/70 mb-8">
-                {t('error.404.message', "The page you're looking for doesn't exist or has been moved. Let's get you back on track!")}
+                {t(
+                  'error.404.message',
+                  "The page you're looking for doesn't exist or has been moved. Let's get you back on track!"
+                )}
               </p>
             </motion.div>
 
@@ -120,7 +126,10 @@ const NotFoundScreen = () => {
               transition={{ delay: 0.8 }}
               className="mt-8 text-sm text-foreground/60"
             >
-              {t('error.404.searchHint', 'Looking for something specific? Try using our search feature in the navigation.')}
+              {t(
+                'error.404.searchHint',
+                'Looking for something specific? Try using our search feature in the navigation.'
+              )}
             </motion.div>
           </div>
         </Container>

@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Plus, 
-  Edit, 
-  Eye, 
-  Search, 
+import {
+  Plus,
+  Edit,
+  Eye,
+  Search,
   Download,
   Star,
   Package,
   AlertCircle,
-  Check
+  Check,
 } from 'lucide-react'
 import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
 
@@ -34,7 +34,7 @@ const MOCK_PRODUCTS = [
     featured: true,
     bestseller: true,
     dateAdded: '2024-01-15',
-    lastModified: '2024-01-20'
+    lastModified: '2024-01-20',
   },
   {
     id: 2,
@@ -52,7 +52,7 @@ const MOCK_PRODUCTS = [
     featured: false,
     bestseller: true,
     dateAdded: '2024-01-10',
-    lastModified: '2024-01-18'
+    lastModified: '2024-01-18',
   },
   {
     id: 3,
@@ -70,7 +70,7 @@ const MOCK_PRODUCTS = [
     featured: true,
     bestseller: false,
     dateAdded: '2024-01-12',
-    lastModified: '2024-01-19'
+    lastModified: '2024-01-19',
   },
   {
     id: 4,
@@ -88,14 +88,26 @@ const MOCK_PRODUCTS = [
     featured: false,
     bestseller: true,
     dateAdded: '2024-01-08',
-    lastModified: '2024-01-16'
-  }
+    lastModified: '2024-01-16',
+  },
 ]
 
 const CATEGORIES = {
-  leather: { name: 'Leather', nameAr: 'جلود', subcategories: ['bags', 'wallets', 'belts', 'accessories'] },
-  electronics: { name: 'Electronics', nameAr: 'إلكترونيات', subcategories: ['audio', 'wearables', 'accessories'] },
-  furniture: { name: 'Furniture', nameAr: 'أثاث', subcategories: ['office', 'seating', 'storage'] }
+  leather: {
+    name: 'Leather',
+    nameAr: 'جلود',
+    subcategories: ['bags', 'wallets', 'belts', 'accessories'],
+  },
+  electronics: {
+    name: 'Electronics',
+    nameAr: 'إلكترونيات',
+    subcategories: ['audio', 'wearables', 'accessories'],
+  },
+  furniture: {
+    name: 'Furniture',
+    nameAr: 'أثاث',
+    subcategories: ['office', 'seating', 'storage'],
+  },
 }
 
 const STATUS_OPTIONS = [
@@ -103,7 +115,7 @@ const STATUS_OPTIONS = [
   { value: 'active', label: 'Active', labelAr: 'نشط' },
   { value: 'inactive', label: 'Inactive', labelAr: 'غير نشط' },
   { value: 'out_of_stock', label: 'Out of Stock', labelAr: 'نفد المخزون' },
-  { value: 'draft', label: 'Draft', labelAr: 'مسودة' }
+  { value: 'draft', label: 'Draft', labelAr: 'مسودة' },
 ]
 
 export default function ProductCatalog() {
@@ -123,16 +135,19 @@ export default function ProductCatalog() {
 
     // Search filter
     if (searchQuery) {
-      filtered = filtered.filter(product => 
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.nameAr.includes(searchQuery) ||
-        product.category.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        product =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          product.nameAr.includes(searchQuery) ||
+          product.category.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
 
     // Category filter
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(product => product.category === selectedCategory)
+      filtered = filtered.filter(
+        product => product.category === selectedCategory
+      )
     }
 
     // Status filter
@@ -143,9 +158,9 @@ export default function ProductCatalog() {
     setFilteredProducts(filtered)
   }, [products, searchQuery, selectedCategory, selectedStatus])
 
-  const handleSelectProduct = (productId) => {
-    setSelectedProducts(prev => 
-      prev.includes(productId) 
+  const handleSelectProduct = productId => {
+    setSelectedProducts(prev =>
+      prev.includes(productId)
         ? prev.filter(id => id !== productId)
         : [...prev, productId]
     )
@@ -153,69 +168,85 @@ export default function ProductCatalog() {
 
   const handleBulkAction = async (action, selectedIds, data = null) => {
     // Declare variables outside switch to avoid lexical declaration issues
-    let duplicates = [];
-    let newProducts = [];
-    let newStatus = '';
-    
+    let duplicates = []
+    let newProducts = []
+    let newStatus = ''
+
     switch (action) {
       case 'delete':
-        if (window.confirm(t('admin.confirmBulkDelete', `Delete ${selectedIds.length} products?`))) {
+        if (
+          window.confirm(
+            t(
+              'admin.confirmBulkDelete',
+              `Delete ${selectedIds.length} products?`
+            )
+          )
+        ) {
           setProducts(prev => prev.filter(p => !selectedIds.includes(p.id)))
           await logAction(AUDIT_ACTIONS.DELETE, 'bulk-products', {
             productIds: selectedIds,
-            count: selectedIds.length
+            count: selectedIds.length,
           })
         }
-        break;
+        break
       case 'archive':
-        setProducts(prev => prev.map(p => 
-          selectedIds.includes(p.id) ? { ...p, status: 'archived' } : p
-        ))
+        setProducts(prev =>
+          prev.map(p =>
+            selectedIds.includes(p.id) ? { ...p, status: 'archived' } : p
+          )
+        )
         await logAction(AUDIT_ACTIONS.UPDATE, 'bulk-products-archive', {
           productIds: selectedIds,
-          count: selectedIds.length
+          count: selectedIds.length,
         })
-        break;
+        break
       case 'duplicate':
-        duplicates = products.filter(p => selectedIds.includes(p.id))
-          .map(p => ({ ...p, id: Date.now() + Math.random(), name: `${p.name} (Copy)` }))
+        duplicates = products
+          .filter(p => selectedIds.includes(p.id))
+          .map(p => ({
+            ...p,
+            id: Date.now() + Math.random(),
+            name: `${p.name} (Copy)`,
+          }))
         setProducts(prev => [...prev, ...duplicates])
         await logAction(AUDIT_ACTIONS.CREATE, 'bulk-products-duplicate', {
           originalIds: selectedIds,
-          count: duplicates.length
+          count: duplicates.length,
         })
-        break;
+        break
       case 'export':
         await exportProducts('csv', selectedIds)
-        break;
+        break
       case 'bulk_edit':
         // Open bulk edit modal
         console.log('Bulk edit:', selectedIds)
-        break;
+        break
       case 'import':
         if (data) {
           newProducts = data.map(item => ({
             ...item,
             id: Date.now() + Math.random(),
             dateAdded: new Date().toISOString().split('T')[0],
-            lastModified: new Date().toISOString().split('T')[0]
+            lastModified: new Date().toISOString().split('T')[0],
           }))
           setProducts(prev => [...prev, ...newProducts])
           await logAction(AUDIT_ACTIONS.CREATE, 'bulk-products-import', {
-            count: newProducts.length
+            count: newProducts.length,
           })
         }
-        break;
+        break
       default:
         if (action === 'activate' || action === 'deactivate') {
           newStatus = action === 'activate' ? 'active' : 'inactive'
-          setProducts(prev => prev.map(p => 
-            selectedIds.includes(p.id) ? { ...p, status: newStatus } : p
-          ))
+          setProducts(prev =>
+            prev.map(p =>
+              selectedIds.includes(p.id) ? { ...p, status: newStatus } : p
+            )
+          )
           await logAction(AUDIT_ACTIONS.UPDATE, 'bulk-products-status', {
             productIds: selectedIds,
             newStatus,
-            count: selectedIds.length
+            count: selectedIds.length,
           })
         }
     }
@@ -223,14 +254,16 @@ export default function ProductCatalog() {
   }
 
   const exportProducts = async (format = 'csv', selectedIds = null) => {
-    const exportItems = selectedIds ? 
-      filteredProducts.filter(p => selectedIds.includes(p.id)) : 
-      filteredProducts
-      
+    const exportItems = selectedIds
+      ? filteredProducts.filter(p => selectedIds.includes(p.id))
+      : filteredProducts
+
     const exportData = exportItems.map(product => ({
       ID: product.id,
       Name: isRTL ? product.nameAr : product.name,
-      Category: CATEGORIES[product.category]?.[isRTL ? 'nameAr' : 'name'] || product.category,
+      Category:
+        CATEGORIES[product.category]?.[isRTL ? 'nameAr' : 'name'] ||
+        product.category,
       Price: product.price,
       OriginalPrice: product.originalPrice,
       Stock: product.stock,
@@ -240,38 +273,48 @@ export default function ProductCatalog() {
       Featured: product.featured ? 'Yes' : 'No',
       Bestseller: product.bestseller ? 'Yes' : 'No',
       DateAdded: product.dateAdded,
-      LastModified: product.lastModified
+      LastModified: product.lastModified,
     }))
 
     if (format === 'csv') {
       const csv = convertToCSV(exportData)
-      downloadFile(csv, `products-${new Date().toISOString().split('T')[0]}.csv`, 'text/csv')
+      downloadFile(
+        csv,
+        `products-${new Date().toISOString().split('T')[0]}.csv`,
+        'text/csv'
+      )
     } else if (format === 'json') {
       const json = JSON.stringify(exportData, null, 2)
-      downloadFile(json, `products-${new Date().toISOString().split('T')[0]}.json`, 'application/json')
+      downloadFile(
+        json,
+        `products-${new Date().toISOString().split('T')[0]}.json`,
+        'application/json'
+      )
     }
 
     await logAction(AUDIT_ACTIONS.EXPORT, 'products', {
       format,
       count: exportData.length,
       selectedOnly: !!selectedIds,
-      filters: { 
-        category: selectedCategory, 
-        status: selectedStatus, 
-        search: searchQuery 
-      }
+      filters: {
+        category: selectedCategory,
+        status: selectedStatus,
+        search: searchQuery,
+      },
     })
   }
 
-  const convertToCSV = (data) => {
+  const convertToCSV = data => {
     if (data.length === 0) return ''
     const headers = Object.keys(data[0]).join(',')
-    const rows = data.map(row => 
-      Object.values(row).map(value => 
-        typeof value === 'string' && value.includes(',') 
-          ? `"${value.replace(/"/g, '""')}"`
-          : value
-      ).join(',')
+    const rows = data.map(row =>
+      Object.values(row)
+        .map(value =>
+          typeof value === 'string' && value.includes(',')
+            ? `"${value.replace(/"/g, '""')}"`
+            : value
+        )
+        .join(',')
     )
     return [headers, ...rows].join('\n')
   }
@@ -288,18 +331,36 @@ export default function ProductCatalog() {
     window.URL.revokeObjectURL(url)
   }
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = status => {
     const statusConfig = {
-      active: { bg: 'bg-green-100', text: 'text-green-800', label: t('admin.status.active', 'Active') },
-      inactive: { bg: 'bg-gray-100', text: 'text-gray-800', label: t('admin.status.inactive', 'Inactive') },
-      out_of_stock: { bg: 'bg-red-100', text: 'text-red-800', label: t('admin.status.outOfStock', 'Out of Stock') },
-      draft: { bg: 'bg-yellow-100', text: 'text-yellow-800', label: t('admin.status.draft', 'Draft') }
+      active: {
+        bg: 'bg-green-100',
+        text: 'text-green-800',
+        label: t('admin.status.active', 'Active'),
+      },
+      inactive: {
+        bg: 'bg-gray-100',
+        text: 'text-gray-800',
+        label: t('admin.status.inactive', 'Inactive'),
+      },
+      out_of_stock: {
+        bg: 'bg-red-100',
+        text: 'text-red-800',
+        label: t('admin.status.outOfStock', 'Out of Stock'),
+      },
+      draft: {
+        bg: 'bg-yellow-100',
+        text: 'text-yellow-800',
+        label: t('admin.status.draft', 'Draft'),
+      },
     }
-    
+
     const config = statusConfig[status] || statusConfig.draft
-    
+
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.text}`}>
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-medium ${config.bg} ${config.text}`}
+      >
         {config.label}
       </span>
     )
@@ -316,20 +377,20 @@ export default function ProductCatalog() {
       {/* Product Image */}
       <div className="relative mb-4">
         <div className="aspect-square bg-background rounded-lg overflow-hidden">
-          <img 
-            src={product.image} 
+          <img
+            src={product.image}
             alt={isRTL ? product.nameAr : product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
-        
+
         {/* Quick Actions */}
         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <div className="flex gap-1">
             <button className="p-1.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors">
               <Eye size={14} />
             </button>
-            <button 
+            <button
               onClick={() => console.log('Edit product:', product.id)}
               className="p-1.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors"
             >
@@ -400,17 +461,24 @@ export default function ProductCatalog() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <div
+        className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+      >
         <div className={isRTL ? 'text-right' : 'text-left'}>
           <h1 className="text-2xl font-bold text-foreground">
             {t('admin.productCatalog', 'Product Catalog')}
           </h1>
           <p className="text-foreground/60">
-            {t('admin.catalogSubtitle', 'Manage your product inventory and catalog')}
+            {t(
+              'admin.catalogSubtitle',
+              'Manage your product inventory and catalog'
+            )}
           </p>
         </div>
-        
-        <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+
+        <div
+          className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+        >
           {/* Export Dropdown */}
           <div className="relative">
             <motion.button
@@ -442,12 +510,15 @@ export default function ProductCatalog() {
         <div className="flex items-center gap-4 flex-wrap">
           {/* Search */}
           <div className="relative flex-1 min-w-[300px]">
-            <Search className={`absolute top-1/2 transform -translate-y-1/2 text-foreground/40 ${isRTL ? 'right-3' : 'left-3'}`} size={20} />
+            <Search
+              className={`absolute top-1/2 transform -translate-y-1/2 text-foreground/40 ${isRTL ? 'right-3' : 'left-3'}`}
+              size={20}
+            />
             <input
               type="text"
               placeholder={t('admin.searchProducts', 'Search products...')}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className={`w-full bg-background border border-border rounded-lg text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary ${
                 isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'
               } py-2`}
@@ -457,10 +528,12 @@ export default function ProductCatalog() {
           {/* Category Filter */}
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={e => setSelectedCategory(e.target.value)}
             className="px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="all">{t('admin.allCategories', 'All Categories')}</option>
+            <option value="all">
+              {t('admin.allCategories', 'All Categories')}
+            </option>
             {Object.entries(CATEGORIES).map(([key, category]) => (
               <option key={key} value={key}>
                 {isRTL ? category.nameAr : category.name}
@@ -471,7 +544,7 @@ export default function ProductCatalog() {
           {/* Status Filter */}
           <select
             value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
+            onChange={e => setSelectedStatus(e.target.value)}
             className="px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {STATUS_OPTIONS.map(option => (
@@ -497,18 +570,20 @@ export default function ProductCatalog() {
             filterable: true,
             filterOptions: Object.entries(CATEGORIES).map(([key, cat]) => ({
               value: key,
-              label: isRTL ? cat.nameAr : cat.name
-            }))
+              label: isRTL ? cat.nameAr : cat.name,
+            })),
           },
           {
             key: 'status',
             label: 'Status',
             filterable: true,
-            filterOptions: STATUS_OPTIONS.filter(opt => opt.value !== 'all').map(opt => ({
+            filterOptions: STATUS_OPTIONS.filter(
+              opt => opt.value !== 'all'
+            ).map(opt => ({
               value: opt.value,
-              label: isRTL ? opt.labelAr : opt.label
-            }))
-          }
+              label: isRTL ? opt.labelAr : opt.label,
+            })),
+          },
         ]}
       />
 
@@ -532,7 +607,10 @@ export default function ProductCatalog() {
               {t('admin.noProducts', 'No products found')}
             </h3>
             <p className="text-foreground/60">
-              {t('admin.noProductsSubtitle', 'Try adjusting your search or filter criteria')}
+              {t(
+                'admin.noProductsSubtitle',
+                'Try adjusting your search or filter criteria'
+              )}
             </p>
           </div>
         )}
@@ -546,49 +624,62 @@ export default function ProductCatalog() {
               <Package className="text-blue-600" size={20} />
             </div>
             <div>
-              <div className="text-sm text-foreground/60">{t('admin.totalProducts', 'Total Products')}</div>
-              <div className="text-xl font-bold text-foreground">{products.length}</div>
+              <div className="text-sm text-foreground/60">
+                {t('admin.totalProducts', 'Total Products')}
+              </div>
+              <div className="text-xl font-bold text-foreground">
+                {products.length}
+              </div>
             </div>
           </div>
         </div>
-        
+
         <div className="bg-surface border border-border rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-green-100 rounded-lg">
               <Check className="text-green-600" size={20} />
             </div>
             <div>
-              <div className="text-sm text-foreground/60">{t('admin.activeProducts', 'Active')}</div>
+              <div className="text-sm text-foreground/60">
+                {t('admin.activeProducts', 'Active')}
+              </div>
               <div className="text-xl font-bold text-foreground">
                 {products.filter(p => p.status === 'active').length}
               </div>
             </div>
           </div>
         </div>
-        
+
         <div className="bg-surface border border-border rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-red-100 rounded-lg">
               <AlertCircle className="text-red-600" size={20} />
             </div>
             <div>
-              <div className="text-sm text-foreground/60">{t('admin.outOfStock', 'Out of Stock')}</div>
+              <div className="text-sm text-foreground/60">
+                {t('admin.outOfStock', 'Out of Stock')}
+              </div>
               <div className="text-xl font-bold text-foreground">
                 {products.filter(p => p.status === 'out_of_stock').length}
               </div>
             </div>
           </div>
         </div>
-        
+
         <div className="bg-surface border border-border rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-yellow-100 rounded-lg">
               <Star className="text-yellow-600" size={20} />
             </div>
             <div>
-              <div className="text-sm text-foreground/60">{t('admin.avgRating', 'Avg. Rating')}</div>
+              <div className="text-sm text-foreground/60">
+                {t('admin.avgRating', 'Avg. Rating')}
+              </div>
               <div className="text-xl font-bold text-foreground">
-                {(products.reduce((sum, p) => sum + p.rating, 0) / products.length).toFixed(1)}
+                {(
+                  products.reduce((sum, p) => sum + p.rating, 0) /
+                  products.length
+                ).toFixed(1)}
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { Activity, Shield, Eye, TrendingUp } from 'lucide-react';
-import ActivityTracker from '../../../components/admin/ActivityTracker.jsx';
+import { motion } from 'framer-motion'
+import { Activity, Shield, Eye, TrendingUp } from 'lucide-react'
+import ActivityTracker from '../../../components/admin/ActivityTracker.jsx'
 
 const AdminActivityPage = () => {
   return (
@@ -20,7 +20,7 @@ const AdminActivityPage = () => {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-xl text-white"
@@ -34,7 +34,7 @@ const AdminActivityPage = () => {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -49,7 +49,7 @@ const AdminActivityPage = () => {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -64,7 +64,7 @@ const AdminActivityPage = () => {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -89,7 +89,7 @@ const AdminActivityPage = () => {
         <ActivityTracker />
       </motion.div>
     </div>
-  );
-};
+  )
+}
 
-export default AdminActivityPage;
+export default AdminActivityPage

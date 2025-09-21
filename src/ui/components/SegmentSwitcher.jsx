@@ -14,10 +14,13 @@ const SEGMENT_DESCRIPTIONS = {
   furniture: 'Elegant furniture & interior design',
 }
 
-export default function SegmentSwitcher({ variant = 'default', className = '' }) {
+export default function SegmentSwitcher({
+  variant = 'default',
+  className = '',
+}) {
   const { activeSegment, segments, setSegment, theme } = useSegment()
 
-  const handleSegmentChange = (segmentId) => {
+  const handleSegmentChange = segmentId => {
     if (segmentId !== activeSegment) {
       setSegment(segmentId)
     }
@@ -26,21 +29,23 @@ export default function SegmentSwitcher({ variant = 'default', className = '' })
   if (variant === 'pills') {
     return (
       <div className={`flex items-center gap-2 ${className}`}>
-        {segments.map((segment) => {
+        {segments.map(segment => {
           const Icon = SEGMENT_ICONS[segment.id]
           const isActive = segment.id === activeSegment
-          
+
           return (
             <motion.button
               key={segment.id}
               onClick={() => handleSegmentChange(segment.id)}
               className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                isActive 
-                  ? 'text-white shadow-segment-md' 
+                isActive
+                  ? 'text-white shadow-segment-md'
                   : 'text-foreground/60 hover:text-foreground hover:bg-surface'
               }`}
               style={{
-                backgroundColor: isActive ? theme.colors.primary : 'transparent',
+                backgroundColor: isActive
+                  ? theme.colors.primary
+                  : 'transparent',
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -58,17 +63,17 @@ export default function SegmentSwitcher({ variant = 'default', className = '' })
   return (
     <div className={`w-full ${className}`}>
       <div className="flex border-b border-border">
-        {segments.map((segment) => {
+        {segments.map(segment => {
           const Icon = SEGMENT_ICONS[segment.id]
           const isActive = segment.id === activeSegment
-          
+
           return (
             <motion.button
               key={segment.id}
               onClick={() => handleSegmentChange(segment.id)}
               className={`relative flex items-center gap-3 px-6 py-4 text-sm font-medium transition-all duration-200 border-b-2 ${
-                isActive 
-                  ? 'text-primary border-primary' 
+                isActive
+                  ? 'text-primary border-primary'
                   : 'text-foreground/60 border-transparent hover:text-foreground hover:border-foreground/20'
               }`}
               whileHover={{ y: -1 }}
@@ -81,7 +86,7 @@ export default function SegmentSwitcher({ variant = 'default', className = '' })
                   {SEGMENT_DESCRIPTIONS[segment.id]}
                 </div>
               </div>
-              
+
               <AnimatePresence>
                 {isActive && (
                   <motion.div
@@ -98,7 +103,7 @@ export default function SegmentSwitcher({ variant = 'default', className = '' })
           )
         })}
       </div>
-      
+
       <AnimatePresence mode="wait">
         <motion.div
           key={activeSegment}
@@ -126,18 +131,20 @@ export function FloatingSegmentSwitcher({ className = '' }) {
   const { activeSegment, segments, setSegment, theme } = useSegment()
 
   return (
-    <div className={`flex items-center bg-surface/80 backdrop-blur-md rounded-full p-1 shadow-segment-md ${className}`}>
-      {segments.map((segment) => {
+    <div
+      className={`flex items-center bg-surface/80 backdrop-blur-md rounded-full p-1 shadow-segment-md ${className}`}
+    >
+      {segments.map(segment => {
         const Icon = SEGMENT_ICONS[segment.id]
         const isActive = segment.id === activeSegment
-        
+
         return (
           <motion.button
             key={segment.id}
             onClick={() => setSegment(segment.id)}
             className={`relative flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-              isActive 
-                ? 'text-white shadow-sm' 
+              isActive
+                ? 'text-white shadow-sm'
                 : 'text-foreground/60 hover:text-foreground'
             }`}
             style={{
@@ -149,7 +156,7 @@ export function FloatingSegmentSwitcher({ className = '' }) {
           >
             <Icon size={14} />
             <span className="hidden sm:inline">{segment.name}</span>
-            
+
             {isActive && (
               <motion.div
                 className="absolute -bottom-1 left-1/2 w-1 h-1 bg-white rounded-full sm:hidden"
@@ -167,20 +174,22 @@ export function FloatingSegmentSwitcher({ className = '' }) {
 export function SegmentIndicator({ showLabel = true, className = '' }) {
   const { activeSegment, theme } = useSegment()
   const Icon = SEGMENT_ICONS[activeSegment]
-  const segment = { leather: 'Leather', electronics: 'Electronics', furniture: 'Furniture' }[activeSegment]
-  
+  const segment = {
+    leather: 'Leather',
+    electronics: 'Electronics',
+    furniture: 'Furniture',
+  }[activeSegment]
+
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      <div 
+      <div
         className="flex items-center justify-center w-8 h-8 rounded-full shadow-segment-sm"
         style={{ backgroundColor: theme.colors.primary }}
       >
         <Icon size={16} className="text-white" />
       </div>
       {showLabel && (
-        <span className="text-sm font-medium text-foreground">
-          {segment}
-        </span>
+        <span className="text-sm font-medium text-foreground">{segment}</span>
       )}
     </div>
   )

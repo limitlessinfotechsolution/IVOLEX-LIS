@@ -11,7 +11,11 @@ import ShippingProvider from './contexts/ShippingContext.jsx'
 import { SegmentProvider } from './contexts/SegmentContext.jsx'
 import { ThemeProvider } from '../contexts/ThemeContext.jsx'
 import { I18nProvider } from './contexts/I18nContext.jsx'
-import { SecurityProvider, RateLimitProvider, SecurityValidator } from '../components/SecurityProvider.jsx'
+import {
+  SecurityProvider,
+  RateLimitProvider,
+  SecurityValidator,
+} from '../components/SecurityProvider.jsx'
 import { RecommendationProvider } from './contexts/RecommendationContext.jsx'
 import { SearchProvider } from './contexts/SearchContext.jsx'
 import SkipToContent from './components/SkipToContent.jsx'
@@ -35,7 +39,9 @@ const Contact = lazy(() => import('../pages/screens/Contact'))
 const Login = lazy(() => import('../pages/screens/Login'))
 const Register = lazy(() => import('../pages/screens/Register'))
 const Profile = lazy(() => import('../pages/screens/Profile'))
-const OrderConfirmation = lazy(() => import('../pages/screens/OrderConfirmation'))
+const OrderConfirmation = lazy(
+  () => import('../pages/screens/OrderConfirmation')
+)
 const MyAccount = lazy(() => import('../pages/screens/Account'))
 const RequestTracking = lazy(() => import('../pages/screens/Tracking'))
 const TrackingPage = lazy(() => import('../pages/screens/TrackingPage'))
@@ -47,7 +53,9 @@ function LoadingSpinner() {
   return (
     <div className="flex items-center justify-center min-h-[50vh]">
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600"></div>
-      <span className="ml-3 text-stone-600 dark:text-stone-400">Loading...</span>
+      <span className="ml-3 text-stone-600 dark:text-stone-400">
+        Loading...
+      </span>
     </div>
   )
 }
@@ -62,75 +70,146 @@ export default function App() {
         <I18nProvider>
           <RecommendationProvider>
             <SegmentProvider>
-            <ThemeProvider>
-            <SEOProvider>
-              <LocationProvider>
-                <AuthProvider>
-                  <NotificationProvider>
-                    <AuditProvider>
-                      <InventoryProvider>
-                        <ShippingProvider>
-                          <OrderProvider>
-                            <CartProvider>
-                  <BrowserRouter future={{
-                    v7_startTransition: true,
-                    v7_relativeSplatPath: true
-                  }}>
-                    <SearchProvider>
-                      <SecurityValidator>
-                        <div className="min-h-screen bg-segment-texture transition-all duration-500">
-                          <SkipToContent />
-                          <FloatingNavbar />
-                          <main id="main" className="pt-32">
-                            <ErrorBoundary>
-                              <Suspense fallback={<LoadingSpinner />}>
-                                <Routes>
-                                  <Route path="/" element={<Home />} />
-                                  <Route path="/leather" element={<Home />} />
-                                  <Route path="/electronics" element={<Home />} />
-                                  <Route path="/furniture" element={<Home />} />
-                                  <Route path="/shop" element={<Shop />} />
-                                  <Route path="/category/:category" element={<Category />} />
-                                  <Route path="/product/:id" element={<Product />} />
-                                  <Route path="/cart" element={<Cart />} />
-                                  <Route path="/checkout" element={<Checkout />} />
-                                  <Route path="/customize" element={<Customize />} />
-                                  <Route path="/about" element={<About />} />
-                                  <Route path="/contact" element={<Contact />} />
-                                  <Route path="/login" element={<Login />} />
-                                  <Route path="/register" element={<Register />} />
-                                  <Route path="/profile" element={<Profile />} />
-                                  <Route path="/account/*" element={<MyAccount />} />
-                                  <Route path="/track/:requestId" element={<RequestTracking />} />
-                                  <Route path="/track-shipment" element={<TrackingPage />} />
-                                  <Route path="/order-confirmation" element={<OrderConfirmation />} />
-                                  <Route path="/admin/*" element={<AdminPanel />} />
-                                  {/* 404 Catch-all route - must be last */}
-                                  <Route path="*" element={<NotFound />} />
-                                </Routes>
-                              </Suspense>
-                            </ErrorBoundary>
-                          </main>
-                          <Footer />
-                          <ToastProvider />
-                        </div>
-                      </SecurityValidator>
-                    </SearchProvider>
-                  </BrowserRouter>
-                            </CartProvider>
-                          </OrderProvider>
-                        </ShippingProvider>
-                      </InventoryProvider>
-                    </AuditProvider>
-                  </NotificationProvider>
-                </AuthProvider>
-              </LocationProvider>
-            </SEOProvider>
-            </ThemeProvider>
+              <ThemeProvider>
+                <SEOProvider>
+                  <LocationProvider>
+                    <AuthProvider>
+                      <NotificationProvider>
+                        <AuditProvider>
+                          <InventoryProvider>
+                            <ShippingProvider>
+                              <OrderProvider>
+                                <CartProvider>
+                                  <BrowserRouter
+                                    future={{
+                                      v7_startTransition: true,
+                                      v7_relativeSplatPath: true,
+                                    }}
+                                  >
+                                    <SearchProvider>
+                                      <SecurityValidator>
+                                        <div className="min-h-screen bg-segment-texture transition-all duration-500">
+                                          <SkipToContent />
+                                          <FloatingNavbar />
+                                          <main id="main" className="pt-32">
+                                            <ErrorBoundary>
+                                              <Suspense
+                                                fallback={<LoadingSpinner />}
+                                              >
+                                                <Routes>
+                                                  <Route
+                                                    path="/"
+                                                    element={<Home />}
+                                                  />
+                                                  <Route
+                                                    path="/leather"
+                                                    element={<Home />}
+                                                  />
+                                                  <Route
+                                                    path="/electronics"
+                                                    element={<Home />}
+                                                  />
+                                                  <Route
+                                                    path="/furniture"
+                                                    element={<Home />}
+                                                  />
+                                                  <Route
+                                                    path="/shop"
+                                                    element={<Shop />}
+                                                  />
+                                                  <Route
+                                                    path="/category/:category"
+                                                    element={<Category />}
+                                                  />
+                                                  <Route
+                                                    path="/product/:id"
+                                                    element={<Product />}
+                                                  />
+                                                  <Route
+                                                    path="/cart"
+                                                    element={<Cart />}
+                                                  />
+                                                  <Route
+                                                    path="/checkout"
+                                                    element={<Checkout />}
+                                                  />
+                                                  <Route
+                                                    path="/customize"
+                                                    element={<Customize />}
+                                                  />
+                                                  <Route
+                                                    path="/about"
+                                                    element={<About />}
+                                                  />
+                                                  <Route
+                                                    path="/contact"
+                                                    element={<Contact />}
+                                                  />
+                                                  <Route
+                                                    path="/login"
+                                                    element={<Login />}
+                                                  />
+                                                  <Route
+                                                    path="/register"
+                                                    element={<Register />}
+                                                  />
+                                                  <Route
+                                                    path="/profile"
+                                                    element={<Profile />}
+                                                  />
+                                                  <Route
+                                                    path="/account/*"
+                                                    element={<MyAccount />}
+                                                  />
+                                                  <Route
+                                                    path="/track/:requestId"
+                                                    element={
+                                                      <RequestTracking />
+                                                    }
+                                                  />
+                                                  <Route
+                                                    path="/track-shipment"
+                                                    element={<TrackingPage />}
+                                                  />
+                                                  <Route
+                                                    path="/order-confirmation"
+                                                    element={
+                                                      <OrderConfirmation />
+                                                    }
+                                                  />
+                                                  <Route
+                                                    path="/admin/*"
+                                                    element={<AdminPanel />}
+                                                  />
+                                                  {/* 404 Catch-all route - must be last */}
+                                                  <Route
+                                                    path="*"
+                                                    element={<NotFound />}
+                                                  />
+                                                </Routes>
+                                              </Suspense>
+                                            </ErrorBoundary>
+                                          </main>
+                                          <Footer />
+                                          <ToastProvider />
+                                        </div>
+                                      </SecurityValidator>
+                                    </SearchProvider>
+                                  </BrowserRouter>
+                                </CartProvider>
+                              </OrderProvider>
+                            </ShippingProvider>
+                          </InventoryProvider>
+                        </AuditProvider>
+                      </NotificationProvider>
+                    </AuthProvider>
+                  </LocationProvider>
+                </SEOProvider>
+              </ThemeProvider>
             </SegmentProvider>
           </RecommendationProvider>
         </I18nProvider>
       </RateLimitProvider>
     </SecurityProvider>
-  );
+  )
 }

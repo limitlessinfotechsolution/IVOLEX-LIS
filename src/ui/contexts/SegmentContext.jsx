@@ -7,10 +7,10 @@ const SEGMENT_THEMES = {
     name: 'Leather',
     slug: 'leather',
     colors: {
-      primary: '#4E342E',        // Deep Umber
-      secondary: '#8D6E63',      // Saddle
-      accent: '#C6A15B',         // Brass Accent
-      background: '#F5E9DA',     // Cream
+      primary: '#4E342E', // Deep Umber
+      secondary: '#8D6E63', // Saddle
+      accent: '#C6A15B', // Brass Accent
+      background: '#F5E9DA', // Cream
       surface: '#FFFFFF',
       foreground: '#2E2E2E',
       muted: '#6B4423',
@@ -19,7 +19,8 @@ const SEGMENT_THEMES = {
     },
     texture: {
       background: 'linear-gradient(135deg, #F5E9DA 0%, #E8D5C1 100%)',
-      overlay: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%234E342E" fill-opacity="0.02"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+      overlay:
+        'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%234E342E" fill-opacity="0.02"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
       card: 'linear-gradient(145deg, #FFFFFF 0%, #FAF7F0 100%)',
     },
     shadows: {
@@ -58,10 +59,10 @@ const SEGMENT_THEMES = {
     name: 'Electronics',
     slug: 'electronics',
     colors: {
-      primary: '#2962FF',        // Electric Blue
-      secondary: '#212121',      // Graphite
-      accent: '#00E5FF',         // Cyan Accent
-      background: '#FFFFFF',     // White
+      primary: '#2962FF', // Electric Blue
+      secondary: '#212121', // Graphite
+      accent: '#00E5FF', // Cyan Accent
+      background: '#FFFFFF', // White
       surface: '#F8F9FA',
       foreground: '#212121',
       muted: '#5C6BC0',
@@ -70,7 +71,8 @@ const SEGMENT_THEMES = {
     },
     texture: {
       background: 'linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%)',
-      overlay: 'radial-gradient(circle at 50% 50%, rgba(41, 98, 255, 0.03) 0%, transparent 50%)',
+      overlay:
+        'radial-gradient(circle at 50% 50%, rgba(41, 98, 255, 0.03) 0%, transparent 50%)',
       card: 'linear-gradient(145deg, #FFFFFF 0%, #F5F7FA 100%)',
     },
     shadows: {
@@ -109,19 +111,20 @@ const SEGMENT_THEMES = {
     name: 'Furniture & Interiors',
     slug: 'furniture',
     colors: {
-      primary: '#2E7D32',        // Forest
-      secondary: '#D7CCC8',      // Sand
-      accent: '#8BC34A',         // Light Green
-      background: '#FAF7F2',     // Linen
+      primary: '#2E7D32', // Forest
+      secondary: '#D7CCC8', // Sand
+      accent: '#8BC34A', // Light Green
+      background: '#FAF7F2', // Linen
       surface: '#FFFFFF',
-      foreground: '#424242',     // Charcoal
+      foreground: '#424242', // Charcoal
       muted: '#81C784',
       border: '#E8F5E8',
       ring: '#2E7D32',
     },
     texture: {
       background: 'linear-gradient(135deg, #FAF7F2 0%, #F5F2ED 100%)',
-      overlay: 'url("data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%232E7D32" fill-opacity="0.03" fill-rule="evenodd"%3E%3Cpath d="M0 40L40 0H20L0 20M40 40V20L20 40"/%3E%3C/g%3E%3C/svg%3E")',
+      overlay:
+        'url("data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%232E7D32" fill-opacity="0.03" fill-rule="evenodd"%3E%3Cpath d="M0 40L40 0H20L0 20M40 40V20L20 40"/%3E%3C/g%3E%3C/svg%3E")',
       card: 'linear-gradient(145deg, #FFFFFF 0%, #FDFCF8 100%)',
     },
     shadows: {
@@ -209,7 +212,7 @@ export function SegmentProvider({ children }) {
   useEffect(() => {
     const currentPath = window.location.pathname
     const urlSegment = currentPath.split('/')[1]
-    
+
     if (SEGMENT_THEMES[urlSegment]) {
       dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: urlSegment })
       localStorage.setItem('ivolex_segment', urlSegment)
@@ -262,16 +265,19 @@ export function SegmentProvider({ children }) {
       root.style.setProperty('--bg-card', theme.texture.card)
 
       // Update body class for segment-specific styling
-      document.body.className = document.body.className.replace(/segment-\w+/g, '')
+      document.body.className = document.body.className.replace(
+        /segment-\w+/g,
+        ''
+      )
       document.body.classList.add(`segment-${state.activeSegment}`)
     }
   }, [state.theme, state.activeSegment])
 
-  const setSegment = (segment) => {
+  const setSegment = segment => {
     if (SEGMENT_THEMES[segment]) {
       dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: segment })
       localStorage.setItem('ivolex_segment', segment)
-      
+
       // Update URL without page reload
       const newPath = `/${segment}`
       if (window.location.pathname !== newPath) {
@@ -284,13 +290,11 @@ export function SegmentProvider({ children }) {
     ...state,
     segments: Object.values(SEGMENT_THEMES),
     setSegment,
-    isCurrentSegment: (segment) => state.activeSegment === segment,
+    isCurrentSegment: segment => state.activeSegment === segment,
   }
 
   return (
-    <SegmentContext.Provider value={value}>
-      {children}
-    </SegmentContext.Provider>
+    <SegmentContext.Provider value={value}>{children}</SegmentContext.Provider>
   )
 }
 

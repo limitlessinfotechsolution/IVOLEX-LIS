@@ -1,5 +1,9 @@
 import { createContext, useContext, useReducer, useEffect } from 'react'
-import { useNotifications, NOTIFICATION_TYPES, NOTIFICATION_CHANNELS } from './NotificationContext'
+import {
+  useNotifications,
+  NOTIFICATION_TYPES,
+  NOTIFICATION_CHANNELS,
+} from './NotificationContext'
 
 // Order statuses
 export const ORDER_STATUSES = {
@@ -9,7 +13,7 @@ export const ORDER_STATUSES = {
   SHIPPED: 'shipped',
   DELIVERED: 'delivered',
   CANCELLED: 'cancelled',
-  REFUNDED: 'refunded'
+  REFUNDED: 'refunded',
 }
 
 // Order status configurations
@@ -18,44 +22,44 @@ const STATUS_CONFIG = {
     label: 'Pending Payment',
     labelAr: 'في انتظار الدفع',
     color: 'bg-yellow-100 text-yellow-800',
-    step: 1
+    step: 1,
   },
   [ORDER_STATUSES.CONFIRMED]: {
     label: 'Payment Confirmed',
     labelAr: 'تم تأكيد الدفع',
     color: 'bg-blue-100 text-blue-800',
-    step: 2
+    step: 2,
   },
   [ORDER_STATUSES.PROCESSING]: {
     label: 'Processing',
     labelAr: 'قيد التحضير',
     color: 'bg-purple-100 text-purple-800',
-    step: 3
+    step: 3,
   },
   [ORDER_STATUSES.SHIPPED]: {
     label: 'Shipped',
     labelAr: 'تم الشحن',
     color: 'bg-indigo-100 text-indigo-800',
-    step: 4
+    step: 4,
   },
   [ORDER_STATUSES.DELIVERED]: {
     label: 'Delivered',
     labelAr: 'تم التسليم',
     color: 'bg-green-100 text-green-800',
-    step: 5
+    step: 5,
   },
   [ORDER_STATUSES.CANCELLED]: {
     label: 'Cancelled',
     labelAr: 'ملغي',
     color: 'bg-red-100 text-red-800',
-    step: 0
+    step: 0,
   },
   [ORDER_STATUSES.REFUNDED]: {
     label: 'Refunded',
     labelAr: 'مسترد',
     color: 'bg-gray-100 text-gray-800',
-    step: 0
-  }
+    step: 0,
+  },
 }
 
 // Actions
@@ -64,14 +68,14 @@ const ORDER_ACTIONS = {
   UPDATE_ORDER_STATUS: 'UPDATE_ORDER_STATUS',
   ADD_TRACKING_UPDATE: 'ADD_TRACKING_UPDATE',
   LOAD_ORDERS: 'LOAD_ORDERS',
-  SET_LOADING: 'SET_LOADING'
+  SET_LOADING: 'SET_LOADING',
 }
 
 // Initial state
 const initialState = {
   orders: [],
   loading: false,
-  error: null
+  error: null,
 }
 
 // Reducer
@@ -80,16 +84,16 @@ function orderReducer(state, action) {
     case ORDER_ACTIONS.SET_LOADING:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       }
-    
+
     case ORDER_ACTIONS.LOAD_ORDERS:
       return {
         ...state,
         orders: action.payload,
-        loading: false
+        loading: false,
       }
-    
+
     case ORDER_ACTIONS.CREATE_ORDER: {
       const newOrder = {
         id: action.payload.id || `ORD-${Date.now()}`,
@@ -102,46 +106,54 @@ function orderReducer(state, action) {
         totals: action.payload.totals || {},
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        tracking: [{
-          status: ORDER_STATUSES.PENDING,
-          message: 'Order created successfully',
-          messageAr: 'تم إنشاء الطلب بنجاح',
-          timestamp: new Date().toISOString(),
-          automated: true
-        }],
+        tracking: [
+          {
+            status: ORDER_STATUSES.PENDING,
+            message: 'Order created successfully',
+            messageAr: 'تم إنشاء الطلب بنجاح',
+            timestamp: new Date().toISOString(),
+            automated: true,
+          },
+        ],
         estimatedDelivery: null,
         shippingCarrier: null,
-        trackingNumber: null
+        trackingNumber: null,
       }
-      
+
       return {
         ...state,
         orders: [newOrder, ...state.orders],
-        loading: false
+        loading: false,
       }
     }
-    
+
     case ORDER_ACTIONS.UPDATE_ORDER_STATUS:
       return {
         ...state,
-        orders: state.orders.map(order => 
+        orders: state.orders.map(order =>
           order.id === action.payload.orderId
             ? {
                 ...order,
                 status: action.payload.status,
                 updatedAt: new Date().toISOString(),
-                ...(action.payload.trackingNumber && { trackingNumber: action.payload.trackingNumber }),
-                ...(action.payload.shippingCarrier && { shippingCarrier: action.payload.shippingCarrier }),
-                ...(action.payload.estimatedDelivery && { estimatedDelivery: action.payload.estimatedDelivery })
+                ...(action.payload.trackingNumber && {
+                  trackingNumber: action.payload.trackingNumber,
+                }),
+                ...(action.payload.shippingCarrier && {
+                  shippingCarrier: action.payload.shippingCarrier,
+                }),
+                ...(action.payload.estimatedDelivery && {
+                  estimatedDelivery: action.payload.estimatedDelivery,
+                }),
               }
             : order
-        )
+        ),
       }
-    
+
     case ORDER_ACTIONS.ADD_TRACKING_UPDATE:
       return {
         ...state,
-        orders: state.orders.map(order => 
+        orders: state.orders.map(order =>
           order.id === action.payload.orderId
             ? {
                 ...order,
@@ -153,15 +165,15 @@ function orderReducer(state, action) {
                     messageAr: action.payload.messageAr,
                     timestamp: new Date().toISOString(),
                     automated: action.payload.automated || false,
-                    location: action.payload.location
-                  }
+                    location: action.payload.location,
+                  },
                 ],
-                updatedAt: new Date().toISOString()
+                updatedAt: new Date().toISOString(),
               }
             : order
-        )
+        ),
       }
-    
+
     default:
       return state
   }
@@ -195,16 +207,19 @@ export function OrderProvider({ children }) {
     }
   }, [state.orders])
 
-  const createOrder = (orderData) => {
+  const createOrder = orderData => {
     dispatch({ type: ORDER_ACTIONS.SET_LOADING, payload: true })
-    
+
     // Simulate API call
     setTimeout(() => {
       const orderId = orderData.id || `ORD-${Date.now()}`
       const orderNumber = orderData.orderNumber || `#${Date.now()}`
-      
-      dispatch({ type: ORDER_ACTIONS.CREATE_ORDER, payload: { ...orderData, id: orderId, orderNumber } })
-      
+
+      dispatch({
+        type: ORDER_ACTIONS.CREATE_ORDER,
+        payload: { ...orderData, id: orderId, orderNumber },
+      })
+
       // Send order confirmation notification
       sendNotification(
         NOTIFICATION_TYPES.ORDER_CONFIRMATION,
@@ -214,16 +229,20 @@ export function OrderProvider({ children }) {
           total: orderData.totals?.total || '0',
           email: orderData.customer?.email,
           phone: orderData.customer?.phone,
-          userId: orderData.customer?.id
+          userId: orderData.customer?.id,
         },
-        [NOTIFICATION_CHANNELS.IN_APP, NOTIFICATION_CHANNELS.EMAIL, NOTIFICATION_CHANNELS.SMS]
+        [
+          NOTIFICATION_CHANNELS.IN_APP,
+          NOTIFICATION_CHANNELS.EMAIL,
+          NOTIFICATION_CHANNELS.SMS,
+        ]
       )
-      
+
       // Simulate payment confirmation after 2 seconds
       setTimeout(() => {
         updateOrderStatus(orderId, ORDER_STATUSES.CONFIRMED, {
           message: 'Payment confirmed successfully',
-          messageAr: 'تم تأكيد الدفع بنجاح'
+          messageAr: 'تم تأكيد الدفع بنجاح',
         })
       }, 2000)
     }, 1000)
@@ -238,8 +257,8 @@ export function OrderProvider({ children }) {
       payload: {
         orderId,
         status,
-        ...options
-      }
+        ...options,
+      },
     })
 
     // Add tracking update
@@ -249,7 +268,7 @@ export function OrderProvider({ children }) {
       message: options.message || statusConfig.label,
       messageAr: options.messageAr || statusConfig.labelAr,
       automated: options.automated !== false,
-      location: options.location
+      location: options.location,
     })
 
     // Send notification for status updates
@@ -261,7 +280,7 @@ export function OrderProvider({ children }) {
       email: order.customer?.email,
       phone: order.customer?.phone,
       userId: order.customer?.id,
-      trackingNumber: options.trackingNumber
+      trackingNumber: options.trackingNumber,
     }
 
     // Determine notification type and channels based on status
@@ -274,7 +293,11 @@ export function OrderProvider({ children }) {
       channels = [NOTIFICATION_CHANNELS.IN_APP, NOTIFICATION_CHANNELS.EMAIL]
     } else if (status === ORDER_STATUSES.SHIPPED) {
       notificationType = NOTIFICATION_TYPES.SHIPPING_UPDATE
-      channels = [NOTIFICATION_CHANNELS.IN_APP, NOTIFICATION_CHANNELS.SMS, NOTIFICATION_CHANNELS.EMAIL]
+      channels = [
+        NOTIFICATION_CHANNELS.IN_APP,
+        NOTIFICATION_CHANNELS.SMS,
+        NOTIFICATION_CHANNELS.EMAIL,
+      ]
     } else if (status === ORDER_STATUSES.DELIVERED) {
       channels = [NOTIFICATION_CHANNELS.IN_APP, NOTIFICATION_CHANNELS.EMAIL]
     }
@@ -288,49 +311,52 @@ export function OrderProvider({ children }) {
       type: ORDER_ACTIONS.ADD_TRACKING_UPDATE,
       payload: {
         orderId,
-        ...trackingData
-      }
+        ...trackingData,
+      },
     })
   }
 
-  const getOrderById = (orderId) => {
+  const getOrderById = orderId => {
     return state.orders.find(order => order.id === orderId)
   }
 
-  const getOrderByNumber = (orderNumber) => {
+  const getOrderByNumber = orderNumber => {
     return state.orders.find(order => order.orderNumber === orderNumber)
   }
 
-  const getStatusConfig = (status) => {
+  const getStatusConfig = status => {
     return STATUS_CONFIG[status] || STATUS_CONFIG[ORDER_STATUSES.PENDING]
   }
 
-  const simulateOrderProgress = (orderId) => {
+  const simulateOrderProgress = orderId => {
     const order = getOrderById(orderId)
     if (!order) return
 
     const progressSteps = [
-      { 
-        status: ORDER_STATUSES.PROCESSING, 
+      {
+        status: ORDER_STATUSES.PROCESSING,
         delay: 5000,
         message: 'Order is being prepared',
-        messageAr: 'جاري تحضير الطلب'
+        messageAr: 'جاري تحضير الطلب',
       },
-      { 
-        status: ORDER_STATUSES.SHIPPED, 
+      {
+        status: ORDER_STATUSES.SHIPPED,
         delay: 10000,
         message: 'Order has been shipped',
         messageAr: 'تم شحن الطلب',
-        trackingNumber: 'TN' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+        trackingNumber:
+          'TN' + Math.random().toString(36).substr(2, 9).toUpperCase(),
         shippingCarrier: 'Aramex',
-        estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString()
+        estimatedDelivery: new Date(
+          Date.now() + 3 * 24 * 60 * 60 * 1000
+        ).toISOString(),
       },
-      { 
-        status: ORDER_STATUSES.DELIVERED, 
+      {
+        status: ORDER_STATUSES.DELIVERED,
         delay: 15000,
         message: 'Order delivered successfully',
-        messageAr: 'تم تسليم الطلب بنجاح'
-      }
+        messageAr: 'تم تسليم الطلب بنجاح',
+      },
     ]
 
     progressSteps.forEach(step => {
@@ -341,7 +367,7 @@ export function OrderProvider({ children }) {
           trackingNumber: step.trackingNumber,
           shippingCarrier: step.shippingCarrier,
           estimatedDelivery: step.estimatedDelivery,
-          automated: true
+          automated: true,
         })
       }, step.delay)
     })
@@ -358,14 +384,10 @@ export function OrderProvider({ children }) {
     getOrderByNumber,
     getStatusConfig,
     simulateOrderProgress,
-    ORDER_STATUSES
+    ORDER_STATUSES,
   }
 
-  return (
-    <OrderContext.Provider value={value}>
-      {children}
-    </OrderContext.Provider>
-  )
+  return <OrderContext.Provider value={value}>{children}</OrderContext.Provider>
 }
 
 // Hook to use order context

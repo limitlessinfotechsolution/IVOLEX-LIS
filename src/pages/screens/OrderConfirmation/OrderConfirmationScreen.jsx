@@ -17,7 +17,7 @@ export default function OrderConfirmationScreen() {
 
   useEffect(() => {
     const orderData = location.state
-    
+
     if (orderData) {
       // Create order in system
       const newOrderData = {
@@ -27,7 +27,7 @@ export default function OrderConfirmationScreen() {
         customer: orderData.customer || {
           email: orderData.email || 'customer@example.com',
           firstName: orderData.firstName || 'John',
-          lastName: orderData.lastName || 'Doe'
+          lastName: orderData.lastName || 'Doe',
         },
         shipping: orderData.shipping || {},
         payment: orderData.payment || {},
@@ -35,22 +35,24 @@ export default function OrderConfirmationScreen() {
           subtotal: orderData.subtotal || orderData.total || 0,
           shipping: orderData.shipping || 0,
           tax: orderData.tax || 0,
-          total: orderData.total || 0
-        }
+          total: orderData.total || 0,
+        },
       }
-      
+
       createOrder(newOrderData)
       setOrder(newOrderData)
-      
+
       // Start order progress simulation
       setTimeout(() => {
         simulateOrderProgress(newOrderData.id)
       }, 3000)
-      
+
       setIsLoading(false)
-      
+
       // Show success notification
-      toast.success(t('order.confirmationSuccess', 'Order confirmed successfully!'))
+      toast.success(
+        t('order.confirmationSuccess', 'Order confirmed successfully!')
+      )
     } else {
       // Try to get order from URL or redirect
       setIsLoading(false)
@@ -62,7 +64,9 @@ export default function OrderConfirmationScreen() {
       <Container>
         <div className="flex items-center justify-center min-h-[50vh]">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <span className="ml-3 text-foreground/60">{t('common.loading', 'Loading...')}</span>
+          <span className="ml-3 text-foreground/60">
+            {t('common.loading', 'Loading...')}
+          </span>
         </div>
       </Container>
     )
@@ -74,9 +78,14 @@ export default function OrderConfirmationScreen() {
         <SEO title={t('order.confirmation', 'Order Confirmation')} />
         <Container>
           <div className="text-center py-20">
-            <h1 className="text-2xl font-semibold mb-2">{t('order.notFound', 'Order not found')}</h1>
+            <h1 className="text-2xl font-semibold mb-2">
+              {t('order.notFound', 'Order not found')}
+            </h1>
             <p className="text-foreground/60 mb-6">
-              {t('order.notFoundDesc', 'We couldn\'t find your order. Please check your email for confirmation.')}
+              {t(
+                'order.notFoundDesc',
+                "We couldn't find your order. Please check your email for confirmation."
+              )}
             </p>
             <Link className="btn btn-primary" to="/">
               {t('nav.home', 'Go Home')}
@@ -89,7 +98,7 @@ export default function OrderConfirmationScreen() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title={`${t('order.confirmation', 'Order Confirmation')} - ${order.orderNumber}`}
         description="Your order has been confirmed. Thank you for shopping with IVOLEX."
       />
@@ -110,17 +119,25 @@ export default function OrderConfirmationScreen() {
               >
                 <CheckCircle className="text-green-600" size={32} />
               </motion.div>
-              
+
               <h1 className="text-3xl font-bold text-foreground mb-2">
                 {t('order.thankYou', 'Thank you for your order!')}
               </h1>
-              
+
               <p className="text-foreground/70 text-lg mb-4">
-                {t('order.confirmationMessage', 'Your order has been confirmed and is being processed.')}
+                {t(
+                  'order.confirmationMessage',
+                  'Your order has been confirmed and is being processed.'
+                )}
               </p>
-              
+
               <div className="flex items-center justify-center gap-4 text-sm text-foreground/60">
-                <span>{t('order.orderNumber', 'Order')}: <strong className="text-foreground">{order.orderNumber}</strong></span>
+                <span>
+                  {t('order.orderNumber', 'Order')}:{' '}
+                  <strong className="text-foreground">
+                    {order.orderNumber}
+                  </strong>
+                </span>
                 <span>•</span>
                 <span>{formatDate(order.createdAt || new Date())}</span>
               </div>
@@ -139,11 +156,14 @@ export default function OrderConfirmationScreen() {
                   <h2 className="text-xl font-semibold text-foreground mb-4">
                     {t('order.summary', 'Order Summary')}
                   </h2>
-                  
+
                   {order.items && order.items.length > 0 ? (
                     <div className="space-y-4">
                       {order.items.map((item, index) => (
-                        <div key={index} className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <div
+                          key={index}
+                          className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}
+                        >
                           <div className="w-16 h-16 bg-background rounded-lg overflow-hidden">
                             <img
                               src={item.image || '/api/placeholder/64/64'}
@@ -151,10 +171,15 @@ export default function OrderConfirmationScreen() {
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                            <h3 className="font-medium text-foreground">{item.name}</h3>
+                          <div
+                            className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}
+                          >
+                            <h3 className="font-medium text-foreground">
+                              {item.name}
+                            </h3>
                             <p className="text-sm text-foreground/60">
-                              {t('common.quantity', 'Qty')}: {item.qty} × {formatCurrency(item.price)}
+                              {t('common.quantity', 'Qty')}: {item.qty} ×{' '}
+                              {formatCurrency(item.price)}
                             </p>
                           </div>
                           <div className="font-semibold text-foreground">
@@ -180,9 +205,11 @@ export default function OrderConfirmationScreen() {
                   <h2 className="text-xl font-semibold text-foreground mb-4">
                     {t('order.tracking', 'Order Tracking')}
                   </h2>
-                  
+
                   <div className="space-y-4">
-                    <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div
+                      className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
                       <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                         <CheckCircle className="text-green-600" size={16} />
                       </div>
@@ -195,8 +222,10 @@ export default function OrderConfirmationScreen() {
                         </div>
                       </div>
                     </div>
-                    
-                    <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+
+                    <div
+                      className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
                       <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                         <Package className="text-blue-600" size={16} />
                       </div>
@@ -205,12 +234,17 @@ export default function OrderConfirmationScreen() {
                           {t('order.status.processing', 'Processing')}
                         </div>
                         <div className="text-sm text-foreground/60">
-                          {t('order.processingDesc', 'Your order is being prepared')}
+                          {t(
+                            'order.processingDesc',
+                            'Your order is being prepared'
+                          )}
                         </div>
                       </div>
                     </div>
-                    
-                    <div className={`flex items-center gap-3 opacity-50 ${isRTL ? 'flex-row-reverse' : ''}`}>
+
+                    <div
+                      className={`flex items-center gap-3 opacity-50 ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
                       <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
                         <Truck className="text-gray-600" size={16} />
                       </div>
@@ -224,10 +258,13 @@ export default function OrderConfirmationScreen() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="mt-6 p-4 bg-blue-50 rounded-lg">
                     <p className="text-sm text-blue-800">
-                      {t('order.trackingInfo', 'You will receive tracking information via email once your order ships.')}
+                      {t(
+                        'order.trackingInfo',
+                        'You will receive tracking information via email once your order ships.'
+                      )}
                     </p>
                   </div>
                 </motion.div>
@@ -245,25 +282,49 @@ export default function OrderConfirmationScreen() {
                   <h3 className="font-semibold text-foreground mb-4">
                     {t('order.total', 'Order Total')}
                   </h3>
-                  
+
                   <div className="space-y-2 text-sm">
-                    <div className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <span className="text-foreground/60">{t('common.subtotal', 'Subtotal')}</span>
-                      <span className="text-foreground">{formatCurrency(order.totals?.subtotal || 0)}</span>
-                    </div>
-                    <div className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <span className="text-foreground/60">{t('common.shipping', 'Shipping')}</span>
+                    <div
+                      className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
+                      <span className="text-foreground/60">
+                        {t('common.subtotal', 'Subtotal')}
+                      </span>
                       <span className="text-foreground">
-                        {order.totals?.shipping === 0 ? t('common.free', 'Free') : formatCurrency(order.totals?.shipping || 0)}
+                        {formatCurrency(order.totals?.subtotal || 0)}
                       </span>
                     </div>
-                    <div className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <span className="text-foreground/60">{t('common.tax', 'Tax')}</span>
-                      <span className="text-foreground">{formatCurrency(order.totals?.tax || 0)}</span>
+                    <div
+                      className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
+                      <span className="text-foreground/60">
+                        {t('common.shipping', 'Shipping')}
+                      </span>
+                      <span className="text-foreground">
+                        {order.totals?.shipping === 0
+                          ? t('common.free', 'Free')
+                          : formatCurrency(order.totals?.shipping || 0)}
+                      </span>
                     </div>
-                    <div className={`flex justify-between font-semibold text-lg pt-2 border-t border-border ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <span className="text-foreground">{t('common.total', 'Total')}</span>
-                      <span className="text-foreground">{formatCurrency(order.totals?.total || 0)}</span>
+                    <div
+                      className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
+                      <span className="text-foreground/60">
+                        {t('common.tax', 'Tax')}
+                      </span>
+                      <span className="text-foreground">
+                        {formatCurrency(order.totals?.tax || 0)}
+                      </span>
+                    </div>
+                    <div
+                      className={`flex justify-between font-semibold text-lg pt-2 border-t border-border ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
+                      <span className="text-foreground">
+                        {t('common.total', 'Total')}
+                      </span>
+                      <span className="text-foreground">
+                        {formatCurrency(order.totals?.total || 0)}
+                      </span>
                     </div>
                   </div>
                 </motion.div>
@@ -278,20 +339,28 @@ export default function OrderConfirmationScreen() {
                   <h3 className="font-semibold text-foreground mb-4">
                     {t('order.needHelp', 'Need Help?')}
                   </h3>
-                  
+
                   <div className="space-y-3">
-                    <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div
+                      className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
                       <Mail className="text-foreground/60" size={16} />
-                      <span className="text-sm text-foreground">support@ivolex.com</span>
+                      <span className="text-sm text-foreground">
+                        support@ivolex.com
+                      </span>
                     </div>
-                    <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div
+                      className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
                       <Phone className="text-foreground/60" size={16} />
-                      <span className="text-sm text-foreground">+966 50 123 4567</span>
+                      <span className="text-sm text-foreground">
+                        +966 50 123 4567
+                      </span>
                     </div>
                   </div>
-                  
-                  <Link 
-                    to="/contact" 
+
+                  <Link
+                    to="/contact"
                     className="btn btn-outline w-full mt-4 text-sm"
                   >
                     {t('order.contactSupport', 'Contact Support')}
@@ -305,17 +374,14 @@ export default function OrderConfirmationScreen() {
                   transition={{ delay: 0.7 }}
                   className="space-y-3"
                 >
-                  <Link 
+                  <Link
                     to={`/account/orders/${order.id}`}
                     className="btn btn-primary w-full"
                   >
                     {t('order.trackOrder', 'Track Order')}
                   </Link>
-                  
-                  <Link 
-                    to="/" 
-                    className="btn btn-outline w-full"
-                  >
+
+                  <Link to="/" className="btn btn-outline w-full">
                     {t('order.continueShopping', 'Continue Shopping')}
                   </Link>
                 </motion.div>

@@ -1,17 +1,28 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useAudit, ROLES, PERMISSIONS, ROLE_PERMISSIONS, AUDIT_ACTIONS } from '../../../ui/contexts/AuditContext'
+import {
+  useAudit,
+  ROLES,
+  PERMISSIONS,
+  ROLE_PERMISSIONS,
+  AUDIT_ACTIONS,
+} from '../../../ui/contexts/AuditContext'
 import { useI18n } from '../../../ui/contexts/I18nContext'
-import { Shield, User, Lock, Edit3, Save, X, Check, AlertTriangle } from 'lucide-react'
+import {
+  Shield,
+  User,
+  Lock,
+  Edit3,
+  Save,
+  X,
+  Check,
+  AlertTriangle,
+} from 'lucide-react'
 
 const RoleManagement = () => {
-  const { 
-    hasPermission, 
-    logAction,
-    ROLES: AVAILABLE_ROLES 
-  } = useAudit()
+  const { hasPermission, logAction, ROLES: AVAILABLE_ROLES } = useAudit()
   const { t, language, isRTL } = useI18n()
-  
+
   const [selectedUser, setSelectedUser] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
   const [newRole, setNewRole] = useState('')
@@ -26,8 +37,8 @@ const RoleManagement = () => {
       role: ROLES.SUPER_ADMIN,
       avatar: null,
       lastLogin: new Date().toISOString(),
-      status: 'active'
-    }
+      status: 'active',
+    },
   ])
 
   // Check if current user can manage roles
@@ -42,32 +53,35 @@ const RoleManagement = () => {
           {t('roles.accessDenied', 'Access Denied')}
         </h3>
         <p className="text-foreground/60">
-          {t('roles.noPermission', 'You do not have permission to view user roles')}
+          {t(
+            'roles.noPermission',
+            'You do not have permission to view user roles'
+          )}
         </p>
       </div>
     )
   }
 
-  const getRoleDisplayName = (role) => {
+  const getRoleDisplayName = role => {
     const roleNames = {
       [ROLES.SUPER_ADMIN]: language === 'ar' ? 'مدير عام' : 'Super Admin',
       [ROLES.ADMIN]: language === 'ar' ? 'مدير' : 'Admin',
       [ROLES.MANAGER]: language === 'ar' ? 'مدير قسم' : 'Manager',
       [ROLES.MODERATOR]: language === 'ar' ? 'منسق' : 'Moderator',
       [ROLES.VIEWER]: language === 'ar' ? 'مشاهد' : 'Viewer',
-      [ROLES.CUSTOMER]: language === 'ar' ? 'عميل' : 'Customer'
+      [ROLES.CUSTOMER]: language === 'ar' ? 'عميل' : 'Customer',
     }
     return roleNames[role] || role
   }
 
-  const getRoleColor = (role) => {
+  const getRoleColor = role => {
     const colors = {
       [ROLES.SUPER_ADMIN]: 'bg-purple-100 text-purple-800 border-purple-200',
       [ROLES.ADMIN]: 'bg-red-100 text-red-800 border-red-200',
       [ROLES.MANAGER]: 'bg-blue-100 text-blue-800 border-blue-200',
       [ROLES.MODERATOR]: 'bg-green-100 text-green-800 border-green-200',
       [ROLES.VIEWER]: 'bg-gray-100 text-gray-800 border-gray-200',
-      [ROLES.CUSTOMER]: 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      [ROLES.CUSTOMER]: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     }
     return colors[role] || 'bg-gray-100 text-gray-800 border-gray-200'
   }
@@ -79,12 +93,12 @@ const RoleManagement = () => {
         oldRole,
         newRole,
         targetUserId: userId,
-        success: true
+        success: true,
       })
 
       // Here you would make API call to update role
       console.log(`Role changed for user ${userId}: ${oldRole} → ${newRole}`)
-      
+
       setIsEditing(false)
       setSelectedUser(null)
     } catch (error) {
@@ -92,54 +106,56 @@ const RoleManagement = () => {
     }
   }
 
-  const togglePermissionView = (role) => {
+  const togglePermissionView = role => {
     setShowPermissions(prev => ({
       ...prev,
-      [role]: !prev[role]
+      [role]: !prev[role],
     }))
   }
 
-  const formatLastLogin = (timestamp) => {
+  const formatLastLogin = timestamp => {
     const date = new Date(timestamp)
     return new Intl.DateTimeFormat(language === 'ar' ? 'ar-SA' : 'en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     }).format(date)
   }
 
-  const getPermissionDisplayName = (permission) => {
+  const getPermissionDisplayName = permission => {
     const permissionNames = {
       // Product permissions
       'products:view': language === 'ar' ? 'عرض المنتجات' : 'View Products',
-      'products:create': language === 'ar' ? 'إنشاء المنتجات' : 'Create Products',
+      'products:create':
+        language === 'ar' ? 'إنشاء المنتجات' : 'Create Products',
       'products:edit': language === 'ar' ? 'تعديل المنتجات' : 'Edit Products',
       'products:delete': language === 'ar' ? 'حذف المنتجات' : 'Delete Products',
-      
+
       // Order permissions
       'orders:view': language === 'ar' ? 'عرض الطلبات' : 'View Orders',
       'orders:edit': language === 'ar' ? 'تعديل الطلبات' : 'Edit Orders',
       'orders:refund': language === 'ar' ? 'استرداد الطلبات' : 'Refund Orders',
-      
+
       // User permissions
       'users:view': language === 'ar' ? 'عرض المستخدمين' : 'View Users',
       'users:create': language === 'ar' ? 'إنشاء المستخدمين' : 'Create Users',
       'users:edit': language === 'ar' ? 'تعديل المستخدمين' : 'Edit Users',
       'users:delete': language === 'ar' ? 'حذف المستخدمين' : 'Delete Users',
-      
+
       // Analytics permissions
       'analytics:view': language === 'ar' ? 'عرض التحليلات' : 'View Analytics',
-      'analytics:export': language === 'ar' ? 'تصدير التحليلات' : 'Export Analytics',
-      
+      'analytics:export':
+        language === 'ar' ? 'تصدير التحليلات' : 'Export Analytics',
+
       // Settings permissions
       'settings:view': language === 'ar' ? 'عرض الإعدادات' : 'View Settings',
       'settings:edit': language === 'ar' ? 'تعديل الإعدادات' : 'Edit Settings',
-      
+
       // Security permissions
       'security:manage': language === 'ar' ? 'إدارة الأمان' : 'Manage Security',
-      'roles:manage': language === 'ar' ? 'إدارة الأدوار' : 'Manage Roles'
+      'roles:manage': language === 'ar' ? 'إدارة الأدوار' : 'Manage Roles',
     }
     return permissionNames[permission] || permission
   }
@@ -152,7 +168,10 @@ const RoleManagement = () => {
           {t('roles.title', 'Role Management')}
         </h1>
         <p className="text-foreground/60">
-          {t('roles.description', 'Manage user roles and permissions across the platform')}
+          {t(
+            'roles.description',
+            'Manage user roles and permissions across the platform'
+          )}
         </p>
       </div>
 
@@ -168,44 +187,63 @@ const RoleManagement = () => {
             </div>
 
             <div className="divide-y divide-border">
-              {users.map((user) => {
+              {users.map(user => {
                 const userPermissions = ROLE_PERMISSIONS[user.role] || []
-                
+
                 return (
                   <motion.div
                     key={user.id}
                     layout
                     className={`p-6 hover:bg-background/50 transition-colors cursor-pointer ${
-                      selectedUser?.id === user.id ? 'bg-primary/5 border-primary/20' : ''
+                      selectedUser?.id === user.id
+                        ? 'bg-primary/5 border-primary/20'
+                        : ''
                     }`}
                     onClick={() => setSelectedUser(user)}
                   >
-                    <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div
+                      className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
+                      <div
+                        className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}
+                      >
                         <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
                           <User className="h-5 w-5 text-primary" />
                         </div>
                         <div className={isRTL ? 'text-right' : 'text-left'}>
-                          <h3 className="font-semibold text-foreground">{user.name}</h3>
-                          <p className="text-sm text-foreground/60">{user.email}</p>
+                          <h3 className="font-semibold text-foreground">
+                            {user.name}
+                          </h3>
+                          <p className="text-sm text-foreground/60">
+                            {user.email}
+                          </p>
                           <p className="text-xs text-foreground/50 mt-1">
-                            {t('roles.lastLogin', 'Last login')}: {formatLastLogin(user.lastLogin)}
+                            {t('roles.lastLogin', 'Last login')}:{' '}
+                            {formatLastLogin(user.lastLogin)}
                           </p>
                         </div>
                       </div>
 
-                      <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <span className={`px-3 py-1 text-xs font-medium rounded-full border ${getRoleColor(user.role)}`}>
+                      <div
+                        className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+                      >
+                        <span
+                          className={`px-3 py-1 text-xs font-medium rounded-full border ${getRoleColor(user.role)}`}
+                        >
                           {getRoleDisplayName(user.role)}
                         </span>
-                        <span className={`w-2 h-2 rounded-full ${
-                          user.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
-                        }`}></span>
+                        <span
+                          className={`w-2 h-2 rounded-full ${
+                            user.status === 'active'
+                              ? 'bg-green-500'
+                              : 'bg-gray-400'
+                          }`}
+                        ></span>
                         {canManageRoles && (
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            onClick={(e) => {
+                            onClick={e => {
                               e.stopPropagation()
                               setSelectedUser(user)
                               setNewRole(user.role)
@@ -219,12 +257,15 @@ const RoleManagement = () => {
                       </div>
                     </div>
 
-                    <div className={`mt-4 text-sm text-foreground/60 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <div
+                      className={`mt-4 text-sm text-foreground/60 ${isRTL ? 'text-right' : 'text-left'}`}
+                    >
                       <span className="font-medium">
-                        {t('roles.permissions', 'Permissions')}: {userPermissions.length}
+                        {t('roles.permissions', 'Permissions')}:{' '}
+                        {userPermissions.length}
                       </span>
                       <button
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation()
                           togglePermissionView(user.role)
                         }}
@@ -232,10 +273,9 @@ const RoleManagement = () => {
                           isRTL ? 'mr-2' : 'ml-2'
                         }`}
                       >
-                        {showPermissions[user.role] 
-                          ? t('roles.hidePermissions', 'Hide') 
-                          : t('roles.showPermissions', 'Show')
-                        }
+                        {showPermissions[user.role]
+                          ? t('roles.hidePermissions', 'Hide')
+                          : t('roles.showPermissions', 'Show')}
                       </button>
                     </div>
 
@@ -248,7 +288,7 @@ const RoleManagement = () => {
                           className="mt-4 pt-4 border-t border-border"
                         >
                           <div className="grid grid-cols-2 gap-2">
-                            {userPermissions.map((permission) => (
+                            {userPermissions.map(permission => (
                               <div
                                 key={permission}
                                 className={`flex items-center gap-2 text-xs text-foreground/70 ${
@@ -256,7 +296,9 @@ const RoleManagement = () => {
                                 }`}
                               >
                                 <Check className="h-3 w-3 text-green-500 flex-shrink-0" />
-                                <span>{getPermissionDisplayName(permission)}</span>
+                                <span>
+                                  {getPermissionDisplayName(permission)}
+                                </span>
                               </div>
                             ))}
                           </div>
@@ -275,7 +317,9 @@ const RoleManagement = () => {
           <div className="bg-surface border border-border rounded-xl p-6 sticky top-6">
             <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
               <Lock className="h-5 w-5" />
-              {selectedUser ? t('roles.editRole', 'Edit Role') : t('roles.selectUser', 'Select User')}
+              {selectedUser
+                ? t('roles.editRole', 'Edit Role')
+                : t('roles.selectUser', 'Select User')}
             </h3>
 
             {selectedUser ? (
@@ -284,8 +328,12 @@ const RoleManagement = () => {
                   <p className="text-sm text-foreground/60 mb-1">
                     {t('roles.selectedUser', 'Selected User')}
                   </p>
-                  <p className="font-medium text-foreground">{selectedUser.name}</p>
-                  <p className="text-sm text-foreground/60">{selectedUser.email}</p>
+                  <p className="font-medium text-foreground">
+                    {selectedUser.name}
+                  </p>
+                  <p className="text-sm text-foreground/60">
+                    {selectedUser.email}
+                  </p>
                 </div>
 
                 {isEditing && canManageRoles ? (
@@ -296,12 +344,12 @@ const RoleManagement = () => {
                       </label>
                       <select
                         value={newRole}
-                        onChange={(e) => setNewRole(e.target.value)}
+                        onChange={e => setNewRole(e.target.value)}
                         className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
                       >
                         {Object.values(AVAILABLE_ROLES)
                           .filter(role => role !== ROLES.CUSTOMER) // Don't allow setting customer role
-                          .map((role) => (
+                          .map(role => (
                             <option key={role} value={role}>
                               {getRoleDisplayName(role)}
                             </option>
@@ -309,11 +357,19 @@ const RoleManagement = () => {
                       </select>
                     </div>
 
-                    <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div
+                      className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
                       <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => handleRoleChange(selectedUser.id, selectedUser.role, newRole)}
+                        onClick={() =>
+                          handleRoleChange(
+                            selectedUser.id,
+                            selectedUser.role,
+                            newRole
+                          )
+                        }
                         className="flex-1 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
                       >
                         <Save className="h-4 w-4" />
@@ -338,7 +394,9 @@ const RoleManagement = () => {
                       <span className="text-sm text-foreground/60">
                         {t('roles.currentRole', 'Current Role')}
                       </span>
-                      <div className={`mt-1 px-3 py-2 rounded-lg border ${getRoleColor(selectedUser.role)}`}>
+                      <div
+                        className={`mt-1 px-3 py-2 rounded-lg border ${getRoleColor(selectedUser.role)}`}
+                      >
                         {getRoleDisplayName(selectedUser.role)}
                       </div>
                     </div>
@@ -363,17 +421,21 @@ const RoleManagement = () => {
                         {t('roles.rolePermissions', 'Role Permissions')}
                       </h4>
                       <div className="space-y-2 max-h-40 overflow-y-auto">
-                        {(ROLE_PERMISSIONS[selectedUser.role] || []).map((permission) => (
-                          <div
-                            key={permission}
-                            className={`flex items-center gap-2 text-xs text-foreground/70 ${
-                              isRTL ? 'flex-row-reverse text-right' : ''
-                            }`}
-                          >
-                            <Check className="h-3 w-3 text-green-500 flex-shrink-0" />
-                            <span>{getPermissionDisplayName(permission)}</span>
-                          </div>
-                        ))}
+                        {(ROLE_PERMISSIONS[selectedUser.role] || []).map(
+                          permission => (
+                            <div
+                              key={permission}
+                              className={`flex items-center gap-2 text-xs text-foreground/70 ${
+                                isRTL ? 'flex-row-reverse text-right' : ''
+                              }`}
+                            >
+                              <Check className="h-3 w-3 text-green-500 flex-shrink-0" />
+                              <span>
+                                {getPermissionDisplayName(permission)}
+                              </span>
+                            </div>
+                          )
+                        )}
                       </div>
                     </div>
                   </div>
@@ -383,7 +445,10 @@ const RoleManagement = () => {
               <div className="text-center py-8">
                 <User className="mx-auto h-12 w-12 text-foreground/30 mb-4" />
                 <p className="text-foreground/60">
-                  {t('roles.selectUserToEdit', 'Select a user to view or edit their role')}
+                  {t(
+                    'roles.selectUserToEdit',
+                    'Select a user to view or edit their role'
+                  )}
                 </p>
               </div>
             )}

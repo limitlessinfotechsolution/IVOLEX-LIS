@@ -2,31 +2,31 @@ import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAudit, AUDIT_ACTIONS } from '../../../ui/contexts/AuditContext'
 import { useI18n } from '../../../ui/contexts/I18nContext'
-import { 
-  FileText, 
-  Download, 
-  Filter, 
-  Search, 
+import {
+  FileText,
+  Download,
+  Filter,
+  Search,
   User,
   Shield,
   AlertCircle,
   CheckCircle,
   Clock,
   X,
-  Globe
+  Globe,
 } from 'lucide-react'
 
 const AuditLogs = () => {
-  const { 
-    logs, 
-    getFilteredLogs, 
-    exportLogs, 
-    clearOldLogs, 
+  const {
+    logs,
+    getFilteredLogs,
+    exportLogs,
+    clearOldLogs,
     hasPermission,
-    PERMISSIONS
+    PERMISSIONS,
   } = useAudit()
   const { t, language, isRTL } = useI18n()
-  
+
   const [filters, setFilters] = useState({
     userId: '',
     action: '',
@@ -34,7 +34,7 @@ const AuditLogs = () => {
     startDate: '',
     endDate: '',
     success: undefined,
-    search: ''
+    search: '',
   })
   const [showFilters, setShowFilters] = useState(false)
   const [selectedLog, setSelectedLog] = useState(null)
@@ -47,21 +47,22 @@ const AuditLogs = () => {
   // Filter and search logs - Removed logs from dependency array since getFilteredLogs should handle it
   const filteredLogs = useMemo(() => {
     let result = getFilteredLogs(filters)
-    
+
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase()
-      result = result.filter(log => 
-        log.userName.toLowerCase().includes(searchTerm) ||
-        log.userEmail.toLowerCase().includes(searchTerm) ||
-        log.action.toLowerCase().includes(searchTerm) ||
-        log.resource.toLowerCase().includes(searchTerm) ||
-        JSON.stringify(log.details).toLowerCase().includes(searchTerm)
+      result = result.filter(
+        log =>
+          log.userName.toLowerCase().includes(searchTerm) ||
+          log.userEmail.toLowerCase().includes(searchTerm) ||
+          log.action.toLowerCase().includes(searchTerm) ||
+          log.resource.toLowerCase().includes(searchTerm) ||
+          JSON.stringify(log.details).toLowerCase().includes(searchTerm)
       )
     }
-    
+
     return result.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
   }, [filters, getFilteredLogs])
-  
+
   if (!canViewAuditLogs) {
     return (
       <div className="p-8 text-center">
@@ -70,7 +71,10 @@ const AuditLogs = () => {
           {t('audit.accessDenied', 'Access Denied')}
         </h3>
         <p className="text-foreground/60">
-          {t('audit.noPermission', 'You do not have permission to view audit logs')}
+          {t(
+            'audit.noPermission',
+            'You do not have permission to view audit logs'
+          )}
         </p>
       </div>
     )
@@ -96,12 +100,12 @@ const AuditLogs = () => {
       startDate: '',
       endDate: '',
       success: undefined,
-      search: ''
+      search: '',
     })
     setCurrentPage(1)
   }
 
-  const formatTimestamp = (timestamp) => {
+  const formatTimestamp = timestamp => {
     const date = new Date(timestamp)
     return new Intl.DateTimeFormat(language === 'ar' ? 'ar-SA' : 'en-US', {
       year: 'numeric',
@@ -109,11 +113,11 @@ const AuditLogs = () => {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit'
+      second: '2-digit',
     }).format(date)
   }
 
-  const getActionIcon = (action) => {
+  const getActionIcon = action => {
     const icons = {
       [AUDIT_ACTIONS.LOGIN]: User,
       [AUDIT_ACTIONS.LOGOUT]: User,
@@ -124,14 +128,14 @@ const AuditLogs = () => {
       [AUDIT_ACTIONS.EXPORT]: Download,
       [AUDIT_ACTIONS.SECURITY_EVENT]: Shield,
       [AUDIT_ACTIONS.ROLE_CHANGE]: Shield,
-      [AUDIT_ACTIONS.PERMISSION_CHANGE]: Shield
+      [AUDIT_ACTIONS.PERMISSION_CHANGE]: Shield,
     }
     return icons[action] || FileText
   }
 
   const getActionColor = (action, success) => {
     if (!success) return 'text-red-500'
-    
+
     const colors = {
       [AUDIT_ACTIONS.LOGIN]: 'text-green-500',
       [AUDIT_ACTIONS.LOGOUT]: 'text-gray-500',
@@ -142,12 +146,12 @@ const AuditLogs = () => {
       [AUDIT_ACTIONS.EXPORT]: 'text-purple-500',
       [AUDIT_ACTIONS.SECURITY_EVENT]: 'text-red-500',
       [AUDIT_ACTIONS.ROLE_CHANGE]: 'text-orange-500',
-      [AUDIT_ACTIONS.PERMISSION_CHANGE]: 'text-orange-500'
+      [AUDIT_ACTIONS.PERMISSION_CHANGE]: 'text-orange-500',
     }
     return colors[action] || 'text-gray-500'
   }
 
-  const getActionDisplayName = (action) => {
+  const getActionDisplayName = action => {
     const actionNames = {
       [AUDIT_ACTIONS.LOGIN]: language === 'ar' ? 'تسجيل دخول' : 'Login',
       [AUDIT_ACTIONS.LOGOUT]: language === 'ar' ? 'تسجيل خروج' : 'Logout',
@@ -160,19 +164,24 @@ const AuditLogs = () => {
       [AUDIT_ACTIONS.REJECT]: language === 'ar' ? 'رفض' : 'Reject',
       [AUDIT_ACTIONS.REFUND]: language === 'ar' ? 'استرداد' : 'Refund',
       [AUDIT_ACTIONS.CANCEL]: language === 'ar' ? 'إلغاء' : 'Cancel',
-      [AUDIT_ACTIONS.ROLE_CHANGE]: language === 'ar' ? 'تغيير دور' : 'Role Change',
-      [AUDIT_ACTIONS.PERMISSION_CHANGE]: language === 'ar' ? 'تغيير صلاحية' : 'Permission Change',
-      [AUDIT_ACTIONS.SETTINGS_CHANGE]: language === 'ar' ? 'تغيير إعدادات' : 'Settings Change',
-      [AUDIT_ACTIONS.THEME_CHANGE]: language === 'ar' ? 'تغيير مظهر' : 'Theme Change',
-      [AUDIT_ACTIONS.SECURITY_EVENT]: language === 'ar' ? 'حدث أمني' : 'Security Event'
+      [AUDIT_ACTIONS.ROLE_CHANGE]:
+        language === 'ar' ? 'تغيير دور' : 'Role Change',
+      [AUDIT_ACTIONS.PERMISSION_CHANGE]:
+        language === 'ar' ? 'تغيير صلاحية' : 'Permission Change',
+      [AUDIT_ACTIONS.SETTINGS_CHANGE]:
+        language === 'ar' ? 'تغيير إعدادات' : 'Settings Change',
+      [AUDIT_ACTIONS.THEME_CHANGE]:
+        language === 'ar' ? 'تغيير مظهر' : 'Theme Change',
+      [AUDIT_ACTIONS.SECURITY_EVENT]:
+        language === 'ar' ? 'حدث أمني' : 'Security Event',
     }
     return actionNames[action] || action
   }
 
-  const handleExport = (format) => {
+  const handleExport = format => {
     const data = exportLogs(format, filters)
-    const blob = new Blob([data], { 
-      type: format === 'csv' ? 'text/csv' : 'application/json' 
+    const blob = new Blob([data], {
+      type: format === 'csv' ? 'text/csv' : 'application/json',
     })
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -195,23 +204,30 @@ const AuditLogs = () => {
           {t('audit.title', 'Audit Logs')}
         </h1>
         <p className="text-foreground/60">
-          {t('audit.description', 'Track all system activities and user actions')}
+          {t(
+            'audit.description',
+            'Track all system activities and user actions'
+          )}
         </p>
       </div>
 
       {/* Controls */}
       <div className="mb-6 space-y-4">
-        <div className={`flex flex-wrap items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div
+          className={`flex flex-wrap items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}
+        >
           {/* Search */}
           <div className="relative flex-1 min-w-64">
-            <Search className={`absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground/40 ${
-              isRTL ? 'right-3' : 'left-3'
-            }`} />
+            <Search
+              className={`absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground/40 ${
+                isRTL ? 'right-3' : 'left-3'
+              }`}
+            />
             <input
               type="text"
               placeholder={t('audit.search', 'Search logs...')}
               value={filters.search}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
+              onChange={e => handleFilterChange('search', e.target.value)}
               className={`w-full py-2 border border-border rounded-lg bg-background text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary ${
                 isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'
               }`}
@@ -270,11 +286,13 @@ const AuditLogs = () => {
                   </label>
                   <select
                     value={filters.action}
-                    onChange={(e) => handleFilterChange('action', e.target.value)}
+                    onChange={e => handleFilterChange('action', e.target.value)}
                     className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
                   >
-                    <option value="">{t('audit.allActions', 'All Actions')}</option>
-                    {uniqueActions.map((action) => (
+                    <option value="">
+                      {t('audit.allActions', 'All Actions')}
+                    </option>
+                    {uniqueActions.map(action => (
                       <option key={action} value={action}>
                         {getActionDisplayName(action)}
                       </option>
@@ -288,11 +306,11 @@ const AuditLogs = () => {
                   </label>
                   <select
                     value={filters.userId}
-                    onChange={(e) => handleFilterChange('userId', e.target.value)}
+                    onChange={e => handleFilterChange('userId', e.target.value)}
                     className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
                   >
                     <option value="">{t('audit.allUsers', 'All Users')}</option>
-                    {uniqueUsers.map((userName) => (
+                    {uniqueUsers.map(userName => (
                       <option key={userName} value={userName}>
                         {userName}
                       </option>
@@ -305,12 +323,27 @@ const AuditLogs = () => {
                     {t('audit.status', 'Status')}
                   </label>
                   <select
-                    value={filters.success === undefined ? '' : filters.success.toString()}
-                    onChange={(e) => handleFilterChange('success', e.target.value === '' ? undefined : e.target.value === 'true')}
+                    value={
+                      filters.success === undefined
+                        ? ''
+                        : filters.success.toString()
+                    }
+                    onChange={e =>
+                      handleFilterChange(
+                        'success',
+                        e.target.value === ''
+                          ? undefined
+                          : e.target.value === 'true'
+                      )
+                    }
                     className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
                   >
-                    <option value="">{t('audit.allStatuses', 'All Statuses')}</option>
-                    <option value="true">{t('audit.success', 'Success')}</option>
+                    <option value="">
+                      {t('audit.allStatuses', 'All Statuses')}
+                    </option>
+                    <option value="true">
+                      {t('audit.success', 'Success')}
+                    </option>
                     <option value="false">{t('audit.failed', 'Failed')}</option>
                   </select>
                 </div>
@@ -322,7 +355,9 @@ const AuditLogs = () => {
                   <input
                     type="date"
                     value={filters.startDate}
-                    onChange={(e) => handleFilterChange('startDate', e.target.value)}
+                    onChange={e =>
+                      handleFilterChange('startDate', e.target.value)
+                    }
                     className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
                   />
                 </div>
@@ -334,7 +369,9 @@ const AuditLogs = () => {
                   <input
                     type="date"
                     value={filters.endDate}
-                    onChange={(e) => handleFilterChange('endDate', e.target.value)}
+                    onChange={e =>
+                      handleFilterChange('endDate', e.target.value)
+                    }
                     className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
                   />
                 </div>
@@ -358,7 +395,9 @@ const AuditLogs = () => {
       {/* Logs Table */}
       <div className="bg-surface border border-border rounded-xl overflow-hidden">
         <div className="p-6 border-b border-border">
-          <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div
+            className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
             <h2 className="text-xl font-semibold text-foreground">
               {t('audit.logs', 'Activity Logs')} ({filteredLogs.length})
             </h2>
@@ -400,9 +439,9 @@ const AuditLogs = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {paginatedLogs.map((log) => {
+              {paginatedLogs.map(log => {
                 const ActionIcon = getActionIcon(log.action)
-                
+
                 return (
                   <motion.tr
                     key={log.id}
@@ -410,50 +449,67 @@ const AuditLogs = () => {
                     className="hover:bg-background/50 transition-colors cursor-pointer"
                     onClick={() => setSelectedLog(log)}
                   >
-                    <td className={`px-6 py-4 whitespace-nowrap text-sm text-foreground/70 ${
-                      isRTL ? 'text-right' : 'text-left'
-                    }`}>
+                    <td
+                      className={`px-6 py-4 whitespace-nowrap text-sm text-foreground/70 ${
+                        isRTL ? 'text-right' : 'text-left'
+                      }`}
+                    >
                       {formatTimestamp(log.timestamp)}
                     </td>
-                    <td className={`px-6 py-4 whitespace-nowrap ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <td
+                      className={`px-6 py-4 whitespace-nowrap ${isRTL ? 'text-right' : 'text-left'}`}
+                    >
                       <div className="flex items-center gap-2">
                         <User className="h-4 w-4 text-foreground/40" />
                         <div>
-                          <div className="text-sm font-medium text-foreground">{log.userName}</div>
-                          <div className="text-xs text-foreground/60">{log.userRole}</div>
+                          <div className="text-sm font-medium text-foreground">
+                            {log.userName}
+                          </div>
+                          <div className="text-xs text-foreground/60">
+                            {log.userRole}
+                          </div>
                         </div>
                       </div>
                     </td>
-                    <td className={`px-6 py-4 whitespace-nowrap ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <td
+                      className={`px-6 py-4 whitespace-nowrap ${isRTL ? 'text-right' : 'text-left'}`}
+                    >
                       <div className="flex items-center gap-2">
-                        <ActionIcon className={`h-4 w-4 ${getActionColor(log.action, log.success)}`} />
+                        <ActionIcon
+                          className={`h-4 w-4 ${getActionColor(log.action, log.success)}`}
+                        />
                         <span className="text-sm text-foreground">
                           {getActionDisplayName(log.action)}
                         </span>
                       </div>
                     </td>
-                    <td className={`px-6 py-4 text-sm text-foreground/70 ${
-                      isRTL ? 'text-right' : 'text-left'
-                    }`}>
+                    <td
+                      className={`px-6 py-4 text-sm text-foreground/70 ${
+                        isRTL ? 'text-right' : 'text-left'
+                      }`}
+                    >
                       <code className="bg-background px-2 py-1 rounded text-xs">
                         {log.resource}
                       </code>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        log.success
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {log.success 
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          log.success
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}
+                      >
+                        {log.success
                           ? t('audit.success', 'Success')
-                          : t('audit.failed', 'Failed')
-                        }
+                          : t('audit.failed', 'Failed')}
                       </span>
                     </td>
-                    <td className={`px-6 py-4 text-sm text-foreground/60 ${
-                      isRTL ? 'text-right' : 'text-left'
-                    }`}>
+                    <td
+                      className={`px-6 py-4 text-sm text-foreground/60 ${
+                        isRTL ? 'text-right' : 'text-left'
+                      }`}
+                    >
                       <div className="flex items-center gap-2">
                         <Globe className="h-3 w-3" />
                         <span className="text-xs">{log.ipAddress}</span>
@@ -469,9 +525,14 @@ const AuditLogs = () => {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="px-6 py-4 border-t border-border">
-            <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div
+              className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+            >
               <div className="text-sm text-foreground/60">
-                {t('audit.showing', 'Showing')} {(currentPage - 1) * logsPerPage + 1} - {Math.min(currentPage * logsPerPage, filteredLogs.length)} {t('audit.of', 'of')} {filteredLogs.length}
+                {t('audit.showing', 'Showing')}{' '}
+                {(currentPage - 1) * logsPerPage + 1} -{' '}
+                {Math.min(currentPage * logsPerPage, filteredLogs.length)}{' '}
+                {t('audit.of', 'of')} {filteredLogs.length}
               </div>
               <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <button
@@ -485,7 +546,9 @@ const AuditLogs = () => {
                   {currentPage} / {totalPages}
                 </span>
                 <button
-                  onClick={() => setCurrentPage(page => Math.min(totalPages, page + 1))}
+                  onClick={() =>
+                    setCurrentPage(page => Math.min(totalPages, page + 1))
+                  }
                   disabled={currentPage === totalPages}
                   className="px-3 py-1 border border-border rounded-md text-sm text-foreground disabled:opacity-50 hover:bg-background/50 transition-colors"
                 >
@@ -512,9 +575,11 @@ const AuditLogs = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               className="bg-surface border border-border rounded-xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
             >
-              <div className={`flex items-center justify-between mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div
+                className={`flex items-center justify-between mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
                 <h3 className="text-lg font-semibold text-foreground">
                   {t('audit.logDetails', 'Log Details')}
                 </h3>
@@ -532,19 +597,25 @@ const AuditLogs = () => {
                     <label className="text-sm font-medium text-foreground/60">
                       {t('audit.timestamp', 'Timestamp')}
                     </label>
-                    <p className="text-foreground">{formatTimestamp(selectedLog.timestamp)}</p>
+                    <p className="text-foreground">
+                      {formatTimestamp(selectedLog.timestamp)}
+                    </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground/60">
                       {t('audit.action', 'Action')}
                     </label>
-                    <p className="text-foreground">{getActionDisplayName(selectedLog.action)}</p>
+                    <p className="text-foreground">
+                      {getActionDisplayName(selectedLog.action)}
+                    </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground/60">
                       {t('audit.user', 'User')}
                     </label>
-                    <p className="text-foreground">{selectedLog.userName} ({selectedLog.userEmail})</p>
+                    <p className="text-foreground">
+                      {selectedLog.userName} ({selectedLog.userEmail})
+                    </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground/60">
@@ -556,27 +627,39 @@ const AuditLogs = () => {
                     <label className="text-sm font-medium text-foreground/60">
                       {t('audit.resource', 'Resource')}
                     </label>
-                    <p className="text-foreground font-mono text-sm">{selectedLog.resource}</p>
+                    <p className="text-foreground font-mono text-sm">
+                      {selectedLog.resource}
+                    </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground/60">
                       {t('audit.status', 'Status')}
                     </label>
-                    <p className={selectedLog.success ? 'text-green-600' : 'text-red-600'}>
-                      {selectedLog.success ? t('audit.success', 'Success') : t('audit.failed', 'Failed')}
+                    <p
+                      className={
+                        selectedLog.success ? 'text-green-600' : 'text-red-600'
+                      }
+                    >
+                      {selectedLog.success
+                        ? t('audit.success', 'Success')
+                        : t('audit.failed', 'Failed')}
                     </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground/60">
                       {t('audit.ipAddress', 'IP Address')}
                     </label>
-                    <p className="text-foreground font-mono text-sm">{selectedLog.ipAddress}</p>
+                    <p className="text-foreground font-mono text-sm">
+                      {selectedLog.ipAddress}
+                    </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground/60">
                       {t('audit.sessionId', 'Session ID')}
                     </label>
-                    <p className="text-foreground font-mono text-sm">{selectedLog.sessionId}</p>
+                    <p className="text-foreground font-mono text-sm">
+                      {selectedLog.sessionId}
+                    </p>
                   </div>
                 </div>
 
@@ -584,7 +667,9 @@ const AuditLogs = () => {
                   <label className="text-sm font-medium text-foreground/60">
                     {t('audit.userAgent', 'User Agent')}
                   </label>
-                  <p className="text-foreground text-sm break-all">{selectedLog.userAgent}</p>
+                  <p className="text-foreground text-sm break-all">
+                    {selectedLog.userAgent}
+                  </p>
                 </div>
 
                 <div>

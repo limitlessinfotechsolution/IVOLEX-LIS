@@ -3,30 +3,34 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Heart, ShoppingBag, Star, Eye, ArrowRight, Plus } from 'lucide-react'
 
 // Product card with circular image
-export default function CircularProductCard({ product, variant = 'default', className = '' }) {
+export default function CircularProductCard({
+  product,
+  variant = 'default',
+  className = '',
+}) {
   const [isHovered, setIsHovered] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = e => {
     e.preventDefault()
     e.stopPropagation()
     console.log('Added to cart:', product.id)
   }
 
-  const handleToggleLike = (e) => {
+  const handleToggleLike = e => {
     e.preventDefault()
     e.stopPropagation()
     setIsLiked(!isLiked)
   }
 
-  const handleQuickView = (e) => {
+  const handleQuickView = e => {
     e.preventDefault()
     e.stopPropagation()
     console.log('Quick view:', product.id)
   }
 
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
@@ -35,8 +39,8 @@ export default function CircularProductCard({ product, variant = 'default', clas
           i < Math.floor(rating)
             ? 'text-yellow-400 fill-current'
             : i < rating
-            ? 'text-yellow-400 fill-current opacity-50'
-            : 'text-foreground/20'
+              ? 'text-yellow-400 fill-current opacity-50'
+              : 'text-foreground/20'
         }`}
       />
     ))
@@ -62,7 +66,7 @@ export default function CircularProductCard({ product, variant = 'default', clas
                 className="w-full h-full object-cover"
               />
             </motion.div>
-            
+
             <AnimatePresence>
               {isHovered && (
                 <motion.div
@@ -83,14 +87,12 @@ export default function CircularProductCard({ product, variant = 'default', clas
               )}
             </AnimatePresence>
           </div>
-          
+
           <div className="text-center">
             <h3 className="font-medium text-foreground mb-1 line-clamp-1">
               {product.name}
             </h3>
-            <p className="text-primary font-bold">
-              {product.price} SAR
-            </p>
+            <p className="text-primary font-bold">{product.price} SAR</p>
           </div>
         </div>
       </motion.div>
@@ -115,13 +117,13 @@ export default function CircularProductCard({ product, variant = 'default', clas
           >
             {product.price} SAR
           </motion.div>
-          
+
           <div className="flex gap-2">
             <motion.button
               onClick={handleToggleLike}
               className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                isLiked 
-                  ? 'bg-red-100 text-red-500' 
+                isLiked
+                  ? 'bg-red-100 text-red-500'
                   : 'bg-background/50 text-foreground/40 hover:bg-background hover:text-foreground'
               }`}
               whileHover={{ scale: 1.1 }}
@@ -129,7 +131,7 @@ export default function CircularProductCard({ product, variant = 'default', clas
             >
               <Heart size={16} className={isLiked ? 'fill-current' : ''} />
             </motion.button>
-            
+
             <AnimatePresence>
               {isHovered && (
                 <motion.button
@@ -160,7 +162,7 @@ export default function CircularProductCard({ product, variant = 'default', clas
               className="w-full h-full object-cover"
             />
           </motion.div>
-          
+
           {product.gallery && product.gallery.length > 1 && (
             <div className="flex justify-center gap-1 mt-3">
               {product.gallery.map((_, index) => (
@@ -176,10 +178,12 @@ export default function CircularProductCard({ product, variant = 'default', clas
               ))}
             </div>
           )}
-          
+
           {!product.inStock && (
             <div className="absolute inset-0 bg-background/80 rounded-full flex items-center justify-center">
-              <span className="text-foreground/60 font-medium text-sm">Out of Stock</span>
+              <span className="text-foreground/60 font-medium text-sm">
+                Out of Stock
+              </span>
             </div>
           )}
         </div>
@@ -188,13 +192,13 @@ export default function CircularProductCard({ product, variant = 'default', clas
           <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
             {product.name}
           </h3>
-          
+
           {product.short && (
             <p className="text-foreground/60 text-sm mb-3 line-clamp-2">
               {product.short}
             </p>
           )}
-          
+
           {product.rating && (
             <div className="flex items-center justify-center gap-2 mb-3">
               <div className="flex items-center gap-0.5">
@@ -205,10 +209,10 @@ export default function CircularProductCard({ product, variant = 'default', clas
               </span>
             </div>
           )}
-          
+
           {product.tags && product.tags.length > 0 && (
             <div className="flex flex-wrap justify-center gap-1 mb-4">
-              {product.tags.slice(0, 2).map((tag) => (
+              {product.tags.slice(0, 2).map(tag => (
                 <span
                   key={tag}
                   className="px-2 py-1 bg-accent/10 text-accent text-xs rounded-full"
@@ -233,7 +237,7 @@ export default function CircularProductCard({ product, variant = 'default', clas
         >
           <ShoppingBag size={18} />
           {product.inStock ? 'Add to Cart' : 'Out of Stock'}
-          
+
           <AnimatePresence>
             {isHovered && product.inStock && (
               <motion.div
@@ -253,7 +257,9 @@ export default function CircularProductCard({ product, variant = 'default', clas
 
 export function ProductGrid({ products, variant = 'default', className = '' }) {
   return (
-    <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ${className}`}>
+    <div
+      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ${className}`}
+    >
       {products.map((product, index) => (
         <motion.div
           key={product.id}
@@ -281,7 +287,7 @@ export function CompactProductCard({ product, className = '' }) {
           className="w-full h-full object-cover"
         />
       </div>
-      
+
       <div className="flex-1 min-w-0">
         <h3 className="font-medium text-foreground mb-1 truncate">
           {product.name}
@@ -293,7 +299,7 @@ export function CompactProductCard({ product, className = '' }) {
           <span className="text-primary font-semibold">
             {product.price} SAR
           </span>
-          
+
           {product.rating && (
             <div className="flex items-center gap-1">
               <Star size={12} className="text-yellow-400 fill-current" />
@@ -304,7 +310,7 @@ export function CompactProductCard({ product, className = '' }) {
           )}
         </div>
       </div>
-      
+
       <motion.button
         className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-segment-sm hover:shadow-segment-md transition-all"
         whileHover={{ scale: 1.1 }}

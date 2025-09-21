@@ -49,7 +49,7 @@ export default function CategoryScreen({ category: propCategory }) {
 
   return (
     <>
-      <SEO 
+      <SEO
         title={`${title} - IVOLEX`}
         description={`Browse our ${title.toLowerCase()} collection with ${filtered.length} items available.`}
         keywords={`${category}, products, shopping, e-commerce`}
@@ -77,13 +77,13 @@ export default function CategoryScreen({ category: propCategory }) {
               <h1 className="text-2xl font-semibold">{title}</h1>
               <p className="text-stone-600 text-sm">{filtered.length} items</p>
             </div>
-            
+
             <div className="flex gap-4 items-center">
               {/* Sort dropdown */}
-              <select 
+              <select
                 className="border rounded-xl px-3 py-2 text-sm"
                 value={sortBy}
-                onChange={(e) => {
+                onChange={e => {
                   const newParams = new URLSearchParams(searchParams)
                   newParams.set('sort', e.target.value)
                   window.location.search = newParams.toString()

@@ -1,19 +1,19 @@
 import { AlertTriangle } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-export function ErrorMessage({ 
+export function ErrorMessage({
   title = 'Something went wrong',
   message = 'An unexpected error occurred. Please try again.',
   action,
   actionText = 'Try Again',
-  severity = 'error'
+  severity = 'error',
 }) {
   const severityStyles = {
     error: 'bg-red-50 border-red-200 text-red-800',
     warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
-    info: 'bg-blue-50 border-blue-200 text-blue-800'
+    info: 'bg-blue-50 border-blue-200 text-blue-800',
   }
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}

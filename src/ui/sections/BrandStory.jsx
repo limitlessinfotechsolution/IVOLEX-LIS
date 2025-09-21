@@ -16,19 +16,24 @@ export default function BrandStory() {
           >
             <div className="space-y-4">
               <h2 className="text-3xl md:text-4xl font-bold text-stone-900">
-                Crafted with 
-                <span className="text-brand-600 block">Passion & Precision</span>
+                Crafted with
+                <span className="text-brand-600 block">
+                  Passion & Precision
+                </span>
               </h2>
               <p className="text-lg text-stone-600 leading-relaxed">
-                For over two decades, IVOLEX has been synonymous with exceptional leather craftsmanship. 
-                Each piece in our collection tells a story of traditional techniques meeting modern design.
+                For over two decades, IVOLEX has been synonymous with
+                exceptional leather craftsmanship. Each piece in our collection
+                tells a story of traditional techniques meeting modern design.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <div className="text-2xl font-bold text-brand-600">20+</div>
-                <div className="text-sm text-stone-600">Years of Excellence</div>
+                <div className="text-sm text-stone-600">
+                  Years of Excellence
+                </div>
               </div>
               <div className="space-y-2">
                 <div className="text-2xl font-bold text-brand-600">50k+</div>
@@ -76,7 +81,7 @@ export default function BrandStory() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
-            
+
             {/* Floating card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -85,9 +90,15 @@ export default function BrandStory() {
               viewport={{ once: true }}
               className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-lg"
             >
-              <div className="text-sm text-stone-500 mb-1">Quality Guarantee</div>
-              <div className="text-lg font-semibold text-stone-900">Lifetime Warranty</div>
-              <div className="text-sm text-stone-600">On all premium products</div>
+              <div className="text-sm text-stone-500 mb-1">
+                Quality Guarantee
+              </div>
+              <div className="text-lg font-semibold text-stone-900">
+                Lifetime Warranty
+              </div>
+              <div className="text-sm text-stone-600">
+                On all premium products
+              </div>
             </motion.div>
           </motion.div>
         </div>

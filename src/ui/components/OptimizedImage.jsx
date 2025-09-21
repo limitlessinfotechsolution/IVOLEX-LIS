@@ -41,7 +41,7 @@ export default function OptimizedImage({
     return originalSrc
   }
 
-  const generateSrcSet = (originalSrc) => {
+  const generateSrcSet = originalSrc => {
     const sizes = [480, 768, 1024, 1280]
     return sizes
       .map(size => `${getOptimizedSrc(originalSrc, size, quality)} ${size}w`)

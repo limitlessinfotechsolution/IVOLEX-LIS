@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Filter, Grid, List, SortAsc, Package, Folder, Tag } from 'lucide-react'
+import {
+  Search,
+  Filter,
+  Grid,
+  List,
+  SortAsc,
+  Package,
+  Folder,
+  Tag,
+} from 'lucide-react'
 import { useSearch, RESULT_TYPES } from '../../ui/contexts/SearchContext'
 import { useI18n } from '../../ui/contexts/I18nContext'
 import EnhancedSearch from '../../components/search/EnhancedSearch'
@@ -13,7 +22,7 @@ const SearchResultsScreen = () => {
     loading,
     filters,
     performSearch,
-    setFilters
+    setFilters,
   } = useSearch()
 
   const { t, language, isRTL } = useI18n()
@@ -28,15 +37,15 @@ const SearchResultsScreen = () => {
     }
   }, [query, performSearch])
 
-  const formatPrice = (price) => {
+  const formatPrice = price => {
     return new Intl.NumberFormat(language === 'ar' ? 'ar-SA' : 'en-US', {
       style: 'currency',
       currency: 'SAR',
-      minimumFractionDigits: 0
+      minimumFractionDigits: 0,
     }).format(price)
   }
 
-  const getResultIcon = (type) => {
+  const getResultIcon = type => {
     switch (type) {
       case RESULT_TYPES.PRODUCT:
         return Package
@@ -51,7 +60,7 @@ const SearchResultsScreen = () => {
 
   const ResultCard = ({ result, index }) => {
     const Icon = getResultIcon(result.type)
-    
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -63,9 +72,11 @@ const SearchResultsScreen = () => {
         whileHover={{ y: -2 }}
       >
         {/* Image/Icon Section */}
-        <div className={`${
-          viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square'
-        } bg-background/50 flex items-center justify-center relative overflow-hidden`}>
+        <div
+          className={`${
+            viewMode === 'list' ? 'w-24 h-24 flex-shrink-0' : 'aspect-square'
+          } bg-background/50 flex items-center justify-center relative overflow-hidden`}
+        >
           {result.type === RESULT_TYPES.PRODUCT ? (
             <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
               <Package className="w-8 h-8 text-primary" />
@@ -75,57 +86,73 @@ const SearchResultsScreen = () => {
               <Icon className="w-8 h-8 text-foreground/60" />
             </div>
           )}
-          
+
           {/* Result Type Badge */}
           <div className="absolute top-2 left-2">
-            <span className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${
-              result.type === RESULT_TYPES.PRODUCT 
-                ? 'bg-primary/20 text-primary' 
-                : result.type === RESULT_TYPES.CATEGORY
-                ? 'bg-secondary/20 text-secondary'
-                : 'bg-accent/20 text-accent'
-            }`}>
+            <span
+              className={`px-2 py-1 text-xs font-medium rounded-full capitalize ${
+                result.type === RESULT_TYPES.PRODUCT
+                  ? 'bg-primary/20 text-primary'
+                  : result.type === RESULT_TYPES.CATEGORY
+                    ? 'bg-secondary/20 text-secondary'
+                    : 'bg-accent/20 text-accent'
+              }`}
+            >
               {t(`search.${result.type}`, result.type)}
             </span>
           </div>
         </div>
 
         {/* Content Section */}
-        <div className={`p-4 flex-1 ${viewMode === 'list' ? 'flex items-center justify-between' : ''}`}>
+        <div
+          className={`p-4 flex-1 ${viewMode === 'list' ? 'flex items-center justify-between' : ''}`}
+        >
           <div className={viewMode === 'list' ? 'flex-1' : ''}>
-            <h3 className={`font-semibold text-foreground group-hover:text-primary transition-colors ${
-              viewMode === 'list' ? 'text-lg' : 'text-base'
-            } ${isRTL ? 'text-right' : 'text-left'}`}>
+            <h3
+              className={`font-semibold text-foreground group-hover:text-primary transition-colors ${
+                viewMode === 'list' ? 'text-lg' : 'text-base'
+              } ${isRTL ? 'text-right' : 'text-left'}`}
+            >
               {language === 'ar' && result.nameAr ? result.nameAr : result.name}
             </h3>
-            
+
             {result.category && (
-              <p className={`text-sm text-foreground/60 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                {language === 'ar' && result.categoryAr ? result.categoryAr : result.category}
+              <p
+                className={`text-sm text-foreground/60 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}
+              >
+                {language === 'ar' && result.categoryAr
+                  ? result.categoryAr
+                  : result.category}
               </p>
             )}
-            
+
             {result.brand && (
-              <p className={`text-sm text-foreground/50 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <p
+                className={`text-sm text-foreground/50 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}
+              >
                 {result.brand}
               </p>
             )}
 
             {result.segment && (
-              <span className={`inline-block mt-2 px-2 py-1 text-xs font-medium rounded-full capitalize ${
-                result.segment === 'leather' 
-                  ? 'bg-amber-100 text-amber-800'
-                  : result.segment === 'electronics'
-                  ? 'bg-blue-100 text-blue-800'
-                  : 'bg-green-100 text-green-800'
-              }`}>
+              <span
+                className={`inline-block mt-2 px-2 py-1 text-xs font-medium rounded-full capitalize ${
+                  result.segment === 'leather'
+                    ? 'bg-amber-100 text-amber-800'
+                    : result.segment === 'electronics'
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'bg-green-100 text-green-800'
+                }`}
+              >
                 {t(`segments.${result.segment}`, result.segment)}
               </span>
             )}
           </div>
 
           {result.price && (
-            <div className={`${viewMode === 'list' ? 'ml-4' : 'mt-3'} ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div
+              className={`${viewMode === 'list' ? 'ml-4' : 'mt-3'} ${isRTL ? 'text-right' : 'text-left'}`}
+            >
               <span className="text-lg font-bold text-primary">
                 {formatPrice(result.price)}
               </span>
@@ -147,7 +174,10 @@ const SearchResultsScreen = () => {
         {t('search.noResults', 'No results found')}
       </h3>
       <p className="text-foreground/60 mb-6 max-w-md mx-auto">
-        {t('search.noResultsDesc', 'Try adjusting your search terms or filters to find what you\'re looking for.')}
+        {t(
+          'search.noResultsDesc',
+          "Try adjusting your search terms or filters to find what you're looking for."
+        )}
       </p>
       <div className="space-y-2">
         <p className="text-sm text-foreground/50">
@@ -167,8 +197,11 @@ const SearchResultsScreen = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Search Header */}
         <div className="mb-8">
-          <EnhancedSearch 
-            placeholder={t('search.placeholder', 'Search products, categories, brands...')}
+          <EnhancedSearch
+            placeholder={t(
+              'search.placeholder',
+              'Search products, categories, brands...'
+            )}
             className="max-w-2xl mx-auto"
             showFilters={true}
           />
@@ -181,20 +214,23 @@ const SearchResultsScreen = () => {
               {t('search.resultsFor', 'Search results for')} {query}
             </h1>
             <p className="text-foreground/60">
-              {loading 
+              {loading
                 ? t('search.searching', 'Searching...')
-                : t('search.resultsCount', `${totalResults} results found`)
-              }
+                : t('search.resultsCount', `${totalResults} results found`)}
             </p>
           </div>
         )}
 
         {/* Controls Bar */}
         {(results.length > 0 || loading) && (
-          <div className={`flex items-center justify-between mb-6 p-4 bg-surface border border-border rounded-xl ${
-            isRTL ? 'flex-row-reverse' : ''
-          }`}>
-            <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div
+            className={`flex items-center justify-between mb-6 p-4 bg-surface border border-border rounded-xl ${
+              isRTL ? 'flex-row-reverse' : ''
+            }`}
+          >
+            <div
+              className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}
+            >
               <span className="text-sm font-medium text-foreground/60">
                 {t('search.view', 'View:')}
               </span>
@@ -222,7 +258,9 @@ const SearchResultsScreen = () => {
               </div>
             </div>
 
-            <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div
+              className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}
+            >
               <button
                 onClick={() => setShowMobileFilters(!showMobileFilters)}
                 className="md:hidden flex items-center gap-2 px-3 py-2 bg-background border border-border rounded-lg text-foreground/60 hover:text-foreground transition-colors"
@@ -230,19 +268,31 @@ const SearchResultsScreen = () => {
                 <Filter size={16} />
                 {t('search.filters', 'Filters')}
               </button>
-              
-              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+
+              <div
+                className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
                 <SortAsc size={16} className="text-foreground/40" />
                 <select
                   value={filters.sortBy}
-                  onChange={(e) => setFilters({ sortBy: e.target.value })}
+                  onChange={e => setFilters({ sortBy: e.target.value })}
                   className="bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 >
-                  <option value="relevance">{t('search.relevance', 'Relevance')}</option>
-                  <option value="price_asc">{t('search.priceLowHigh', 'Price: Low to High')}</option>
-                  <option value="price_desc">{t('search.priceHighLow', 'Price: High to Low')}</option>
-                  <option value="newest">{t('search.newest', 'Newest First')}</option>
-                  <option value="popular">{t('search.popular', 'Most Popular')}</option>
+                  <option value="relevance">
+                    {t('search.relevance', 'Relevance')}
+                  </option>
+                  <option value="price_asc">
+                    {t('search.priceLowHigh', 'Price: Low to High')}
+                  </option>
+                  <option value="price_desc">
+                    {t('search.priceHighLow', 'Price: High to Low')}
+                  </option>
+                  <option value="newest">
+                    {t('search.newest', 'Newest First')}
+                  </option>
+                  <option value="popular">
+                    {t('search.popular', 'Most Popular')}
+                  </option>
                 </select>
               </div>
             </div>
@@ -306,10 +356,13 @@ const SearchResultsScreen = () => {
             >
               <Search className="mx-auto h-16 w-16 text-foreground/30 mb-4" />
               <h2 className="text-2xl font-semibold text-foreground mb-2">
-                {t('search.welcomeTitle', 'Find what you\'re looking for')}
+                {t('search.welcomeTitle', "Find what you're looking for")}
               </h2>
               <p className="text-foreground/60 max-w-md mx-auto">
-                {t('search.welcomeDesc', 'Search through our extensive collection of products, categories, and brands.')}
+                {t(
+                  'search.welcomeDesc',
+                  'Search through our extensive collection of products, categories, and brands.'
+                )}
               </p>
             </motion.div>
           )}

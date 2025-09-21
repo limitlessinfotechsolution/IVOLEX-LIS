@@ -20,21 +20,21 @@ export default function LoginScreen() {
 
   const from = location.state?.from?.pathname || '/'
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value, type, checked } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     setIsLoading(true)
 
     try {
       const result = await login(formData)
-      
+
       if (result.success) {
         toast.success('Welcome back!')
         navigate(from, { replace: true })
@@ -50,7 +50,7 @@ export default function LoginScreen() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Sign In - IVOLEX"
         description="Sign in to your IVOLEX account to access your orders, wishlist, and account settings."
         keywords="login, sign in, account, ivolex"
@@ -69,15 +69,20 @@ export default function LoginScreen() {
               {/* Demo credentials notice */}
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
                 <p className="text-sm text-blue-800">
-                  <strong>Demo Account:</strong><br />
-                  Email: demo@ivolex.com<br />
+                  <strong>Demo Account:</strong>
+                  <br />
+                  Email: demo@ivolex.com
+                  <br />
                   Password: password
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium mb-2"
+                  >
                     Email Address
                   </label>
                   <div className="relative">
@@ -91,12 +96,18 @@ export default function LoginScreen() {
                       placeholder="your@email.com"
                       required
                     />
-                    <Mail size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-stone-400" />
+                    <Mail
+                      size={20}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-stone-400"
+                    />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium mb-2">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium mb-2"
+                  >
                     Password
                   </label>
                   <div className="relative">
@@ -110,7 +121,10 @@ export default function LoginScreen() {
                       placeholder="Enter your password"
                       required
                     />
-                    <Lock size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-stone-400" />
+                    <Lock
+                      size={20}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-stone-400"
+                    />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
@@ -130,10 +144,12 @@ export default function LoginScreen() {
                       onChange={handleInputChange}
                       className="w-4 h-4 text-brand-600 border-stone-300 rounded focus:ring-brand-500"
                     />
-                    <span className="ml-2 text-sm text-stone-600">Remember me</span>
+                    <span className="ml-2 text-sm text-stone-600">
+                      Remember me
+                    </span>
                   </label>
-                  <Link 
-                    to="/forgot-password" 
+                  <Link
+                    to="/forgot-password"
                     className="text-sm text-brand-600 hover:text-brand-700"
                   >
                     Forgot password?
@@ -159,8 +175,8 @@ export default function LoginScreen() {
               <div className="mt-6 text-center">
                 <p className="text-stone-600">
                   Don&apos;t have an account?{' '}
-                  <Link 
-                    to="/register" 
+                  <Link
+                    to="/register"
                     state={{ from: location.state?.from }}
                     className="text-brand-600 hover:text-brand-700 font-medium"
                   >
@@ -171,7 +187,9 @@ export default function LoginScreen() {
 
               <div className="mt-8 pt-6 border-t">
                 <div className="text-center">
-                  <p className="text-sm text-stone-500 mb-4">Or continue with</p>
+                  <p className="text-sm text-stone-500 mb-4">
+                    Or continue with
+                  </p>
                   <div className="grid grid-cols-2 gap-3">
                     <button className="btn btn-outline flex items-center justify-center gap-2">
                       <span>🔑</span>
@@ -187,8 +205,8 @@ export default function LoginScreen() {
             </div>
 
             <div className="text-center mt-6">
-              <Link 
-                to="/shop" 
+              <Link
+                to="/shop"
                 className="text-sm text-stone-500 hover:text-stone-700"
               >
                 ← Continue shopping as guest

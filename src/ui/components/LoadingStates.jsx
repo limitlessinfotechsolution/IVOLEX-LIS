@@ -2,11 +2,15 @@ import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 
 // Enhanced loading spinner with animation
-export function LoadingSpinner({ size = 'md', text = 'Loading...', className = '' }) {
+export function LoadingSpinner({
+  size = 'md',
+  text = 'Loading...',
+  className = '',
+}) {
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-8 w-8',
-    lg: 'h-12 w-12'
+    lg: 'h-12 w-12',
   }
 
   return (
@@ -97,13 +101,17 @@ export function ProductCardSkeleton({ className = '' }) {
       animate={{ opacity: 1, scale: 1 }}
       className={`border border-stone-200 dark:border-stone-700 rounded-2xl p-4 ${className}`}
     >
-      <div className="aspect-square bg-gradient-to-r from-stone-200 via-stone-100 to-stone-200 
+      <div
+        className="aspect-square bg-gradient-to-r from-stone-200 via-stone-100 to-stone-200 
                       dark:from-stone-700 dark:via-stone-600 dark:to-stone-700 
-                      rounded-xl animate-pulse mb-4" />
+                      rounded-xl animate-pulse mb-4"
+      />
       <SkeletonLoader lines={2} />
-      <div className="mt-3 h-6 bg-gradient-to-r from-stone-200 via-stone-100 to-stone-200 
+      <div
+        className="mt-3 h-6 bg-gradient-to-r from-stone-200 via-stone-100 to-stone-200 
                       dark:from-stone-700 dark:via-stone-600 dark:to-stone-700 
-                      rounded w-1/3 animate-pulse" />
+                      rounded w-1/3 animate-pulse"
+      />
     </motion.div>
   )
 }
@@ -123,7 +131,7 @@ export function PageLoading({ progress = 0, message = 'Loading page...' }) {
           transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
           className="mx-auto w-12 h-12 border-3 border-brand-200 border-t-brand-600 rounded-full"
         />
-        
+
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -132,7 +140,7 @@ export function PageLoading({ progress = 0, message = 'Loading page...' }) {
         >
           {message}
         </motion.p>
-        
+
         {progress > 0 && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -182,7 +190,7 @@ export function ImageShimmer({ className = '', children }) {
         transition={{
           duration: 1.5,
           repeat: Infinity,
-          ease: 'linear'
+          ease: 'linear',
         }}
         className="absolute inset-0 bg-gradient-to-r from-transparent 
                    via-white/20 dark:via-stone-800/20 to-transparent z-10"
@@ -193,11 +201,11 @@ export function ImageShimmer({ className = '', children }) {
 }
 
 // Loading button state
-export function LoadingButton({ 
-  loading = false, 
-  children, 
-  className = '', 
-  ...props 
+export function LoadingButton({
+  loading = false,
+  children,
+  className = '',
+  ...props
 }) {
   return (
     <motion.button
@@ -216,9 +224,7 @@ export function LoadingButton({
           <Loader2 className="w-4 h-4 animate-spin" />
         </motion.div>
       )}
-      <span className={loading ? 'opacity-0' : 'opacity-100'}>
-        {children}
-      </span>
+      <span className={loading ? 'opacity-0' : 'opacity-100'}>{children}</span>
     </motion.button>
   )
 }

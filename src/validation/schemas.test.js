@@ -8,7 +8,7 @@ describe('Form Validation Schemas', () => {
         email: 'test@example.com',
         terms: true,
       }
-      
+
       const result = newsletterSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -18,7 +18,7 @@ describe('Form Validation Schemas', () => {
         email: 'invalid-email',
         terms: true,
       }
-      
+
       const result = newsletterSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
       expect(result.error?.issues[0].message).toContain('valid email')
@@ -29,7 +29,7 @@ describe('Form Validation Schemas', () => {
         email: 'test@example.com',
         terms: false,
       }
-      
+
       const result = newsletterSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
       expect(result.error?.issues[0].message).toContain('terms and conditions')
@@ -44,7 +44,7 @@ describe('Form Validation Schemas', () => {
         subject: 'Test Subject',
         message: 'This is a test message that is long enough.',
       }
-      
+
       const result = contactSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -56,7 +56,7 @@ describe('Form Validation Schemas', () => {
         subject: 'Test Subject',
         message: 'This is a test message that is long enough.',
       }
-      
+
       const result = contactSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
       expect(result.error?.issues[0].message).toContain('at least 2 characters')
@@ -80,7 +80,7 @@ describe('Form Validation Schemas', () => {
         cvv: '123',
         cardholderName: 'John Doe',
       }
-      
+
       const result = checkoutSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -101,7 +101,7 @@ describe('Form Validation Schemas', () => {
         cvv: '123',
         cardholderName: 'John Doe',
       }
-      
+
       const result = checkoutSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
       expect(result.error?.issues[0].message).toContain('valid phone number')

@@ -11,7 +11,7 @@ export const NOTIFICATION_TYPES = {
   SHIPPING_UPDATE: 'shipping_update',
   CUSTOMIZATION_UPDATE: 'customization_update',
   ADMIN_ALERT: 'admin_alert',
-  SYSTEM_NOTIFICATION: 'system_notification'
+  SYSTEM_NOTIFICATION: 'system_notification',
 }
 
 // Notification channels
@@ -20,7 +20,7 @@ export const NOTIFICATION_CHANNELS = {
   SMS: 'sms',
   WHATSAPP: 'whatsapp',
   IN_APP: 'in_app',
-  PUSH: 'push'
+  PUSH: 'push',
 }
 
 // Notification priorities
@@ -28,7 +28,7 @@ export const NOTIFICATION_PRIORITIES = {
   LOW: 'low',
   MEDIUM: 'medium',
   HIGH: 'high',
-  URGENT: 'urgent'
+  URGENT: 'urgent',
 }
 
 const NOTIFICATION_ACTIONS = {
@@ -39,7 +39,7 @@ const NOTIFICATION_ACTIONS = {
   DELETE_NOTIFICATION: 'DELETE_NOTIFICATION',
   CLEAR_ALL: 'CLEAR_ALL',
   SET_LOADING: 'SET_LOADING',
-  SET_ERROR: 'SET_ERROR'
+  SET_ERROR: 'SET_ERROR',
 }
 
 const initialState = {
@@ -49,24 +49,24 @@ const initialState = {
       orderUpdates: true,
       customizationUpdates: true,
       promotions: false,
-      newsletter: false
+      newsletter: false,
     },
     sms: {
       orderUpdates: true,
       customizationUpdates: false,
-      promotions: false
+      promotions: false,
     },
     whatsapp: {
       orderUpdates: false,
       customizationUpdates: true,
-      promotions: false
+      promotions: false,
     },
     inApp: {
-      all: true
-    }
+      all: true,
+    },
   },
   loading: false,
-  error: null
+  error: null,
 }
 
 const notificationReducer = (state, action) => {
@@ -74,14 +74,14 @@ const notificationReducer = (state, action) => {
     case NOTIFICATION_ACTIONS.SET_PREFERENCES:
       return {
         ...state,
-        preferences: { ...state.preferences, ...action.payload }
+        preferences: { ...state.preferences, ...action.payload },
       }
 
     case NOTIFICATION_ACTIONS.ADD_NOTIFICATION:
       return {
         ...state,
         notifications: [action.payload, ...state.notifications],
-        loading: false
+        loading: false,
       }
 
     case NOTIFICATION_ACTIONS.MARK_AS_READ:
@@ -91,7 +91,7 @@ const notificationReducer = (state, action) => {
           notification.id === action.payload
             ? { ...notification, read: true, readAt: new Date().toISOString() }
             : notification
-        )
+        ),
       }
 
     case NOTIFICATION_ACTIONS.MARK_ALL_AS_READ:
@@ -100,33 +100,35 @@ const notificationReducer = (state, action) => {
         notifications: state.notifications.map(notification => ({
           ...notification,
           read: true,
-          readAt: new Date().toISOString()
-        }))
+          readAt: new Date().toISOString(),
+        })),
       }
 
     case NOTIFICATION_ACTIONS.DELETE_NOTIFICATION:
       return {
         ...state,
-        notifications: state.notifications.filter(notification => notification.id !== action.payload)
+        notifications: state.notifications.filter(
+          notification => notification.id !== action.payload
+        ),
       }
 
     case NOTIFICATION_ACTIONS.CLEAR_ALL:
       return {
         ...state,
-        notifications: []
+        notifications: [],
       }
 
     case NOTIFICATION_ACTIONS.SET_LOADING:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       }
 
     case NOTIFICATION_ACTIONS.SET_ERROR:
       return {
         ...state,
         error: action.payload,
-        loading: false
+        loading: false,
       }
 
     default:
@@ -140,11 +142,16 @@ export const NotificationProvider = ({ children }) => {
 
   // Load preferences from localStorage on mount
   useEffect(() => {
-    const savedPreferences = localStorage.getItem('ivolex_notification_preferences')
+    const savedPreferences = localStorage.getItem(
+      'ivolex_notification_preferences'
+    )
     if (savedPreferences) {
       try {
         const preferences = JSON.parse(savedPreferences)
-        dispatch({ type: NOTIFICATION_ACTIONS.SET_PREFERENCES, payload: preferences })
+        dispatch({
+          type: NOTIFICATION_ACTIONS.SET_PREFERENCES,
+          payload: preferences,
+        })
       } catch (error) {
         console.error('Failed to load notification preferences:', error)
       }
@@ -153,7 +160,10 @@ export const NotificationProvider = ({ children }) => {
 
   // Save preferences to localStorage when they change
   useEffect(() => {
-    localStorage.setItem('ivolex_notification_preferences', JSON.stringify(state.preferences))
+    localStorage.setItem(
+      'ivolex_notification_preferences',
+      JSON.stringify(state.preferences)
+    )
   }, [state.preferences])
 
   // Notification templates
@@ -161,63 +171,76 @@ export const NotificationProvider = ({ children }) => {
     const templates = {
       [NOTIFICATION_TYPES.ORDER_CONFIRMATION]: {
         title: language === 'ar' ? 'تأكيد الطلب' : 'Order Confirmed',
-        message: language === 'ar' 
-          ? `تم تأكيد طلبك #${data.orderNumber} بنجاح. المبلغ الإجمالي: ${data.total}`
-          : `Your order #${data.orderNumber} has been confirmed. Total: ${data.total}`,
+        message:
+          language === 'ar'
+            ? `تم تأكيد طلبك #${data.orderNumber} بنجاح. المبلغ الإجمالي: ${data.total}`
+            : `Your order #${data.orderNumber} has been confirmed. Total: ${data.total}`,
         icon: '✅',
-        priority: NOTIFICATION_PRIORITIES.HIGH
+        priority: NOTIFICATION_PRIORITIES.HIGH,
       },
       [NOTIFICATION_TYPES.ORDER_STATUS_UPDATE]: {
         title: language === 'ar' ? 'تحديث حالة الطلب' : 'Order Status Update',
-        message: language === 'ar'
-          ? `طلبك #${data.orderNumber} الآن: ${data.statusAr || data.status}`
-          : `Your order #${data.orderNumber} is now: ${data.status}`,
+        message:
+          language === 'ar'
+            ? `طلبك #${data.orderNumber} الآن: ${data.statusAr || data.status}`
+            : `Your order #${data.orderNumber} is now: ${data.status}`,
         icon: '📦',
-        priority: NOTIFICATION_PRIORITIES.MEDIUM
+        priority: NOTIFICATION_PRIORITIES.MEDIUM,
       },
       [NOTIFICATION_TYPES.PAYMENT_CONFIRMATION]: {
         title: language === 'ar' ? 'تأكيد الدفع' : 'Payment Confirmed',
-        message: language === 'ar'
-          ? `تم استلام دفعتك بمبلغ ${data.amount} بنجاح`
-          : `Your payment of ${data.amount} has been successfully processed`,
+        message:
+          language === 'ar'
+            ? `تم استلام دفعتك بمبلغ ${data.amount} بنجاح`
+            : `Your payment of ${data.amount} has been successfully processed`,
         icon: '💳',
-        priority: NOTIFICATION_PRIORITIES.HIGH
+        priority: NOTIFICATION_PRIORITIES.HIGH,
       },
       [NOTIFICATION_TYPES.SHIPPING_UPDATE]: {
         title: language === 'ar' ? 'تحديث الشحن' : 'Shipping Update',
-        message: language === 'ar'
-          ? `طلبك في الطريق. رقم التتبع: ${data.trackingNumber}`
-          : `Your order is on the way. Tracking: ${data.trackingNumber}`,
+        message:
+          language === 'ar'
+            ? `طلبك في الطريق. رقم التتبع: ${data.trackingNumber}`
+            : `Your order is on the way. Tracking: ${data.trackingNumber}`,
         icon: '🚚',
-        priority: NOTIFICATION_PRIORITIES.MEDIUM
+        priority: NOTIFICATION_PRIORITIES.MEDIUM,
       },
       [NOTIFICATION_TYPES.CUSTOMIZATION_UPDATE]: {
         title: language === 'ar' ? 'تحديث طلب التخصيص' : 'Customization Update',
-        message: language === 'ar'
-          ? `طلب التخصيص #${data.requestId} - ${data.statusAr || data.status}`
-          : `Customization request #${data.requestId} - ${data.status}`,
+        message:
+          language === 'ar'
+            ? `طلب التخصيص #${data.requestId} - ${data.statusAr || data.status}`
+            : `Customization request #${data.requestId} - ${data.status}`,
         icon: '🎨',
-        priority: NOTIFICATION_PRIORITIES.MEDIUM
+        priority: NOTIFICATION_PRIORITIES.MEDIUM,
       },
       [NOTIFICATION_TYPES.ADMIN_ALERT]: {
         title: language === 'ar' ? 'تنبيه إداري' : 'Admin Alert',
-        message: data.message || (language === 'ar' ? 'تنبيه جديد' : 'New admin alert'),
+        message:
+          data.message ||
+          (language === 'ar' ? 'تنبيه جديد' : 'New admin alert'),
         icon: '⚠️',
-        priority: NOTIFICATION_PRIORITIES.URGENT
+        priority: NOTIFICATION_PRIORITIES.URGENT,
       },
       [NOTIFICATION_TYPES.SYSTEM_NOTIFICATION]: {
         title: language === 'ar' ? 'إشعار النظام' : 'System Notification',
-        message: data.message || (language === 'ar' ? 'إشعار جديد' : 'New system notification'),
+        message:
+          data.message ||
+          (language === 'ar' ? 'إشعار جديد' : 'New system notification'),
         icon: '🔔',
-        priority: NOTIFICATION_PRIORITIES.LOW
-      }
+        priority: NOTIFICATION_PRIORITIES.LOW,
+      },
     }
 
     return templates[type] || templates[NOTIFICATION_TYPES.SYSTEM_NOTIFICATION]
   }
 
   // Send notification function
-  const sendNotification = async (type, data, channels = [NOTIFICATION_CHANNELS.IN_APP]) => {
+  const sendNotification = async (
+    type,
+    data,
+    channels = [NOTIFICATION_CHANNELS.IN_APP]
+  ) => {
     dispatch({ type: NOTIFICATION_ACTIONS.SET_LOADING, payload: true })
 
     try {
@@ -230,12 +253,15 @@ export const NotificationProvider = ({ children }) => {
         channels,
         read: false,
         createdAt: new Date().toISOString(),
-        userId: data.userId || 'current_user'
+        userId: data.userId || 'current_user',
       }
 
       // Add to in-app notifications
       if (channels.includes(NOTIFICATION_CHANNELS.IN_APP)) {
-        dispatch({ type: NOTIFICATION_ACTIONS.ADD_NOTIFICATION, payload: notification })
+        dispatch({
+          type: NOTIFICATION_ACTIONS.ADD_NOTIFICATION,
+          payload: notification,
+        })
       }
 
       // Simulate external notifications (would integrate with real services)
@@ -260,49 +286,55 @@ export const NotificationProvider = ({ children }) => {
   }
 
   // Simulate external notification services
-  const simulateEmailNotification = async (notification) => {
+  const simulateEmailNotification = async notification => {
     console.log('📧 Email sent:', {
       to: notification.data.email || 'user@example.com',
       subject: notification.title,
       body: notification.message,
-      template: notification.type
+      template: notification.type,
     })
-    
+
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500))
     return true
   }
 
-  const simulateSMSNotification = async (notification) => {
+  const simulateSMSNotification = async notification => {
     console.log('📱 SMS sent:', {
       to: notification.data.phone || '+1234567890',
       message: `${notification.title}: ${notification.message}`,
-      provider: 'Twilio'
+      provider: 'Twilio',
     })
-    
+
     await new Promise(resolve => setTimeout(resolve, 300))
     return true
   }
 
-  const simulateWhatsAppNotification = async (notification) => {
+  const simulateWhatsAppNotification = async notification => {
     console.log('💬 WhatsApp sent:', {
       to: notification.data.whatsapp || '+1234567890',
       message: `${notification.icon} ${notification.title}\n${notification.message}`,
-      provider: 'WhatsApp Business API'
+      provider: 'WhatsApp Business API',
     })
-    
+
     await new Promise(resolve => setTimeout(resolve, 400))
     return true
   }
 
   // Update preferences
-  const updatePreferences = (newPreferences) => {
-    dispatch({ type: NOTIFICATION_ACTIONS.SET_PREFERENCES, payload: newPreferences })
+  const updatePreferences = newPreferences => {
+    dispatch({
+      type: NOTIFICATION_ACTIONS.SET_PREFERENCES,
+      payload: newPreferences,
+    })
   }
 
   // Mark notifications as read
-  const markAsRead = (notificationId) => {
-    dispatch({ type: NOTIFICATION_ACTIONS.MARK_AS_READ, payload: notificationId })
+  const markAsRead = notificationId => {
+    dispatch({
+      type: NOTIFICATION_ACTIONS.MARK_AS_READ,
+      payload: notificationId,
+    })
   }
 
   const markAllAsRead = () => {
@@ -310,8 +342,11 @@ export const NotificationProvider = ({ children }) => {
   }
 
   // Delete notifications
-  const deleteNotification = (notificationId) => {
-    dispatch({ type: NOTIFICATION_ACTIONS.DELETE_NOTIFICATION, payload: notificationId })
+  const deleteNotification = notificationId => {
+    dispatch({
+      type: NOTIFICATION_ACTIONS.DELETE_NOTIFICATION,
+      payload: notificationId,
+    })
   }
 
   const clearAllNotifications = () => {
@@ -324,8 +359,10 @@ export const NotificationProvider = ({ children }) => {
   }
 
   // Get notifications by type
-  const getNotificationsByType = (type) => {
-    return state.notifications.filter(notification => notification.type === type)
+  const getNotificationsByType = type => {
+    return state.notifications.filter(
+      notification => notification.type === type
+    )
   }
 
   // Check if user should receive notification based on preferences
@@ -339,16 +376,16 @@ export const NotificationProvider = ({ children }) => {
       case NOTIFICATION_TYPES.PAYMENT_CONFIRMATION:
       case NOTIFICATION_TYPES.SHIPPING_UPDATE:
         return prefs.orderUpdates
-      
+
       case NOTIFICATION_TYPES.CUSTOMIZATION_UPDATE:
         return prefs.customizationUpdates
-      
+
       case NOTIFICATION_TYPES.ADMIN_ALERT:
         return true // Always send admin alerts
-      
+
       case NOTIFICATION_TYPES.SYSTEM_NOTIFICATION:
         return prefs.all !== false
-      
+
       default:
         return false
     }
@@ -367,7 +404,7 @@ export const NotificationProvider = ({ children }) => {
     shouldSendNotification,
     NOTIFICATION_TYPES,
     NOTIFICATION_CHANNELS,
-    NOTIFICATION_PRIORITIES
+    NOTIFICATION_PRIORITIES,
   }
 
   return (
@@ -380,7 +417,9 @@ export const NotificationProvider = ({ children }) => {
 export const useNotifications = () => {
   const context = useContext(NotificationContext)
   if (!context) {
-    throw new Error('useNotifications must be used within a NotificationProvider')
+    throw new Error(
+      'useNotifications must be used within a NotificationProvider'
+    )
   }
   return context
 }

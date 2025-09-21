@@ -8,7 +8,7 @@ export default function ThemeToggle() {
   const themes = [
     { value: 'light', icon: Sun, label: 'Light' },
     { value: 'dark', icon: Moon, label: 'Dark' },
-    { value: 'system', icon: Monitor, label: 'System' }
+    { value: 'system', icon: Monitor, label: 'System' },
   ]
 
   return (

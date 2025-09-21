@@ -28,30 +28,36 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false)
   }, [])
 
-  const login = async (credentials) => {
+  const login = async credentials => {
     // Super admin authentication
-    if (credentials.email === 'faisal@limitlessinfotech.com' && credentials.password === 'SuperAdmin2024!') {
+    if (
+      credentials.email === 'faisal@limitlessinfotech.com' &&
+      credentials.password === 'SuperAdmin2024!'
+    ) {
       const userData = {
         id: '1',
         email: 'faisal@limitlessinfotech.com',
         firstName: 'Faisal',
         lastName: 'Khan',
         role: 'super_admin',
-        avatar: null
+        avatar: null,
       }
       setUser(userData)
       localStorage.setItem('user', JSON.stringify(userData))
       return { success: true, user: userData }
     }
     // Demo user for testing
-    if (credentials.email === 'demo@ivolex.com' && credentials.password === 'password') {
+    if (
+      credentials.email === 'demo@ivolex.com' &&
+      credentials.password === 'password'
+    ) {
       const userData = {
         id: '2',
         email: 'demo@ivolex.com',
         firstName: 'Demo',
         lastName: 'User',
         role: 'customer',
-        avatar: null
+        avatar: null,
       }
       setUser(userData)
       localStorage.setItem('user', JSON.stringify(userData))
@@ -65,21 +71,21 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user')
   }
 
-  const register = async (userData) => {
+  const register = async userData => {
     // Simulate API call
     const newUser = {
       id: Date.now().toString(),
       ...userData,
-      avatar: null
+      avatar: null,
     }
     setUser(newUser)
     localStorage.setItem('user', JSON.stringify(newUser))
     return { success: true, user: newUser }
   }
 
-  const updateProfile = async (updates) => {
+  const updateProfile = async updates => {
     if (!user) return { success: false, error: 'Not authenticated' }
-    
+
     const updatedUser = { ...user, ...updates }
     setUser(updatedUser)
     localStorage.setItem('user', JSON.stringify(updatedUser))
@@ -95,12 +101,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     register,
-    updateProfile
+    updateProfile,
   }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

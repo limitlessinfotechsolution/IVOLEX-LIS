@@ -29,7 +29,7 @@ export default function CartScreen() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title={`Shopping Cart (${itemCount}) - IVOLEX`}
         description="Review your selected items and proceed to checkout for a seamless shopping experience."
         keywords="shopping cart, checkout, e-commerce, buy online"
@@ -69,19 +69,16 @@ export default function CartScreen() {
                     key={id}
                     className="flex items-center gap-4 p-4 rounded-2xl border bg-white shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <Link 
-                      to={`/product/${item.id}`}
-                      className="flex-shrink-0"
-                    >
+                    <Link to={`/product/${item.id}`} className="flex-shrink-0">
                       <img
                         src={item.image || item.img}
                         alt={item.name || item.title}
                         className="w-20 h-20 object-cover rounded-xl hover:scale-105 transition-transform"
                       />
                     </Link>
-                    
+
                     <div className="flex-1 min-w-0">
-                      <Link 
+                      <Link
                         to={`/product/${item.id}`}
                         className="font-medium hover:text-brand-600 transition-colors block"
                       >
@@ -110,7 +107,10 @@ export default function CartScreen() {
                         min={1}
                         max={99}
                         onChange={e =>
-                          handleQuantityChange(id, parseInt(e.target.value || '1', 10))
+                          handleQuantityChange(
+                            id,
+                            parseInt(e.target.value || '1', 10)
+                          )
                         }
                       />
                       <button
@@ -123,7 +123,9 @@ export default function CartScreen() {
 
                     <button
                       className="p-2 text-stone-400 hover:text-red-500 transition-colors"
-                      onClick={() => handleRemoveItem(id, item.name || item.title)}
+                      onClick={() =>
+                        handleRemoveItem(id, item.name || item.title)
+                      }
                       aria-label={`Remove ${item.name || item.title} from cart`}
                     >
                       <Trash2 size={16} />
@@ -135,11 +137,12 @@ export default function CartScreen() {
               <div className="lg:col-span-1">
                 <div className="card p-6 sticky top-6">
                   <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
-                  
+
                   <div className="space-y-3 mb-4">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-stone-600">
-                        Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+                        Subtotal ({itemCount}{' '}
+                        {itemCount === 1 ? 'item' : 'items'})
                       </span>
                       <span>${total.toFixed(2)}</span>
                     </div>
@@ -155,7 +158,12 @@ export default function CartScreen() {
                     <div className="flex items-center justify-between font-semibold">
                       <span>Total</span>
                       <span className="text-lg">
-                        ${(total + (total >= 50 ? 0 : 5.99) + total * 0.08).toFixed(2)}
+                        $
+                        {(
+                          total +
+                          (total >= 50 ? 0 : 5.99) +
+                          total * 0.08
+                        ).toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -171,11 +179,8 @@ export default function CartScreen() {
                   <Link to="/checkout" className="btn btn-primary w-full mb-3">
                     Proceed to Checkout
                   </Link>
-                  
-                  <Link 
-                    to="/shop" 
-                    className="btn btn-outline w-full text-sm"
-                  >
+
+                  <Link to="/shop" className="btn btn-outline w-full text-sm">
                     Continue Shopping
                   </Link>
 

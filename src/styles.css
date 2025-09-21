@@ -13,13 +13,13 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
     /* stylelint-disable at-rule-no-unknown */
     @apply text-stone-800;
     /* stylelint-enable at-rule-no-unknown */
   }
-  
+
   h1,
   h2,
   h3,
@@ -28,7 +28,7 @@
     @apply font-semibold text-stone-900;
     /* stylelint-enable at-rule-no-unknown */
   }
-  
+
   .container-xl {
     /* stylelint-disable at-rule-no-unknown */
     @apply max-w-6xl mx-auto px-4;

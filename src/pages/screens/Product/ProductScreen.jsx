@@ -20,7 +20,9 @@ export default function ProductScreen() {
       <Container>
         <div className="py-20 text-center">
           <h1 className="text-2xl mb-2">Product not found</h1>
-          <p className="text-stone-600 mb-4">The product you&apos;re looking for doesn&apos;t exist.</p>
+          <p className="text-stone-600 mb-4">
+            The product you&apos;re looking for doesn&apos;t exist.
+          </p>
           <Link className="btn btn-primary" to="/shop">
             Back to shop
           </Link>
@@ -66,9 +68,12 @@ export default function ProductScreen() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title={`${product.name} - IVOLEX`}
-        description={product.short || `Buy ${product.name} at the best price. High quality products with fast delivery.`}
+        description={
+          product.short ||
+          `Buy ${product.name} at the best price. High quality products with fast delivery.`
+        }
         keywords={`${product.name}, ${product.category}, buy online, e-commerce`}
       />
       <section className="py-10">
@@ -82,7 +87,10 @@ export default function ProductScreen() {
               Shop
             </Link>
             <span className="mx-2">/</span>
-            <Link className="hover:underline focus:underline" to={`/category/${product.category}`}>
+            <Link
+              className="hover:underline focus:underline"
+              to={`/category/${product.category}`}
+            >
               {product.category}
             </Link>
             <span className="mx-2">/</span>
@@ -105,7 +113,9 @@ export default function ProductScreen() {
                     key={index}
                     onClick={() => setSelectedImage(index)}
                     className={`w-20 h-20 rounded-xl overflow-hidden bg-stone-100 border-2 ${
-                      selectedImage === index ? 'border-brand-500' : 'border-transparent'
+                      selectedImage === index
+                        ? 'border-brand-500'
+                        : 'border-transparent'
                     }`}
                   >
                     <img
@@ -142,7 +152,8 @@ export default function ProductScreen() {
               <div className="flex items-center gap-2 mb-4">
                 <Stars value={product.rating || 5} />
                 <span className="text-sm text-stone-500">
-                  {product.rating?.toFixed(1)} ({Math.floor(Math.random() * 100) + 10} reviews)
+                  {product.rating?.toFixed(1)} (
+                  {Math.floor(Math.random() * 100) + 10} reviews)
                 </span>
               </div>
 
@@ -151,7 +162,8 @@ export default function ProductScreen() {
               </p>
 
               <p className="text-stone-700 mb-6 leading-relaxed">
-                {product.short || `High-quality ${product.name.toLowerCase()} perfect for your needs. Crafted with attention to detail and built to last.`}
+                {product.short ||
+                  `High-quality ${product.name.toLowerCase()} perfect for your needs. Crafted with attention to detail and built to last.`}
               </p>
 
               {/* Quantity Selector */}
@@ -171,7 +183,11 @@ export default function ProductScreen() {
                     value={quantity}
                     min={1}
                     max={10}
-                    onChange={(e) => setQuantity(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
+                    onChange={e =>
+                      setQuantity(
+                        Math.max(1, Math.min(10, parseInt(e.target.value) || 1))
+                      )
+                    }
                   />
                   <button
                     className="p-2 hover:bg-stone-50 transition-colors"
@@ -200,7 +216,10 @@ export default function ProductScreen() {
               <div className="space-y-3 text-sm text-stone-600">
                 <div className="flex justify-between">
                   <span>Category:</span>
-                  <Link to={`/category/${product.category}`} className="text-brand-600 hover:underline">
+                  <Link
+                    to={`/category/${product.category}`}
+                    className="text-brand-600 hover:underline"
+                  >
                     {product.category}
                   </Link>
                 </div>
@@ -221,7 +240,9 @@ export default function ProductScreen() {
             <h2 className="text-2xl font-semibold mb-6">Related Products</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {products
-                .filter(p => p.category === product.category && p.id !== product.id)
+                .filter(
+                  p => p.category === product.category && p.id !== product.id
+                )
                 .slice(0, 4)
                 .map(p => (
                   <div key={p.id} className="group">
@@ -236,7 +257,9 @@ export default function ProductScreen() {
                       <h3 className="font-medium group-hover:text-brand-600 transition-colors">
                         {p.name}
                       </h3>
-                      <p className="text-brand-700 font-semibold">${p.price.toFixed(2)}</p>
+                      <p className="text-brand-700 font-semibold">
+                        ${p.price.toFixed(2)}
+                      </p>
                     </Link>
                   </div>
                 ))}

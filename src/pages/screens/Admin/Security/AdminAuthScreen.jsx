@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { 
-  Shield, 
-  Lock, 
-  Eye, 
-  EyeOff, 
+import {
+  Shield,
+  Lock,
+  Eye,
+  EyeOff,
   Smartphone,
   AlertTriangle,
   CheckCircle,
   Timer,
-  Globe
+  Globe,
 } from 'lucide-react'
 import { useI18n } from '../../../../ui/contexts/I18nContext.jsx'
 import { useAuth } from '../../../../ui/contexts/AuthContext.jsx'
@@ -20,14 +20,14 @@ const AdminAuthScreen = () => {
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
-    totp: ''
+    totp: '',
   })
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [remainingAttempts, setRemainingAttempts] = useState(5)
   const [lockoutTime, setLockoutTime] = useState(0)
-  
+
   const { t } = useI18n()
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -53,39 +53,47 @@ const AdminAuthScreen = () => {
   useEffect(() => {
     const currentPath = window.location.pathname
     const currentHost = window.location.hostname
-    
+
     // In production, check for admin.ivolex.com or /admin-secret-path
-    const isValidAdminAccess = 
-      currentHost.includes('admin.') || 
+    const isValidAdminAccess =
+      currentHost.includes('admin.') ||
       currentPath.includes('/admin-panel-secure') ||
       import.meta.env?.MODE === 'development'
-    
+
     if (!isValidAdminAccess) {
       window.location.href = '/'
     }
   }, [])
 
-  const handlePasswordSubmit = async (e) => {
+  const handlePasswordSubmit = async e => {
     e.preventDefault()
     if (lockoutTime > 0) return
 
     setLoading(true)
     setError('')
-    
+
     try {
       // Simulate admin login check
       const result = await login({
         email: credentials.email,
         password: credentials.password,
-        isAdmin: true
+        isAdmin: true,
       })
-      
+
       if (result.success) {
         // Check if user has admin role
-        if (result.user.role === 'admin' || result.user.role === 'super_admin') {
+        if (
+          result.user.role === 'admin' ||
+          result.user.role === 'super_admin'
+        ) {
           setStep('2fa')
         } else {
-          setError(t('admin.auth.notAdmin', 'Access denied. Admin privileges required.'))
+          setError(
+            t(
+              'admin.auth.notAdmin',
+              'Access denied. Admin privileges required.'
+            )
+          )
           setRemainingAttempts(prev => prev - 1)
         }
       } else {
@@ -106,11 +114,11 @@ const AdminAuthScreen = () => {
     }
   }
 
-  const handle2FASubmit = async (e) => {
+  const handle2FASubmit = async e => {
     e.preventDefault()
     setLoading(true)
     setError('')
-    
+
     try {
       // Simulate 2FA verification
       if (credentials.totp.length === 6) {
@@ -129,7 +137,7 @@ const AdminAuthScreen = () => {
     }
   }
 
-  const formatTime = (seconds) => {
+  const formatTime = seconds => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
     return `${mins}:${secs.toString().padStart(2, '0')}`
@@ -220,7 +228,12 @@ const AdminAuthScreen = () => {
                     <input
                       type="email"
                       value={credentials.email}
-                      onChange={(e) => setCredentials(prev => ({ ...prev, email: e.target.value }))}
+                      onChange={e =>
+                        setCredentials(prev => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
                       className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="admin@ivolex.com"
                       required
@@ -236,7 +249,12 @@ const AdminAuthScreen = () => {
                       <input
                         type={showPassword ? 'text' : 'password'}
                         value={credentials.password}
-                        onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
+                        onChange={e =>
+                          setCredentials(prev => ({
+                            ...prev,
+                            password: e.target.value,
+                          }))
+                        }
                         className="w-full px-4 py-3 pr-12 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         placeholder="••••••••"
                         required
@@ -248,7 +266,11 @@ const AdminAuthScreen = () => {
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
                         disabled={lockoutTime > 0}
                       >
-                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        {showPassword ? (
+                          <EyeOff className="w-5 h-5" />
+                        ) : (
+                          <Eye className="w-5 h-5" />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -315,7 +337,12 @@ const AdminAuthScreen = () => {
                     <input
                       type="text"
                       value={credentials.totp}
-                      onChange={(e) => setCredentials(prev => ({ ...prev, totp: e.target.value.replace(/\D/g, '').slice(0, 6) }))}
+                      onChange={e =>
+                        setCredentials(prev => ({
+                          ...prev,
+                          totp: e.target.value.replace(/\D/g, '').slice(0, 6),
+                        }))
+                      }
                       className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white text-center text-2xl tracking-widest placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                       placeholder="000000"
                       maxLength={6}
@@ -327,8 +354,12 @@ const AdminAuthScreen = () => {
                     type="submit"
                     disabled={loading || credentials.totp.length !== 6}
                     className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                    whileHover={{ scale: credentials.totp.length === 6 ? 1.02 : 1 }}
-                    whileTap={{ scale: credentials.totp.length === 6 ? 0.98 : 1 }}
+                    whileHover={{
+                      scale: credentials.totp.length === 6 ? 1.02 : 1,
+                    }}
+                    whileTap={{
+                      scale: credentials.totp.length === 6 ? 0.98 : 1,
+                    }}
                   >
                     {loading ? (
                       <div className="flex items-center justify-center gap-2">
@@ -365,7 +396,9 @@ const AdminAuthScreen = () => {
                 >
                   <CheckCircle className="w-8 h-8 text-white" />
                 </motion.div>
-                <h2 className="text-2xl font-bold text-white mb-2">Access Granted</h2>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Access Granted
+                </h2>
                 <p className="text-gray-300">Redirecting to admin panel...</p>
               </motion.div>
             )}

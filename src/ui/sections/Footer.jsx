@@ -13,7 +13,7 @@ import CurrencySelector from '../components/CurrencySelector.jsx'
 
 export default function Footer() {
   const { isAuthenticated } = useAuth()
-  
+
   const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -48,9 +48,11 @@ export default function Footer() {
     <footer id="about" className="bg-stone-900 text-stone-200">
       <div className="container-xl">
         {/* Main Footer Content */}
-        <div className={`grid gap-8 py-12 ${
-          isAuthenticated ? 'md:grid-cols-4' : 'md:grid-cols-5'
-        }`}>
+        <div
+          className={`grid gap-8 py-12 ${
+            isAuthenticated ? 'md:grid-cols-4' : 'md:grid-cols-5'
+          }`}
+        >
           {/* Company Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

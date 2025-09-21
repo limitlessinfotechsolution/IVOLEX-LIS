@@ -1,5 +1,9 @@
 import { createContext, useContext, useReducer, useEffect } from 'react'
-import { useNotifications, NOTIFICATION_TYPES, NOTIFICATION_CHANNELS } from './NotificationContext'
+import {
+  useNotifications,
+  NOTIFICATION_TYPES,
+  NOTIFICATION_CHANNELS,
+} from './NotificationContext'
 
 const AuditContext = createContext()
 
@@ -10,7 +14,7 @@ export const ROLES = {
   MANAGER: 'manager',
   MODERATOR: 'moderator',
   VIEWER: 'viewer',
-  CUSTOMER: 'customer'
+  CUSTOMER: 'customer',
 }
 
 // Permission actions
@@ -21,55 +25,55 @@ export const PERMISSIONS = {
   PRODUCTS_EDIT: 'products:edit',
   PRODUCTS_DELETE: 'products:delete',
   PRODUCTS_BULK_IMPORT: 'products:bulk_import',
-  
+
   // Order Management
   ORDERS_VIEW: 'orders:view',
   ORDERS_EDIT: 'orders:edit',
   ORDERS_REFUND: 'orders:refund',
   ORDERS_CANCEL: 'orders:cancel',
   ORDERS_EXPORT: 'orders:export',
-  
+
   // User Management
   USERS_VIEW: 'users:view',
   USERS_CREATE: 'users:create',
   USERS_EDIT: 'users:edit',
   USERS_DELETE: 'users:delete',
   USERS_ASSIGN_ROLES: 'users:assign_roles',
-  
+
   // Customization Requests
   CUSTOMIZATION_VIEW: 'customization:view',
   CUSTOMIZATION_EDIT: 'customization:edit',
   CUSTOMIZATION_APPROVE: 'customization:approve',
   CUSTOMIZATION_REJECT: 'customization:reject',
-  
+
   // Theme Management
   THEMES_VIEW: 'themes:view',
   THEMES_EDIT: 'themes:edit',
   THEMES_CREATE: 'themes:create',
   THEMES_DELETE: 'themes:delete',
-  
+
   // Analytics & Reports
   ANALYTICS_VIEW: 'analytics:view',
   ANALYTICS_EXPORT: 'analytics:export',
   REPORTS_GENERATE: 'reports:generate',
-  
+
   // System Settings
   SETTINGS_VIEW: 'settings:view',
   SETTINGS_EDIT: 'settings:edit',
   AUDIT_LOGS_VIEW: 'audit_logs:view',
-  
+
   // Security
   SECURITY_MANAGE: 'security:manage',
-  ROLES_MANAGE: 'roles:manage'
+  ROLES_MANAGE: 'roles:manage',
 }
 
 // Role-Permission Matrix
 export const ROLE_PERMISSIONS = {
   [ROLES.SUPER_ADMIN]: [
     // Full access to everything
-    ...Object.values(PERMISSIONS)
+    ...Object.values(PERMISSIONS),
   ],
-  
+
   [ROLES.ADMIN]: [
     // Product Management
     PERMISSIONS.PRODUCTS_VIEW,
@@ -77,79 +81,79 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.PRODUCTS_EDIT,
     PERMISSIONS.PRODUCTS_DELETE,
     PERMISSIONS.PRODUCTS_BULK_IMPORT,
-    
+
     // Order Management
     PERMISSIONS.ORDERS_VIEW,
     PERMISSIONS.ORDERS_EDIT,
     PERMISSIONS.ORDERS_REFUND,
     PERMISSIONS.ORDERS_CANCEL,
     PERMISSIONS.ORDERS_EXPORT,
-    
+
     // User Management (Limited)
     PERMISSIONS.USERS_VIEW,
     PERMISSIONS.USERS_CREATE,
     PERMISSIONS.USERS_EDIT,
-    
+
     // Customization
     PERMISSIONS.CUSTOMIZATION_VIEW,
     PERMISSIONS.CUSTOMIZATION_EDIT,
     PERMISSIONS.CUSTOMIZATION_APPROVE,
     PERMISSIONS.CUSTOMIZATION_REJECT,
-    
+
     // Themes
     PERMISSIONS.THEMES_VIEW,
     PERMISSIONS.THEMES_EDIT,
     PERMISSIONS.THEMES_CREATE,
-    
+
     // Analytics
     PERMISSIONS.ANALYTICS_VIEW,
     PERMISSIONS.ANALYTICS_EXPORT,
     PERMISSIONS.REPORTS_GENERATE,
-    
+
     // Settings (Limited)
     PERMISSIONS.SETTINGS_VIEW,
-    PERMISSIONS.AUDIT_LOGS_VIEW
+    PERMISSIONS.AUDIT_LOGS_VIEW,
   ],
-  
+
   [ROLES.MANAGER]: [
     // Product Management (Limited)
     PERMISSIONS.PRODUCTS_VIEW,
     PERMISSIONS.PRODUCTS_EDIT,
-    
+
     // Order Management
     PERMISSIONS.ORDERS_VIEW,
     PERMISSIONS.ORDERS_EDIT,
-    
+
     // Customization
     PERMISSIONS.CUSTOMIZATION_VIEW,
     PERMISSIONS.CUSTOMIZATION_EDIT,
     PERMISSIONS.CUSTOMIZATION_APPROVE,
-    
+
     // Analytics (View only)
     PERMISSIONS.ANALYTICS_VIEW,
-    PERMISSIONS.REPORTS_GENERATE
+    PERMISSIONS.REPORTS_GENERATE,
   ],
-  
+
   [ROLES.MODERATOR]: [
     // Basic viewing and editing
     PERMISSIONS.PRODUCTS_VIEW,
     PERMISSIONS.ORDERS_VIEW,
     PERMISSIONS.CUSTOMIZATION_VIEW,
     PERMISSIONS.CUSTOMIZATION_EDIT,
-    PERMISSIONS.USERS_VIEW
+    PERMISSIONS.USERS_VIEW,
   ],
-  
+
   [ROLES.VIEWER]: [
     // Read-only access
     PERMISSIONS.PRODUCTS_VIEW,
     PERMISSIONS.ORDERS_VIEW,
     PERMISSIONS.CUSTOMIZATION_VIEW,
-    PERMISSIONS.ANALYTICS_VIEW
+    PERMISSIONS.ANALYTICS_VIEW,
   ],
-  
+
   [ROLES.CUSTOMER]: [
     // No admin permissions
-  ]
+  ],
 }
 
 // Audit log types
@@ -169,7 +173,7 @@ export const AUDIT_ACTIONS = {
   PERMISSION_CHANGE: 'permission_change',
   SETTINGS_CHANGE: 'settings_change',
   THEME_CHANGE: 'theme_change',
-  SECURITY_EVENT: 'security_event'
+  SECURITY_EVENT: 'security_event',
 }
 
 // Audit reducer
@@ -178,7 +182,7 @@ const AUDIT_ACTIONS_TYPES = {
   LOAD_LOGS: 'LOAD_LOGS',
   CLEAR_LOGS: 'CLEAR_LOGS',
   SET_LOADING: 'SET_LOADING',
-  SET_ERROR: 'SET_ERROR'
+  SET_ERROR: 'SET_ERROR',
 }
 
 const initialState = {
@@ -190,8 +194,8 @@ const initialState = {
     name: 'Admin User',
     email: 'admin@ivolex.com',
     role: ROLES.ADMIN,
-    permissions: ROLE_PERMISSIONS[ROLES.ADMIN]
-  }
+    permissions: ROLE_PERMISSIONS[ROLES.ADMIN],
+  },
 }
 
 const auditReducer = (state, action) => {
@@ -200,33 +204,33 @@ const auditReducer = (state, action) => {
       return {
         ...state,
         logs: [action.payload, ...state.logs],
-        loading: false
+        loading: false,
       }
 
     case AUDIT_ACTIONS_TYPES.LOAD_LOGS:
       return {
         ...state,
         logs: action.payload,
-        loading: false
+        loading: false,
       }
 
     case AUDIT_ACTIONS_TYPES.CLEAR_LOGS:
       return {
         ...state,
-        logs: []
+        logs: [],
       }
 
     case AUDIT_ACTIONS_TYPES.SET_LOADING:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       }
 
     case AUDIT_ACTIONS_TYPES.SET_ERROR:
       return {
         ...state,
         error: action.payload,
-        loading: false
+        loading: false,
       }
 
     default:
@@ -271,7 +275,10 @@ export const AuditProvider = ({ children }) => {
     return permissions.some(permission => hasPermission(permission, userRole))
   }
 
-  const hasAllPermissions = (permissions, userRole = state.currentUser.role) => {
+  const hasAllPermissions = (
+    permissions,
+    userRole = state.currentUser.role
+  ) => {
     return permissions.every(permission => hasPermission(permission, userRole))
   }
 
@@ -287,12 +294,12 @@ export const AuditProvider = ({ children }) => {
       ROLES.MODERATOR,
       ROLES.MANAGER,
       ROLES.ADMIN,
-      ROLES.SUPER_ADMIN
+      ROLES.SUPER_ADMIN,
     ]
-    
+
     const userRoleIndex = roleHierarchy.indexOf(userRole)
     const minimumRoleIndex = roleHierarchy.indexOf(minimumRole)
-    
+
     return userRoleIndex >= minimumRoleIndex
   }
 
@@ -312,7 +319,7 @@ export const AuditProvider = ({ children }) => {
         ipAddress: '192.168.1.1', // Would be real IP in production
         userAgent: navigator.userAgent,
         sessionId: sessionStorage.getItem('session_id') || 'unknown',
-        success: details.success !== false
+        success: details.success !== false,
       }
 
       dispatch({ type: AUDIT_ACTIONS_TYPES.ADD_LOG, payload: logEntry })
@@ -327,7 +334,7 @@ export const AuditProvider = ({ children }) => {
             userId: state.currentUser.id,
             action,
             resource,
-            severity: 'high'
+            severity: 'high',
           },
           [NOTIFICATION_CHANNELS.IN_APP, NOTIFICATION_CHANNELS.EMAIL]
         )
@@ -342,13 +349,13 @@ export const AuditProvider = ({ children }) => {
   }
 
   // Check if action is critical and requires notification
-  const isCriticalAction = (action) => {
+  const isCriticalAction = action => {
     const criticalActions = [
       AUDIT_ACTIONS.DELETE,
       AUDIT_ACTIONS.ROLE_CHANGE,
       AUDIT_ACTIONS.PERMISSION_CHANGE,
       AUDIT_ACTIONS.SECURITY_EVENT,
-      AUDIT_ACTIONS.SETTINGS_CHANGE
+      AUDIT_ACTIONS.SETTINGS_CHANGE,
     ]
     return criticalActions.includes(action)
   }
@@ -366,15 +373,21 @@ export const AuditProvider = ({ children }) => {
     }
 
     if (filters.resource) {
-      filteredLogs = filteredLogs.filter(log => log.resource.includes(filters.resource))
+      filteredLogs = filteredLogs.filter(log =>
+        log.resource.includes(filters.resource)
+      )
     }
 
     if (filters.startDate) {
-      filteredLogs = filteredLogs.filter(log => new Date(log.timestamp) >= new Date(filters.startDate))
+      filteredLogs = filteredLogs.filter(
+        log => new Date(log.timestamp) >= new Date(filters.startDate)
+      )
     }
 
     if (filters.endDate) {
-      filteredLogs = filteredLogs.filter(log => new Date(log.timestamp) <= new Date(filters.endDate))
+      filteredLogs = filteredLogs.filter(
+        log => new Date(log.timestamp) <= new Date(filters.endDate)
+      )
     }
 
     if (filters.success !== undefined) {
@@ -387,36 +400,48 @@ export const AuditProvider = ({ children }) => {
   // Export logs
   const exportLogs = (format = 'json', filters = {}) => {
     const logs = getFilteredLogs(filters)
-    
+
     if (format === 'csv') {
       return exportLogsAsCSV(logs)
     }
-    
+
     return JSON.stringify(logs, null, 2)
   }
 
-  const exportLogsAsCSV = (logs) => {
-    const headers = ['Timestamp', 'User', 'Action', 'Resource', 'IP Address', 'Success', 'Details']
+  const exportLogsAsCSV = logs => {
+    const headers = [
+      'Timestamp',
+      'User',
+      'Action',
+      'Resource',
+      'IP Address',
+      'Success',
+      'Details',
+    ]
     const csvRows = [
       headers.join(','),
-      ...logs.map(log => [
-        log.timestamp,
-        `"${log.userName}"`,
-        log.action,
-        `"${log.resource}"`,
-        log.ipAddress,
-        log.success,
-        `"${JSON.stringify(log.details).replace(/"/g, '""')}"`
-      ].join(','))
+      ...logs.map(log =>
+        [
+          log.timestamp,
+          `"${log.userName}"`,
+          log.action,
+          `"${log.resource}"`,
+          log.ipAddress,
+          log.success,
+          `"${JSON.stringify(log.details).replace(/"/g, '""')}"`,
+        ].join(',')
+      ),
     ]
-    
+
     return csvRows.join('\n')
   }
 
   // Clear old logs (retention policy)
   const clearOldLogs = (daysToKeep = 90) => {
     const cutoffDate = new Date(Date.now() - daysToKeep * 24 * 60 * 60 * 1000)
-    const filteredLogs = state.logs.filter(log => new Date(log.timestamp) >= cutoffDate)
+    const filteredLogs = state.logs.filter(
+      log => new Date(log.timestamp) >= cutoffDate
+    )
     dispatch({ type: AUDIT_ACTIONS_TYPES.LOAD_LOGS, payload: filteredLogs })
   }
 
@@ -425,32 +450,28 @@ export const AuditProvider = ({ children }) => {
     loading: state.loading,
     error: state.error,
     currentUser: state.currentUser,
-    
+
     // Permission functions
     hasPermission,
     hasAnyPermission,
     hasAllPermissions,
     hasRole,
     hasMinimumRole,
-    
+
     // Audit functions
     logAction,
     getFilteredLogs,
     exportLogs,
     clearOldLogs,
-    
+
     // Constants
     ROLES,
     PERMISSIONS,
     ROLE_PERMISSIONS,
-    AUDIT_ACTIONS
+    AUDIT_ACTIONS,
   }
 
-  return (
-    <AuditContext.Provider value={value}>
-      {children}
-    </AuditContext.Provider>
-  )
+  return <AuditContext.Provider value={value}>{children}</AuditContext.Provider>
 }
 
 export const useAudit = () => {

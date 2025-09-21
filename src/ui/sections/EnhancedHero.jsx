@@ -6,29 +6,36 @@ import SegmentSwitcher from '../components/SegmentSwitcher.jsx'
 
 const SEGMENT_HERO_CONTENT = {
   leather: {
-    headline: "Timeless Leather Craftsmanship",
-    subheadline: "Experience the finest handcrafted leather goods, where tradition meets modern elegance",
-    cta: "Explore Collection",
-    features: ["100% Full-Grain Leather", "Handcrafted Excellence", "Lifetime Warranty"],
-    backgroundImage: "/images/hero-leather.jpg",
-    videoUrl: "/videos/leather-crafting.mp4"
+    headline: 'Timeless Leather Craftsmanship',
+    subheadline:
+      'Experience the finest handcrafted leather goods, where tradition meets modern elegance',
+    cta: 'Explore Collection',
+    features: [
+      '100% Full-Grain Leather',
+      'Handcrafted Excellence',
+      'Lifetime Warranty',
+    ],
+    backgroundImage: '/images/hero-leather.jpg',
+    videoUrl: '/videos/leather-crafting.mp4',
   },
   electronics: {
-    headline: "Cutting-Edge Technology",
-    subheadline: "Discover the future of electronics with innovative devices that enhance your digital lifestyle",
-    cta: "Shop Electronics",
-    features: ["Latest Technology", "Premium Quality", "Smart Integration"],
-    backgroundImage: "/images/hero-electronics.jpg",
-    videoUrl: "/videos/tech-showcase.mp4"
+    headline: 'Cutting-Edge Technology',
+    subheadline:
+      'Discover the future of electronics with innovative devices that enhance your digital lifestyle',
+    cta: 'Shop Electronics',
+    features: ['Latest Technology', 'Premium Quality', 'Smart Integration'],
+    backgroundImage: '/images/hero-electronics.jpg',
+    videoUrl: '/videos/tech-showcase.mp4',
   },
   furniture: {
-    headline: "Elegant Interior Design",
-    subheadline: "Transform your space with premium furniture and décor that reflects your unique style",
-    cta: "Browse Furniture",
-    features: ["Sustainable Materials", "Modern Design", "Custom Solutions"],
-    backgroundImage: "/images/hero-furniture.jpg",
-    videoUrl: "/videos/interior-design.mp4"
-  }
+    headline: 'Elegant Interior Design',
+    subheadline:
+      'Transform your space with premium furniture and décor that reflects your unique style',
+    cta: 'Browse Furniture',
+    features: ['Sustainable Materials', 'Modern Design', 'Custom Solutions'],
+    backgroundImage: '/images/hero-furniture.jpg',
+    videoUrl: '/videos/interior-design.mp4',
+  },
 }
 
 export default function EnhancedHero() {
@@ -37,36 +44,36 @@ export default function EnhancedHero() {
   const heroRef = useRef(null)
   const videoRef = useRef(null)
   const isInView = useInView(heroRef, { once: true })
-  
+
   const { scrollY } = useScroll()
   const y = useTransform(scrollY, [0, 500], [0, 150])
-  
+
   const content = SEGMENT_HERO_CONTENT[activeSegment]
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
       // Image cycling logic can be added here if needed
     }, 6000)
-    
+
     return () => clearInterval(interval)
   }, [])
-  
+
   const handleVideoPlay = () => {
     setIsVideoPlaying(true)
     if (videoRef.current) {
       videoRef.current.play()
     }
   }
-  
+
   const handleCTAClick = () => {
     const productsSection = document.getElementById('featured-products')
     if (productsSection) {
       productsSection.scrollIntoView({ behavior: 'smooth' })
     }
   }
-  
+
   return (
-    <section 
+    <section
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{
@@ -74,20 +81,17 @@ export default function EnhancedHero() {
       }}
     >
       {/* Background Parallax Layers */}
-      <motion.div 
-        className="absolute inset-0 z-0"
-        style={{ y }}
-      >
-        <div 
+      <motion.div className="absolute inset-0 z-0" style={{ y }}>
+        <div
           className="absolute inset-0 opacity-30"
           style={{ backgroundImage: theme.texture.overlay }}
         />
-        
+
         <div className="absolute inset-0">
           {/* Animated background dots removed */}
         </div>
       </motion.div>
-      
+
       {/* Video Background */}
       {isVideoPlaying && (
         <motion.video
@@ -102,7 +106,7 @@ export default function EnhancedHero() {
           <source src={content.videoUrl} type="video/mp4" />
         </motion.video>
       )}
-      
+
       {/* Main Content */}
       <div className="relative z-20 max-w-7xl mx-auto px-6 text-center">
         {/* Segment Switcher */}
@@ -114,7 +118,7 @@ export default function EnhancedHero() {
         >
           <SegmentSwitcher variant="pills" className="justify-center" />
         </motion.div>
-        
+
         {/* Main Headline */}
         <motion.h1
           className="text-6xl md:text-8xl font-bold mb-6 leading-tight"
@@ -125,7 +129,7 @@ export default function EnhancedHero() {
         >
           <motion.span
             className="inline-block"
-            animate={{ 
+            animate={{
               backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
             }}
             transition={{ duration: 3, repeat: Infinity }}
@@ -134,13 +138,13 @@ export default function EnhancedHero() {
               backgroundSize: '200% 100%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
+              backgroundClip: 'text',
             }}
           >
             {content.headline}
           </motion.span>
         </motion.h1>
-        
+
         {/* Subheadline */}
         <motion.p
           className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed"
@@ -151,7 +155,7 @@ export default function EnhancedHero() {
         >
           {content.subheadline}
         </motion.p>
-        
+
         {/* Features */}
         <motion.div
           className="flex flex-wrap justify-center gap-6 mb-12"
@@ -167,11 +171,13 @@ export default function EnhancedHero() {
               transition={{ delay: index * 0.1 }}
             >
               <Sparkles size={16} style={{ color: theme.colors.accent }} />
-              <span className="text-sm font-medium text-foreground">{feature}</span>
+              <span className="text-sm font-medium text-foreground">
+                {feature}
+              </span>
             </motion.div>
           ))}
         </motion.div>
-        
+
         {/* CTA Buttons */}
         <motion.div
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
@@ -184,7 +190,7 @@ export default function EnhancedHero() {
             className="group flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg shadow-segment-lg transition-all duration-300"
             style={{
               backgroundColor: theme.colors.primary,
-              color: 'white'
+              color: 'white',
             }}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
@@ -199,7 +205,7 @@ export default function EnhancedHero() {
               <ArrowRight size={20} />
             </motion.div>
           </motion.button>
-          
+
           <motion.button
             onClick={handleVideoPlay}
             className="group flex items-center gap-3 px-6 py-4 rounded-2xl border border-border bg-surface/50 backdrop-blur-sm text-foreground font-medium transition-all duration-300 hover:bg-surface/80"
@@ -216,7 +222,7 @@ export default function EnhancedHero() {
             Watch Our Story
           </motion.button>
         </motion.div>
-        
+
         {/* Stats */}
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-8 border-t border-border/50"
@@ -228,7 +234,7 @@ export default function EnhancedHero() {
             { label: 'Happy Customers', value: '50K+' },
             { label: 'Products Sold', value: '100K+' },
             { label: 'Years Experience', value: '20+' },
-            { label: 'Global Reach', value: '30+' }
+            { label: 'Global Reach', value: '30+' },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -241,7 +247,11 @@ export default function EnhancedHero() {
                 className="text-3xl md:text-4xl font-bold mb-2"
                 style={{ color: theme.colors.primary }}
                 animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: index * 0.2,
+                }}
               >
                 {stat.value}
               </motion.div>
@@ -252,7 +262,7 @@ export default function EnhancedHero() {
           ))}
         </motion.div>
       </div>
-      
+
       {/* Scroll Indicator removed */}
     </section>
   )

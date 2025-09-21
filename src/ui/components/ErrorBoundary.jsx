@@ -5,35 +5,35 @@ import { motion } from 'framer-motion'
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props)
-    this.state = { 
-      hasError: false, 
+    this.state = {
+      hasError: false,
       error: null,
       errorInfo: null,
-      errorId: null
+      errorId: null,
     }
   }
 
   static getDerivedStateFromError(_error) {
-    return { 
+    return {
       hasError: true,
-      errorId: Date.now().toString(36) + Math.random().toString(36).substr(2)
+      errorId: Date.now().toString(36) + Math.random().toString(36).substr(2),
     }
   }
 
   componentDidCatch(error, errorInfo) {
     // Log error details
     console.error('UI Error:', error, errorInfo)
-    
+
     this.setState({
       error,
-      errorInfo
+      errorInfo,
     })
 
     // Report error to monitoring service (if available)
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'exception', {
         description: error.toString(),
-        fatal: false
+        fatal: false,
       })
     }
 
@@ -44,7 +44,7 @@ export default class ErrorBoundary extends Component {
           type: 'ui_error',
           severity: 'high',
           details: `Error: ${error.message}`,
-          metadata: { errorId: this.state.errorId }
+          metadata: { errorId: this.state.errorId },
         })
       }
     } catch (loggingError) {
@@ -67,7 +67,7 @@ export default class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       const { showDetails = false, title, message } = this.props
-      
+
       return (
         <div className="min-h-[400px] flex items-center justify-center p-8">
           <motion.div
@@ -90,13 +90,17 @@ export default class ErrorBoundary extends Component {
               {title || 'Something went wrong'}
             </h2>
             <p className="text-foreground/70 mb-6">
-              {message || 'An unexpected error occurred. Please try refreshing the page or contact support if the problem persists.'}
+              {message ||
+                'An unexpected error occurred. Please try refreshing the page or contact support if the problem persists.'}
             </p>
 
             {/* Error ID */}
             <div className="bg-background border border-border rounded-lg p-3 mb-6">
               <p className="text-sm text-foreground/60">
-                Error ID: <code className="font-mono text-xs bg-background px-2 py-1 rounded">{this.state.errorId}</code>
+                Error ID:{' '}
+                <code className="font-mono text-xs bg-background px-2 py-1 rounded">
+                  {this.state.errorId}
+                </code>
               </p>
             </div>
 

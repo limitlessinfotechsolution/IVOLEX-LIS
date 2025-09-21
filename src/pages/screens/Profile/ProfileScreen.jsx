@@ -2,7 +2,16 @@ import { useState } from 'react'
 import Container from '../../../ui/components/Container.jsx'
 import { SEO } from '../../../components/SEO'
 import { LoadingButton } from '../../../ui/components/LoadingStates.jsx'
-import { User, Package, Heart, Settings, Shield, CreditCard, Edit2, Save } from 'lucide-react'
+import {
+  User,
+  Package,
+  Heart,
+  Settings,
+  Shield,
+  CreditCard,
+  Edit2,
+  Save,
+} from 'lucide-react'
 import CurrencySelector from '../../../ui/components/CurrencySelector.jsx'
 import toast from 'react-hot-toast'
 
@@ -18,7 +27,7 @@ export default function ProfileScreen() {
     address: '123 Main St',
     city: 'New York',
     country: 'United States',
-    postalCode: '10001'
+    postalCode: '10001',
   })
 
   const tabs = [
@@ -31,12 +40,30 @@ export default function ProfileScreen() {
   ]
 
   const orders = [
-    { id: 'ORD-001', date: '2024-01-15', status: 'Delivered', total: 129.99, items: 3 },
-    { id: 'ORD-002', date: '2024-01-10', status: 'In Transit', total: 89.50, items: 2 },
-    { id: 'ORD-003', date: '2024-01-05', status: 'Processing', total: 199.99, items: 1 },
+    {
+      id: 'ORD-001',
+      date: '2024-01-15',
+      status: 'Delivered',
+      total: 129.99,
+      items: 3,
+    },
+    {
+      id: 'ORD-002',
+      date: '2024-01-10',
+      status: 'In Transit',
+      total: 89.5,
+      items: 2,
+    },
+    {
+      id: 'ORD-003',
+      date: '2024-01-05',
+      status: 'Processing',
+      total: 199.99,
+      items: 1,
+    },
   ]
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target
     setProfileData(prev => ({ ...prev, [name]: value }))
   }
@@ -55,7 +82,7 @@ export default function ProfileScreen() {
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Profile Information</h2>
         <button
-          onClick={() => isEditing ? handleSaveProfile() : setIsEditing(true)}
+          onClick={() => (isEditing ? handleSaveProfile() : setIsEditing(true))}
           className="btn btn-outline flex items-center gap-2"
         >
           {isEditing ? <Save size={16} /> : <Edit2 size={16} />}
@@ -176,11 +203,15 @@ export default function ProfileScreen() {
                 <h3 className="font-semibold">{order.id}</h3>
                 <p className="text-sm text-stone-600">Placed on {order.date}</p>
               </div>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
-                order.status === 'In Transit' ? 'bg-blue-100 text-blue-800' :
-                'bg-amber-100 text-amber-800'
-              }`}>
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  order.status === 'Delivered'
+                    ? 'bg-green-100 text-green-800'
+                    : order.status === 'In Transit'
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'bg-amber-100 text-amber-800'
+                }`}
+              >
                 {order.status}
               </span>
             </div>
@@ -206,7 +237,9 @@ export default function ProfileScreen() {
         <Heart size={48} className="mx-auto text-stone-300 mb-4" />
         <h3 className="text-lg font-medium mb-2">Your wishlist is empty</h3>
         <p className="text-stone-600 mb-6">Save items you love for later</p>
-        <a href="/shop" className="btn btn-primary">Start Shopping</a>
+        <a href="/shop" className="btn btn-primary">
+          Start Shopping
+        </a>
       </div>
     </div>
   )
@@ -245,7 +278,9 @@ export default function ProfileScreen() {
         </div>
         <div className="card p-6">
           <h3 className="font-medium mb-2">Two-Factor Authentication</h3>
-          <p className="text-stone-600 mb-4">Add an extra layer of security to your account</p>
+          <p className="text-stone-600 mb-4">
+            Add an extra layer of security to your account
+          </p>
           <button className="btn btn-outline">Enable 2FA</button>
         </div>
       </div>
@@ -260,11 +295,12 @@ export default function ProfileScreen() {
         <div className="card p-6">
           <h3 className="font-medium mb-4">Regional Preferences</h3>
           <p className="text-stone-600 text-sm mb-4">
-            Configure your preferred currency and region for localized pricing and content.
+            Configure your preferred currency and region for localized pricing
+            and content.
           </p>
           <CurrencySelector variant="profile" showRegion={true} />
         </div>
-        
+
         <div className="card p-6">
           <h3 className="font-medium mb-4">Notifications</h3>
           <div className="space-y-3">
@@ -301,19 +337,26 @@ export default function ProfileScreen() {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'profile': return renderProfileTab()
-      case 'orders': return renderOrdersTab()
-      case 'wishlist': return renderWishlistTab()
-      case 'payments': return renderPaymentsTab()
-      case 'security': return renderSecurityTab()
-      case 'settings': return renderSettingsTab()
-      default: return renderProfileTab()
+      case 'profile':
+        return renderProfileTab()
+      case 'orders':
+        return renderOrdersTab()
+      case 'wishlist':
+        return renderWishlistTab()
+      case 'payments':
+        return renderPaymentsTab()
+      case 'security':
+        return renderSecurityTab()
+      case 'settings':
+        return renderSettingsTab()
+      default:
+        return renderProfileTab()
     }
   }
 
   return (
     <>
-      <SEO 
+      <SEO
         title="My Profile - IVOLEX"
         description="Manage your IVOLEX account settings, view order history, and update your profile information."
         keywords="profile, account, orders, settings, ivolex"
@@ -323,7 +366,9 @@ export default function ProfileScreen() {
           <div className="max-w-6xl mx-auto">
             <div className="mb-8">
               <h1 className="text-2xl font-bold mb-2">My Account</h1>
-              <p className="text-stone-600">Manage your profile and account settings</p>
+              <p className="text-stone-600">
+                Manage your profile and account settings
+              </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -334,10 +379,14 @@ export default function ProfileScreen() {
                     <div className="w-20 h-20 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-3">
                       <User size={32} className="text-brand-600" />
                     </div>
-                    <h3 className="font-semibold">{profileData.firstName} {profileData.lastName}</h3>
-                    <p className="text-stone-600 text-sm">{profileData.email}</p>
+                    <h3 className="font-semibold">
+                      {profileData.firstName} {profileData.lastName}
+                    </h3>
+                    <p className="text-stone-600 text-sm">
+                      {profileData.email}
+                    </p>
                   </div>
-                  
+
                   <nav className="space-y-1">
                     {tabs.map(tab => {
                       const Icon = tab.icon
@@ -346,8 +395,8 @@ export default function ProfileScreen() {
                           key={tab.id}
                           onClick={() => setActiveTab(tab.id)}
                           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors ${
-                            activeTab === tab.id 
-                              ? 'bg-brand-50 text-brand-700' 
+                            activeTab === tab.id
+                              ? 'bg-brand-50 text-brand-700'
                               : 'text-stone-600 hover:bg-stone-50'
                           }`}
                         >
@@ -362,9 +411,7 @@ export default function ProfileScreen() {
 
               {/* Content */}
               <div className="lg:col-span-3">
-                <div className="card p-8">
-                  {renderTabContent()}
-                </div>
+                <div className="card p-8">{renderTabContent()}</div>
               </div>
             </div>
           </div>

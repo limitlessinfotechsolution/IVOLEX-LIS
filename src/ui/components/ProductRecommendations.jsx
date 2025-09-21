@@ -5,25 +5,25 @@ import { useRecommendations } from '../contexts/RecommendationContext.jsx'
 import { useCart } from '../contexts/CartContext.jsx'
 import toast from 'react-hot-toast'
 
-export default function ProductRecommendations({ 
-  type = 'trending', 
-  productId = null, 
+export default function ProductRecommendations({
+  type = 'trending',
+  productId = null,
   category = null,
   title = null,
   subtitle = null,
   maxItems = 6,
   showAddToCart = true,
   className = '',
-  layout = 'grid' // 'grid' or 'carousel'
+  layout = 'grid', // 'grid' or 'carousel'
 }) {
   const { t, formatCurrency, isRTL } = useI18n()
-  const { 
-    getRelated, 
-    getFrequentlyBoughtTogether, 
-    getCategoryBased, 
-    getTrending, 
+  const {
+    getRelated,
+    getFrequentlyBoughtTogether,
+    getCategoryBased,
+    getTrending,
     getPersonalized,
-    trackBehavior 
+    trackBehavior,
   } = useRecommendations()
   const { addToCart } = useCart()
 
@@ -33,9 +33,13 @@ export default function ProductRecommendations({
       case 'related':
         return productId ? getRelated(productId).slice(0, maxItems) : []
       case 'frequentlyBoughtTogether':
-        return productId ? getFrequentlyBoughtTogether(productId).slice(0, maxItems) : []
+        return productId
+          ? getFrequentlyBoughtTogether(productId).slice(0, maxItems)
+          : []
       case 'categoryBased':
-        return category ? getCategoryBased(category, productId).slice(0, maxItems) : []
+        return category
+          ? getCategoryBased(category, productId).slice(0, maxItems)
+          : []
       case 'personalized':
         return getPersonalized().slice(0, maxItems)
       case 'trending':
@@ -52,7 +56,10 @@ export default function ProductRecommendations({
       case 'related':
         return t('recommendations.related', 'Related Products')
       case 'frequentlyBoughtTogether':
-        return t('recommendations.frequentlyBought', 'Frequently Bought Together')
+        return t(
+          'recommendations.frequentlyBought',
+          'Frequently Bought Together'
+        )
       case 'categoryBased':
         return t('recommendations.moreLike', 'More Like This')
       case 'personalized':
@@ -64,20 +71,22 @@ export default function ProductRecommendations({
   }
 
   const displayTitle = title || getDefaultTitle()
-  const displaySubtitle = subtitle || t('recommendations.subtitle', 'Discover products you might like')
+  const displaySubtitle =
+    subtitle ||
+    t('recommendations.subtitle', 'Discover products you might like')
 
   // Handle product interactions
-  const handleProductView = (product) => {
+  const handleProductView = product => {
     trackBehavior('view', product.id, { source: `recommendation_${type}` })
   }
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = product => {
     addToCart(product)
     trackBehavior('addToCart', product.id, { source: `recommendation_${type}` })
     toast.success(t('cart.itemAdded', 'Item added to cart'))
   }
 
-  const handleWishlist = (product) => {
+  const handleWishlist = product => {
     trackBehavior('wishlist', product.id, { source: `recommendation_${type}` })
     toast.success(t('wishlist.added', 'Added to wishlist'))
   }
@@ -97,16 +106,19 @@ export default function ProductRecommendations({
       {/* Product Image */}
       <div className="relative aspect-square bg-gray-100 overflow-hidden">
         <img
-          src={product.image || `/api/placeholder/300/300?text=${encodeURIComponent(product.name)}`}
+          src={
+            product.image ||
+            `/api/placeholder/300/300?text=${encodeURIComponent(product.name)}`
+          }
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
         />
-        
+
         {/* Quick Actions */}
         <div className="absolute top-3 right-3 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               handleWishlist(product)
             }}
@@ -115,7 +127,7 @@ export default function ProductRecommendations({
             <Heart size={16} />
           </button>
           <button
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               // Navigate to product detail
             }}
@@ -139,10 +151,12 @@ export default function ProductRecommendations({
         <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 group-hover:text-brand-600 transition-colors">
           {product.name}
         </h3>
-        
+
         {/* Category & Tags */}
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-xs text-gray-500 capitalize">{product.category}</span>
+          <span className="text-xs text-gray-500 capitalize">
+            {product.category}
+          </span>
           {product.tags && product.tags.length > 0 && (
             <>
               <span className="text-gray-300">•</span>
@@ -166,7 +180,7 @@ export default function ProductRecommendations({
         {/* Add to Cart Button */}
         {showAddToCart && (
           <button
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               handleAddToCart(product)
             }}
@@ -184,16 +198,16 @@ export default function ProductRecommendations({
     <section className={`py-8 ${className}`}>
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <div className={`flex items-center justify-between mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div
+          className={`flex items-center justify-between mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}
+        >
           <div className={isRTL ? 'text-right' : 'text-left'}>
             <h2 className="text-2xl font-bold text-gray-900 mb-1">
               {displayTitle}
             </h2>
-            <p className="text-gray-600">
-              {displaySubtitle}
-            </p>
+            <p className="text-gray-600">{displaySubtitle}</p>
           </div>
-          
+
           {recommendations.length > maxItems && (
             <button className="flex items-center gap-2 text-brand-600 hover:text-brand-700 font-medium transition-colors">
               {t('common.viewAll', 'View All')}
@@ -203,12 +217,15 @@ export default function ProductRecommendations({
         </div>
 
         {/* Products Grid/Carousel */}
-        <div className={`
-          ${layout === 'grid' 
-            ? `grid grid-cols-2 md:grid-cols-3 lg:grid-cols-${Math.min(maxItems, 6)} gap-4 md:gap-6`
-            : 'flex gap-4 overflow-x-auto scrollbar-hide'
+        <div
+          className={`
+          ${
+            layout === 'grid'
+              ? `grid grid-cols-2 md:grid-cols-3 lg:grid-cols-${Math.min(maxItems, 6)} gap-4 md:gap-6`
+              : 'flex gap-4 overflow-x-auto scrollbar-hide'
           }
-        `}>
+        `}
+        >
           {recommendations.map((product, index) => (
             <div
               key={product.id}
@@ -222,13 +239,18 @@ export default function ProductRecommendations({
         {/* Special message for frequently bought together */}
         {type === 'frequentlyBoughtTogether' && recommendations.length > 0 && (
           <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
-            <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div
+              className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+            >
               <div className={isRTL ? 'text-right' : 'text-left'}>
                 <h4 className="font-semibold text-blue-900 mb-1">
                   {t('recommendations.bundleOffer', 'Bundle Offer')}
                 </h4>
                 <p className="text-sm text-blue-700">
-                  {t('recommendations.bundleDiscount', 'Get 10% off when you buy these items together')}
+                  {t(
+                    'recommendations.bundleDiscount',
+                    'Get 10% off when you buy these items together'
+                  )}
                 </p>
               </div>
               <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">

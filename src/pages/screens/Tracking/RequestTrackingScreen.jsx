@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   Package,
   Clock,
   CheckCircle,
@@ -12,7 +12,7 @@ import {
   Mail,
   Phone,
   MessageSquare,
-  Download
+  Download,
 } from 'lucide-react'
 import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
 import { Link, useParams } from 'react-router-dom'
@@ -29,8 +29,10 @@ const MOCK_REQUEST = {
   segment: 'leather',
   projectTitle: 'Custom Leather Briefcase',
   projectTitleAr: 'حقيبة جلدية مخصصة',
-  description: 'Need a premium leather briefcase with custom embossing and specific dimensions for business use.',
-  descriptionAr: 'أحتاج حقيبة جلدية فاخرة مع نقش مخصص وأبعاد محددة للاستخدام التجاري.',
+  description:
+    'Need a premium leather briefcase with custom embossing and specific dimensions for business use.',
+  descriptionAr:
+    'أحتاج حقيبة جلدية فاخرة مع نقش مخصص وأبعاد محددة للاستخدام التجاري.',
   budget: 1500,
   expectedTimeline: '2 weeks',
   dateSubmitted: '2024-01-15T10:30:00Z',
@@ -38,13 +40,13 @@ const MOCK_REQUEST = {
   estimatedCompletion: '2024-01-29T18:00:00Z',
   files: [
     { name: 'reference-design.jpg', size: '2.5 MB', type: 'image' },
-    { name: 'measurements.pdf', size: '1.2 MB', type: 'document' }
+    { name: 'measurements.pdf', size: '1.2 MB', type: 'document' },
   ],
   requirements: {
     material: 'Premium Italian Leather',
     color: 'Dark Brown',
     dimensions: '40cm x 30cm x 10cm',
-    features: ['Custom embossing', 'Brass hardware', 'Interior organizers']
+    features: ['Custom embossing', 'Brass hardware', 'Interior organizers'],
   },
   trackingTimeline: [
     {
@@ -52,31 +54,35 @@ const MOCK_REQUEST = {
       status: 'submitted',
       title: 'Request Submitted',
       titleAr: 'تم إرسال الطلب',
-      description: 'Your customization request has been received and is under review.',
+      description:
+        'Your customization request has been received and is under review.',
       descriptionAr: 'تم استلام طلب التخصيص الخاص بك وهو قيد المراجعة.',
       timestamp: '2024-01-15T10:30:00Z',
-      completed: true
+      completed: true,
     },
     {
       id: 2,
       status: 'reviewed',
       title: 'Design Review',
       titleAr: 'مراجعة التصميم',
-      description: 'Our design team has reviewed your requirements and approved the project.',
+      description:
+        'Our design team has reviewed your requirements and approved the project.',
       descriptionAr: 'راجع فريق التصميم متطلباتك ووافق على المشروع.',
       timestamp: '2024-01-16T14:20:00Z',
-      completed: true
+      completed: true,
     },
     {
       id: 3,
       status: 'in_progress',
       title: 'Production Started',
       titleAr: 'بدء الإنتاج',
-      description: 'Your custom item is now being crafted by our skilled artisans.',
-      descriptionAr: 'يتم الآن صناعة العنصر المخصص الخاص بك من قبل حرفيينا المهرة.',
+      description:
+        'Your custom item is now being crafted by our skilled artisans.',
+      descriptionAr:
+        'يتم الآن صناعة العنصر المخصص الخاص بك من قبل حرفيينا المهرة.',
       timestamp: '2024-01-18T09:15:00Z',
       completed: true,
-      current: true
+      current: true,
     },
     {
       id: 4,
@@ -86,7 +92,7 @@ const MOCK_REQUEST = {
       description: 'Final quality inspection and finishing touches.',
       descriptionAr: 'فحص الجودة النهائي واللمسات الأخيرة.',
       timestamp: null,
-      completed: false
+      completed: false,
     },
     {
       id: 5,
@@ -96,57 +102,57 @@ const MOCK_REQUEST = {
       description: 'Your custom item is complete and ready for shipping.',
       descriptionAr: 'العنصر المخصص الخاص بك مكتمل وجاهز للشحن.',
       timestamp: null,
-      completed: false
-    }
-  ]
+      completed: false,
+    },
+  ],
 }
 
 // Helper functions
-const formatDate = (dateString) => {
+const formatDate = dateString => {
   return new Date(dateString).toLocaleDateString()
 }
 
-const formatCurrency = (amount) => {
+const formatCurrency = amount => {
   return `${amount} SAR`
 }
 
 const STATUS_CONFIG = {
-  submitted: { 
-    label: 'Submitted', 
+  submitted: {
+    label: 'Submitted',
     labelAr: 'مُرسل',
     color: 'bg-blue-100 text-blue-800',
-    icon: FileText 
+    icon: FileText,
   },
-  reviewed: { 
-    label: 'Under Review', 
+  reviewed: {
+    label: 'Under Review',
     labelAr: 'قيد المراجعة',
     color: 'bg-yellow-100 text-yellow-800',
-    icon: Clock 
+    icon: Clock,
   },
-  in_progress: { 
-    label: 'In Progress', 
+  in_progress: {
+    label: 'In Progress',
     labelAr: 'قيد التنفيذ',
     color: 'bg-purple-100 text-purple-800',
-    icon: AlertCircle 
+    icon: AlertCircle,
   },
-  quality_check: { 
-    label: 'Quality Check', 
+  quality_check: {
+    label: 'Quality Check',
     labelAr: 'مراقبة الجودة',
     color: 'bg-orange-100 text-orange-800',
-    icon: Package 
+    icon: Package,
   },
-  completed: { 
-    label: 'Completed', 
+  completed: {
+    label: 'Completed',
     labelAr: 'مكتمل',
     color: 'bg-green-100 text-green-800',
-    icon: CheckCircle 
+    icon: CheckCircle,
   },
-  rejected: { 
-    label: 'Rejected', 
+  rejected: {
+    label: 'Rejected',
     labelAr: 'مرفوض',
     color: 'bg-red-100 text-red-800',
-    icon: XCircle 
-  }
+    icon: XCircle,
+  },
 }
 
 const RequestTrackingScreen = () => {
@@ -169,7 +175,9 @@ const RequestTrackingScreen = () => {
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-center py-20">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-            <span className="ml-3 text-foreground/60">{t('common.loading', 'Loading...')}</span>
+            <span className="ml-3 text-foreground/60">
+              {t('common.loading', 'Loading...')}
+            </span>
           </div>
         </div>
       </div>
@@ -182,9 +190,14 @@ const RequestTrackingScreen = () => {
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center py-20">
             <FileText size={48} className="mx-auto text-foreground/30 mb-4" />
-            <h1 className="text-2xl font-semibold mb-2">{t('tracking.notFound', 'Request not found')}</h1>
+            <h1 className="text-2xl font-semibold mb-2">
+              {t('tracking.notFound', 'Request not found')}
+            </h1>
             <p className="text-foreground/60 mb-6">
-              {t('tracking.notFoundDesc', 'The customization request you\'re looking for doesn\'t exist or has been removed.')}
+              {t(
+                'tracking.notFoundDesc',
+                "The customization request you're looking for doesn't exist or has been removed."
+              )}
             </p>
             <Link to="/customize" className="btn btn-primary">
               {t('tracking.newRequest', 'Create New Request')}
@@ -207,8 +220,8 @@ const RequestTrackingScreen = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <Link 
-            to="/account/orders" 
+          <Link
+            to="/account/orders"
             className={`inline-flex items-center gap-2 text-foreground/60 hover:text-foreground transition-colors mb-4 ${
               isRTL ? 'flex-row-reverse' : ''
             }`}
@@ -216,21 +229,29 @@ const RequestTrackingScreen = () => {
             <BackIcon size={16} />
             {t('common.back', 'Back')}
           </Link>
-          
-          <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+
+          <div
+            className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
             <div className={isRTL ? 'text-right' : 'text-left'}>
               <h1 className="text-3xl font-bold text-foreground mb-2">
                 {isRTL ? request.projectTitleAr : request.projectTitle}
               </h1>
               <div className="flex items-center gap-4 text-foreground/60">
-                <span>{t('tracking.requestId', 'Request ID')}: {request.id}</span>
+                <span>
+                  {t('tracking.requestId', 'Request ID')}: {request.id}
+                </span>
                 <span>•</span>
                 <span>{formatDate(request.dateSubmitted)}</span>
               </div>
             </div>
-            
-            <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <span className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium ${statusConfig.color}`}>
+
+            <div
+              className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+            >
+              <span
+                className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium ${statusConfig.color}`}
+              >
                 <statusConfig.icon size={16} />
                 {isRTL ? statusConfig.labelAr : statusConfig.label}
               </span>
@@ -251,18 +272,23 @@ const RequestTrackingScreen = () => {
               <h2 className="text-xl font-semibold text-foreground mb-6">
                 {t('tracking.progress', 'Progress Timeline')}
               </h2>
-              
+
               <div className="space-y-6">
                 {request.trackingTimeline.map((step, index) => (
-                  <div key={step.id} className={`flex gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div
+                    key={step.id}
+                    className={`flex gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
                     <div className="flex flex-col items-center">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        step.completed 
-                          ? 'bg-green-100 text-green-600' 
-                          : step.current
-                          ? 'bg-blue-100 text-blue-600'
-                          : 'bg-gray-100 text-gray-400'
-                      }`}>
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          step.completed
+                            ? 'bg-green-100 text-green-600'
+                            : step.current
+                              ? 'bg-blue-100 text-blue-600'
+                              : 'bg-gray-100 text-gray-400'
+                        }`}
+                      >
                         {step.completed ? (
                           <CheckCircle size={20} />
                         ) : step.current ? (
@@ -272,17 +298,27 @@ const RequestTrackingScreen = () => {
                         )}
                       </div>
                       {index < request.trackingTimeline.length - 1 && (
-                        <div className={`w-px h-8 mt-2 ${
-                          step.completed ? 'bg-green-200' : 'bg-gray-200'
-                        }`}></div>
+                        <div
+                          className={`w-px h-8 mt-2 ${
+                            step.completed ? 'bg-green-200' : 'bg-gray-200'
+                          }`}
+                        ></div>
                       )}
                     </div>
-                    
-                    <div className={`flex-1 pb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+
+                    <div
+                      className={`flex-1 pb-6 ${isRTL ? 'text-right' : 'text-left'}`}
+                    >
                       <div className="flex items-center justify-between mb-1">
-                        <h3 className={`font-semibold ${
-                          step.completed ? 'text-foreground' : step.current ? 'text-blue-600' : 'text-foreground/60'
-                        }`}>
+                        <h3
+                          className={`font-semibold ${
+                            step.completed
+                              ? 'text-foreground'
+                              : step.current
+                                ? 'text-blue-600'
+                                : 'text-foreground/60'
+                          }`}
+                        >
                           {isRTL ? step.titleAr : step.title}
                         </h3>
                         {step.timestamp && (
@@ -291,9 +327,15 @@ const RequestTrackingScreen = () => {
                           </span>
                         )}
                       </div>
-                      <p className={`text-sm ${
-                        step.completed ? 'text-foreground/70' : step.current ? 'text-blue-600/80' : 'text-foreground/50'
-                      }`}>
+                      <p
+                        className={`text-sm ${
+                          step.completed
+                            ? 'text-foreground/70'
+                            : step.current
+                              ? 'text-blue-600/80'
+                              : 'text-foreground/50'
+                        }`}
+                      >
                         {isRTL ? step.descriptionAr : step.description}
                       </p>
                     </div>
@@ -312,31 +354,38 @@ const RequestTrackingScreen = () => {
               <h2 className="text-xl font-semibold text-foreground mb-4">
                 {t('tracking.projectDetails', 'Project Details')}
               </h2>
-              
-              <div className={`prose prose-stone max-w-none ${isRTL ? 'text-right' : 'text-left'}`}>
+
+              <div
+                className={`prose prose-stone max-w-none ${isRTL ? 'text-right' : 'text-left'}`}
+              >
                 <p className="text-foreground/70 leading-relaxed">
                   {isRTL ? request.descriptionAr : request.description}
                 </p>
               </div>
-              
+
               {request.requirements && (
                 <div className="mt-6">
                   <h3 className="font-semibold text-foreground mb-3">
                     {t('tracking.specifications', 'Specifications')}
                   </h3>
                   <div className="bg-background rounded-lg p-4">
-                    {Object.entries(request.requirements).map(([key, value]) => (
-                      <div key={key} className={`flex justify-between py-2 border-b border-border last:border-0 ${
-                        isRTL ? 'flex-row-reverse' : ''
-                      }`}>
-                        <span className="font-medium text-foreground capitalize">
-                          {key.replace(/([A-Z])/g, ' $1')}:
-                        </span>
-                        <span className="text-foreground/70">
-                          {Array.isArray(value) ? value.join(', ') : value}
-                        </span>
-                      </div>
-                    ))}
+                    {Object.entries(request.requirements).map(
+                      ([key, value]) => (
+                        <div
+                          key={key}
+                          className={`flex justify-between py-2 border-b border-border last:border-0 ${
+                            isRTL ? 'flex-row-reverse' : ''
+                          }`}
+                        >
+                          <span className="font-medium text-foreground capitalize">
+                            {key.replace(/([A-Z])/g, ' $1')}:
+                          </span>
+                          <span className="text-foreground/70">
+                            {Array.isArray(value) ? value.join(', ') : value}
+                          </span>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               )}
@@ -355,23 +404,45 @@ const RequestTrackingScreen = () => {
               <h3 className="font-semibold text-foreground mb-4">
                 {t('tracking.summary', 'Request Summary')}
               </h3>
-              
+
               <div className="space-y-3 text-sm">
-                <div className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="text-foreground/60">{t('tracking.budget', 'Budget')}</span>
-                  <span className="font-semibold text-foreground">{formatCurrency(request.budget)}</span>
+                <div
+                  className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
+                  <span className="text-foreground/60">
+                    {t('tracking.budget', 'Budget')}
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    {formatCurrency(request.budget)}
+                  </span>
                 </div>
-                <div className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="text-foreground/60">{t('tracking.timeline', 'Timeline')}</span>
-                  <span className="font-semibold text-foreground">{request.expectedTimeline}</span>
+                <div
+                  className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
+                  <span className="text-foreground/60">
+                    {t('tracking.timeline', 'Timeline')}
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    {request.expectedTimeline}
+                  </span>
                 </div>
-                <div className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="text-foreground/60">{t('tracking.category', 'Category')}</span>
-                  <span className="font-semibold text-foreground capitalize">{request.segment}</span>
+                <div
+                  className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
+                  <span className="text-foreground/60">
+                    {t('tracking.category', 'Category')}
+                  </span>
+                  <span className="font-semibold text-foreground capitalize">
+                    {request.segment}
+                  </span>
                 </div>
                 {request.estimatedCompletion && (
-                  <div className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <span className="text-foreground/60">{t('tracking.estimated', 'Est. Completion')}</span>
+                  <div
+                    className={`flex justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
+                    <span className="text-foreground/60">
+                      {t('tracking.estimated', 'Est. Completion')}
+                    </span>
                     <span className="font-semibold text-foreground">
                       {formatDate(request.estimatedCompletion)}
                     </span>
@@ -390,18 +461,26 @@ const RequestTrackingScreen = () => {
               <h3 className="font-semibold text-foreground mb-4">
                 {t('tracking.needHelp', 'Need Help?')}
               </h3>
-              
+
               <div className="space-y-3 mb-4">
-                <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div
+                  className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
                   <Mail className="text-foreground/60" size={16} />
-                  <span className="text-sm text-foreground">support@ivolex.com</span>
+                  <span className="text-sm text-foreground">
+                    support@ivolex.com
+                  </span>
                 </div>
-                <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div
+                  className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
                   <Phone className="text-foreground/60" size={16} />
-                  <span className="text-sm text-foreground">+966 50 123 4567</span>
+                  <span className="text-sm text-foreground">
+                    +966 50 123 4567
+                  </span>
                 </div>
               </div>
-              
+
               <button className="w-full btn btn-outline text-sm">
                 <MessageSquare size={16} className={isRTL ? 'ml-2' : 'mr-2'} />
                 {t('tracking.contactSupport', 'Contact Support')}
@@ -419,17 +498,26 @@ const RequestTrackingScreen = () => {
                 <h3 className="font-semibold text-foreground mb-4">
                   {t('tracking.attachedFiles', 'Attached Files')}
                 </h3>
-                
+
                 <div className="space-y-2">
                   {request.files.map((file, index) => (
-                    <div key={index} className={`flex items-center justify-between p-3 bg-background rounded-lg ${
-                      isRTL ? 'flex-row-reverse' : ''
-                    }`}>
-                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div
+                      key={index}
+                      className={`flex items-center justify-between p-3 bg-background rounded-lg ${
+                        isRTL ? 'flex-row-reverse' : ''
+                      }`}
+                    >
+                      <div
+                        className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+                      >
                         <FileText size={16} className="text-foreground/60" />
                         <div className={isRTL ? 'text-right' : 'text-left'}>
-                          <div className="font-medium text-foreground text-sm">{file.name}</div>
-                          <div className="text-xs text-foreground/60">{file.size}</div>
+                          <div className="font-medium text-foreground text-sm">
+                            {file.name}
+                          </div>
+                          <div className="text-xs text-foreground/60">
+                            {file.size}
+                          </div>
                         </div>
                       </div>
                       <button className="p-1 hover:bg-surface rounded transition-colors">

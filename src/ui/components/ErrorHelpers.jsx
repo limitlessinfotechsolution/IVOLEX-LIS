@@ -50,7 +50,7 @@ export function NetworkStatus() {
 // API Error component
 export function ApiError({ error, onRetry }) {
   const { t } = useI18n()
-  
+
   return (
     <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
       <AlertCircle size={32} className="text-red-600 mx-auto mb-4" />
@@ -58,7 +58,8 @@ export function ApiError({ error, onRetry }) {
         {t('error.api.title', 'Request Failed')}
       </h3>
       <p className="text-red-700 mb-4">
-        {error?.message || t('error.api.general', 'An unexpected error occurred.')}
+        {error?.message ||
+          t('error.api.general', 'An unexpected error occurred.')}
       </p>
       {onRetry && (
         <button

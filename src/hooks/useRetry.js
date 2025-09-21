@@ -1,42 +1,48 @@
 import { useState, useCallback } from 'react'
 import { showError } from '../ui/components/ToastProvider'
 
-export function useRetry(fn, { maxRetries = 3, delay = 1000, backoff = true } = {}) {
+export function useRetry(
+  fn,
+  { maxRetries = 3, delay = 1000, backoff = true } = {}
+) {
   const [isRetrying, setIsRetrying] = useState(false)
   const [retryCount, setRetryCount] = useState(0)
   const [lastError, setLastError] = useState(null)
 
-  const retry = useCallback(async (...args) => {
-    if (retryCount >= maxRetries) {
-      showError('Maximum retry attempts reached')
-      return
-    }
-
-    setIsRetrying(true)
-    setRetryCount(prev => prev + 1)
-
-    try {
-      const result = await fn(...args)
-      setRetryCount(0)
-      setLastError(null)
-      setIsRetrying(false)
-      return result
-    } catch (error) {
-      setLastError(error)
-      
-      if (retryCount < maxRetries - 1) {
-        const retryDelay = backoff ? delay * Math.pow(2, retryCount) : delay
-        
-        setTimeout(() => {
-          retry(...args)
-        }, retryDelay)
-      } else {
-        setIsRetrying(false)
-        showError('Operation failed after multiple attempts')
-        throw error
+  const retry = useCallback(
+    async (...args) => {
+      if (retryCount >= maxRetries) {
+        showError('Maximum retry attempts reached')
+        return
       }
-    }
-  }, [fn, maxRetries, delay, backoff, retryCount])
+
+      setIsRetrying(true)
+      setRetryCount(prev => prev + 1)
+
+      try {
+        const result = await fn(...args)
+        setRetryCount(0)
+        setLastError(null)
+        setIsRetrying(false)
+        return result
+      } catch (error) {
+        setLastError(error)
+
+        if (retryCount < maxRetries - 1) {
+          const retryDelay = backoff ? delay * Math.pow(2, retryCount) : delay
+
+          setTimeout(() => {
+            retry(...args)
+          }, retryDelay)
+        } else {
+          setIsRetrying(false)
+          showError('Operation failed after multiple attempts')
+          throw error
+        }
+      }
+    },
+    [fn, maxRetries, delay, backoff, retryCount]
+  )
 
   const reset = useCallback(() => {
     setRetryCount(0)
@@ -50,7 +56,7 @@ export function useRetry(fn, { maxRetries = 3, delay = 1000, backoff = true } = 
     isRetrying,
     retryCount,
     lastError,
-    canRetry: retryCount < maxRetries
+    canRetry: retryCount < maxRetries,
   }
 }
 
@@ -62,7 +68,7 @@ export function useAsyncOperation() {
   const execute = useCallback(async (asyncFn, ...args) => {
     setLoading(true)
     setError(null)
-    
+
     try {
       const result = await asyncFn(...args)
       setData(result)
@@ -86,6 +92,6 @@ export function useAsyncOperation() {
     error,
     data,
     execute,
-    reset
+    reset,
   }
 }

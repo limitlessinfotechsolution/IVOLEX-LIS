@@ -34,22 +34,22 @@ export default function CheckoutScreen() {
   const tax = total * 0.18 // 18% GST for India
   const finalTotal = subtotal + shipping + tax
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }))
   }
 
-  const handlePlaceOrder = async (e) => {
+  const handlePlaceOrder = async e => {
     e.preventDefault()
     setIsProcessing(true)
 
     // Simulate payment processing
     try {
       await new Promise(resolve => setTimeout(resolve, 2000))
-      
+
       // Create order data
       const orderData = {
         orderNumber: 'ORD-' + Date.now(),
@@ -58,40 +58,48 @@ export default function CheckoutScreen() {
           name: item.name || item.title,
           price: item.price,
           qty: qty,
-          image: item.image || item.img
+          image: item.image || item.img,
         })),
         customer: {
           email: formData.email,
           firstName: formData.firstName,
-          lastName: formData.lastName
+          lastName: formData.lastName,
         },
         shipping: {
           address: formData.address,
           city: formData.city,
           country: formData.country,
-          postalCode: formData.postalCode
+          postalCode: formData.postalCode,
         },
         payment: {
           method: formData.paymentMethod,
-          cardNumber: formData.paymentMethod === 'card' ? formData.cardNumber.slice(-4) : null,
-          cardName: formData.paymentMethod === 'card' ? formData.cardName : null,
+          cardNumber:
+            formData.paymentMethod === 'card'
+              ? formData.cardNumber.slice(-4)
+              : null,
+          cardName:
+            formData.paymentMethod === 'card' ? formData.cardName : null,
           upiId: formData.paymentMethod === 'upi' ? formData.upiId : null,
-          bankAccount: formData.paymentMethod === 'bank' ? formData.bankAccount.slice(-4) : null,
-          ifscCode: formData.paymentMethod === 'bank' ? formData.ifscCode : null
+          bankAccount:
+            formData.paymentMethod === 'bank'
+              ? formData.bankAccount.slice(-4)
+              : null,
+          ifscCode:
+            formData.paymentMethod === 'bank' ? formData.ifscCode : null,
         },
         totals: {
           subtotal: subtotal,
           shipping: shipping,
           tax: tax,
-          total: finalTotal
-        }
+          total: finalTotal,
+        },
       }
-      
+
       // Clear cart and redirect
       clear()
       toast.success('Order placed successfully!')
-      navigate('/order-confirmation', { 
-        state: orderData
+      navigate('/order-confirmation', {
+        state: orderData,
       })
     } catch {
       toast.error('Payment failed. Please try again.')
@@ -103,13 +111,15 @@ export default function CheckoutScreen() {
   if (!hasItems) {
     return (
       <>
-        <SEO 
+        <SEO
           title="Checkout - IVOLEX"
           description="Complete your purchase securely with our streamlined checkout process."
         />
         <Container>
           <div className="text-center py-20">
-            <h1 className="text-2xl font-semibold mb-2">No items to checkout</h1>
+            <h1 className="text-2xl font-semibold mb-2">
+              No items to checkout
+            </h1>
             <p className="text-stone-600 mb-6">
               Your cart is empty. Add some items to proceed with checkout.
             </p>
@@ -124,7 +134,7 @@ export default function CheckoutScreen() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Checkout - IVOLEX"
         description="Complete your purchase securely with our streamlined checkout process."
         keywords="checkout, payment, secure shopping, buy online"
@@ -137,12 +147,17 @@ export default function CheckoutScreen() {
               <h1 className="text-2xl font-semibold">Secure Checkout</h1>
             </div>
 
-            <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <form
+              onSubmit={handlePlaceOrder}
+              className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+            >
               <div className="lg:col-span-2 space-y-6">
                 {/* Contact Information */}
                 <div className="card p-6">
                   <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <span className="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-sm">1</span>
+                    <span className="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-sm">
+                      1
+                    </span>
                     Contact Information
                   </h2>
                   <div className="space-y-4">
@@ -161,7 +176,9 @@ export default function CheckoutScreen() {
                 {/* Shipping Details */}
                 <div className="card p-6">
                   <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <span className="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-sm">2</span>
+                    <span className="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-sm">
+                      2
+                    </span>
                     Shipping Details
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -219,20 +236,26 @@ export default function CheckoutScreen() {
                 {/* Payment Information */}
                 <div className="card p-6">
                   <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <span className="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-sm">3</span>
+                    <span className="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-sm">
+                      3
+                    </span>
                     Payment Information
                   </h2>
-                  
+
                   {/* Payment Method Selection */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium mb-3">Choose Payment Method</label>
+                    <label className="block text-sm font-medium mb-3">
+                      Choose Payment Method
+                    </label>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Cash on Delivery */}
-                      <label className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${
-                        formData.paymentMethod === 'cod' 
-                          ? 'border-brand-500 bg-brand-50' 
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}>
+                      <label
+                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${
+                          formData.paymentMethod === 'cod'
+                            ? 'border-brand-500 bg-brand-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
                         <input
                           type="radio"
                           name="paymentMethod"
@@ -244,16 +267,20 @@ export default function CheckoutScreen() {
                         <div className="text-center">
                           <div className="text-2xl mb-2">💵</div>
                           <div className="font-medium">Cash on Delivery</div>
-                          <div className="text-xs text-gray-500 mt-1">Pay when you receive</div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            Pay when you receive
+                          </div>
                         </div>
                       </label>
-                      
+
                       {/* UPI */}
-                      <label className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${
-                        formData.paymentMethod === 'upi' 
-                          ? 'border-brand-500 bg-brand-50' 
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}>
+                      <label
+                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${
+                          formData.paymentMethod === 'upi'
+                            ? 'border-brand-500 bg-brand-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
                         <input
                           type="radio"
                           name="paymentMethod"
@@ -265,16 +292,20 @@ export default function CheckoutScreen() {
                         <div className="text-center">
                           <div className="text-2xl mb-2">📱</div>
                           <div className="font-medium">UPI Payment</div>
-                          <div className="text-xs text-gray-500 mt-1">GooglePay, PhonePe, Paytm</div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            GooglePay, PhonePe, Paytm
+                          </div>
                         </div>
                       </label>
-                      
+
                       {/* Bank Transfer */}
-                      <label className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${
-                        formData.paymentMethod === 'bank' 
-                          ? 'border-brand-500 bg-brand-50' 
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}>
+                      <label
+                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${
+                          formData.paymentMethod === 'bank'
+                            ? 'border-brand-500 bg-brand-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
                         <input
                           type="radio"
                           name="paymentMethod"
@@ -286,16 +317,20 @@ export default function CheckoutScreen() {
                         <div className="text-center">
                           <div className="text-2xl mb-2">🏦</div>
                           <div className="font-medium">Bank Transfer</div>
-                          <div className="text-xs text-gray-500 mt-1">Direct bank transfer</div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            Direct bank transfer
+                          </div>
                         </div>
                       </label>
                     </div>
                   </div>
-                  
+
                   {/* UPI Payment Details */}
                   {formData.paymentMethod === 'upi' && (
                     <div className="border rounded-xl p-4 bg-blue-50 mb-4">
-                      <label className="block text-sm font-medium mb-2">UPI ID</label>
+                      <label className="block text-sm font-medium mb-2">
+                        UPI ID
+                      </label>
                       <input
                         className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500"
                         placeholder="yourname@paytm / yourname@phonepe"
@@ -309,13 +344,15 @@ export default function CheckoutScreen() {
                       </p>
                     </div>
                   )}
-                  
+
                   {/* Bank Transfer Details */}
                   {formData.paymentMethod === 'bank' && (
                     <div className="border rounded-xl p-4 bg-green-50 space-y-4 mb-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium mb-2">Account Number</label>
+                          <label className="block text-sm font-medium mb-2">
+                            Account Number
+                          </label>
                           <input
                             className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500"
                             placeholder="Bank Account Number"
@@ -326,7 +363,9 @@ export default function CheckoutScreen() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium mb-2">IFSC Code</label>
+                          <label className="block text-sm font-medium mb-2">
+                            IFSC Code
+                          </label>
                           <input
                             className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500"
                             placeholder="IFSC Code"
@@ -338,11 +377,12 @@ export default function CheckoutScreen() {
                         </div>
                       </div>
                       <p className="text-xs text-gray-600">
-                        Bank transfer details will be provided after order confirmation
+                        Bank transfer details will be provided after order
+                        confirmation
                       </p>
                     </div>
                   )}
-                  
+
                   {/* Credit/Debit Card (Optional) */}
                   {formData.paymentMethod === 'card' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -385,14 +425,18 @@ export default function CheckoutScreen() {
                       </div>
                     </div>
                   )}
-                  
+
                   <div className="mt-4 flex items-center gap-2 text-sm text-stone-600">
                     <CreditCard size={16} />
                     <span>
-                      {formData.paymentMethod === 'cod' && 'Pay cash when your order arrives'}
-                      {formData.paymentMethod === 'upi' && 'Secure UPI payment through trusted providers'}
-                      {formData.paymentMethod === 'bank' && 'Safe and secure bank transfer'}
-                      {formData.paymentMethod === 'card' && 'We accept all major credit and debit cards'}
+                      {formData.paymentMethod === 'cod' &&
+                        'Pay cash when your order arrives'}
+                      {formData.paymentMethod === 'upi' &&
+                        'Secure UPI payment through trusted providers'}
+                      {formData.paymentMethod === 'bank' &&
+                        'Safe and secure bank transfer'}
+                      {formData.paymentMethod === 'card' &&
+                        'We accept all major credit and debit cards'}
                     </span>
                   </div>
                 </div>
@@ -402,7 +446,7 @@ export default function CheckoutScreen() {
               <div className="lg:col-span-1">
                 <div className="card p-6 sticky top-6">
                   <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
-                  
+
                   <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
                     {items.map(({ id, item, qty }) => (
                       <div key={id} className="flex items-center gap-3">
@@ -435,7 +479,9 @@ export default function CheckoutScreen() {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Shipping</span>
-                      <span>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</span>
+                      <span>
+                        {shipping === 0 ? 'Free' : formatCurrency(shipping)}
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Tax</span>
@@ -447,8 +493,8 @@ export default function CheckoutScreen() {
                     </div>
                   </div>
 
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     className="btn btn-primary w-full mb-4"
                     disabled={isProcessing}
                   >
@@ -469,7 +515,9 @@ export default function CheckoutScreen() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Truck size={12} />
-                      <span>Free delivery on orders over {formatCurrency(500)}</span>
+                      <span>
+                        Free delivery on orders over {formatCurrency(500)}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle size={12} />

@@ -11,15 +11,18 @@ export default function Hero() {
   const getSegmentContent = () => {
     return {
       headline: t(`hero.${currentSegment}.headline`, 'Timeless Craftsmanship'),
-      subheadline: t(`hero.${currentSegment}.subheadline`, 'Experience the finest handcrafted goods'),
+      subheadline: t(
+        `hero.${currentSegment}.subheadline`,
+        'Experience the finest handcrafted goods'
+      ),
       cta: t('hero.cta', 'Explore Collection'),
       customize: t('hero.customize', 'Customize Your Piece'),
       premium: t('hero.premium', 'Premium Quality'),
       stats: {
         customers: t('hero.stats.customers', 'Happy Customers'),
         products: t('hero.stats.products', 'Products'),
-        experience: t('hero.stats.experience', 'Years Experience')
-      }
+        experience: t('hero.stats.experience', 'Years Experience'),
+      },
     }
   }
 
@@ -36,7 +39,9 @@ export default function Hero() {
       </div>
 
       <div className="container-xl relative">
-        <div className={`grid lg:grid-cols-2 gap-12 items-center py-20 lg:py-28 ${isRTL ? 'lg:grid-flow-col-dense' : ''}`}>
+        <div
+          className={`grid lg:grid-cols-2 gap-12 items-center py-20 lg:py-28 ${isRTL ? 'lg:grid-flow-col-dense' : ''}`}
+        >
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: isRTL ? 50 : -50 }}
@@ -50,7 +55,10 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className={`flex items-center gap-2 text-foreground/70 ${isRTL ? 'justify-end flex-row-reverse' : 'justify-start'}`}
             >
-              <Star className="w-5 h-5 fill-current" style={{ color: theme.colors.accent }} />
+              <Star
+                className="w-5 h-5 fill-current"
+                style={{ color: theme.colors.accent }}
+              />
               <span className="text-sm font-medium">
                 {t('hero.tagline', 'Premium Handcrafted Excellence')}
               </span>
@@ -64,8 +72,15 @@ export default function Hero() {
               dir={isRTL ? 'rtl' : 'ltr'}
             >
               {content.headline.split(' ').map((word, index) => (
-                <span key={index} className={index === 1 ? 'block' : ''} style={{ color: index === 1 ? theme.colors.primary : undefined }}>
-                  {word}{index < content.headline.split(' ').length - 1 ? ' ' : ''}
+                <span
+                  key={index}
+                  className={index === 1 ? 'block' : ''}
+                  style={{
+                    color: index === 1 ? theme.colors.primary : undefined,
+                  }}
+                >
+                  {word}
+                  {index < content.headline.split(' ').length - 1 ? ' ' : ''}
                 </span>
               ))}
             </motion.h1>
@@ -94,14 +109,21 @@ export default function Hero() {
                 whileTap={{ scale: 0.95 }}
               >
                 {content.cta}
-                <ArrowIcon className={`w-5 h-5 transition-transform ${
-                  isRTL ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'
-                }`} />
+                <ArrowIcon
+                  className={`w-5 h-5 transition-transform ${
+                    isRTL
+                      ? 'group-hover:-translate-x-1'
+                      : 'group-hover:translate-x-1'
+                  }`}
+                />
               </motion.a>
               <motion.a
                 href="#customize"
                 className="btn btn-outline text-lg px-8 py-4"
-                style={{ borderColor: theme.colors.secondary, color: theme.colors.secondary }}
+                style={{
+                  borderColor: theme.colors.secondary,
+                  color: theme.colors.secondary,
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -117,16 +139,37 @@ export default function Hero() {
               className="grid grid-cols-3 gap-8 pt-8 border-t border-border"
             >
               <div className={`${isRTL ? 'text-right' : 'text-center'}`}>
-                <div className="text-2xl font-bold" style={{ color: theme.colors.primary }}>500+</div>
-                <div className="text-sm text-foreground/60">{content.stats.customers}</div>
+                <div
+                  className="text-2xl font-bold"
+                  style={{ color: theme.colors.primary }}
+                >
+                  500+
+                </div>
+                <div className="text-sm text-foreground/60">
+                  {content.stats.customers}
+                </div>
               </div>
               <div className={`${isRTL ? 'text-right' : 'text-center'}`}>
-                <div className="text-2xl font-bold" style={{ color: theme.colors.primary }}>50+</div>
-                <div className="text-sm text-foreground/60">{content.stats.products}</div>
+                <div
+                  className="text-2xl font-bold"
+                  style={{ color: theme.colors.primary }}
+                >
+                  50+
+                </div>
+                <div className="text-sm text-foreground/60">
+                  {content.stats.products}
+                </div>
               </div>
               <div className={`${isRTL ? 'text-right' : 'text-center'}`}>
-                <div className="text-2xl font-bold" style={{ color: theme.colors.primary }}>14</div>
-                <div className="text-sm text-foreground/60">{content.stats.experience}</div>
+                <div
+                  className="text-2xl font-bold"
+                  style={{ color: theme.colors.primary }}
+                >
+                  14
+                </div>
+                <div className="text-sm text-foreground/60">
+                  {content.stats.experience}
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -162,7 +205,10 @@ export default function Hero() {
                 transition={{ duration: 0.5, delay: 1 }}
                 whileHover={{ scale: 1.1 }}
               >
-                <Star className="w-6 h-6 fill-current" style={{ color: theme.colors.accent }} />
+                <Star
+                  className="w-6 h-6 fill-current"
+                  style={{ color: theme.colors.accent }}
+                />
               </motion.div>
 
               <motion.div

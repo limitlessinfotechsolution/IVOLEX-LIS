@@ -70,7 +70,7 @@ export function CartProvider({ children }) {
         })
       },
       clear: () => dispatch({ type: 'clear' }),
-      isUpdating: (id) => updatingItems.has(id),
+      isUpdating: id => updatingItems.has(id),
     }
   }, [state, updatingItems])
   return <CartContext.Provider value={api}>{children}</CartContext.Provider>

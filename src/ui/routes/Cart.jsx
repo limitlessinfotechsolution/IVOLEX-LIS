@@ -44,7 +44,11 @@ export default function Cart() {
                       onClick={() => setQty(id, Math.max(0, qty - 1))}
                       disabled={isUpdating(id)}
                     >
-                      {isUpdating(id) ? <LoadingSpinner size="sm" text="" /> : '-'}
+                      {isUpdating(id) ? (
+                        <LoadingSpinner size="sm" text="" />
+                      ) : (
+                        '-'
+                      )}
                     </button>
                     <input
                       className="w-12 text-center border rounded-xl py-1 disabled:opacity-50"
@@ -61,7 +65,11 @@ export default function Cart() {
                       onClick={() => setQty(id, qty + 1)}
                       disabled={isUpdating(id)}
                     >
-                      {isUpdating(id) ? <LoadingSpinner size="sm" text="" /> : '+'}
+                      {isUpdating(id) ? (
+                        <LoadingSpinner size="sm" text="" />
+                      ) : (
+                        '+'
+                      )}
                     </button>
                   </div>
                   <button
