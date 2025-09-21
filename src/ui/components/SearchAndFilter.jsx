@@ -624,6 +624,7 @@ export function SortDropdown({ sort, onSortChange }) {
         className="flex items-center gap-2 px-4 py-2 border border-stone-300 rounded-lg hover:bg-stone-50 transition-colors min-w-[140px] justify-between"
         aria-expanded={isOpen}
         aria-haspopup="true"
+        aria-label={`Sort by ${currentOption ? currentOption.label : 'default'}`}
       >
         <span className="text-sm">
           {currentOption ? currentOption.label : 'Sort by'}

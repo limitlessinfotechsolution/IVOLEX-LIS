@@ -194,6 +194,7 @@ export default function EnhancedHero() {
             }}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
+            aria-label={`Shop now: ${content.cta}`}
           >
             <ShoppingBag size={20} />
             {content.cta}
@@ -211,6 +212,7 @@ export default function EnhancedHero() {
             className="group flex items-center gap-3 px-6 py-4 rounded-2xl border border-border bg-surface/50 backdrop-blur-sm text-foreground font-medium transition-all duration-300 hover:bg-surface/80"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            aria-label="Watch our story video"
           >
             <motion.div
               className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white"

@@ -77,6 +77,7 @@ const NotFoundScreen = () => {
               <button
                 onClick={() => navigate(-1)}
                 className={`flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+                aria-label="Go back to previous page"
               >
                 <ArrowLeft size={18} />
                 {t('common.back', 'Go Back')}

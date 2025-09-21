@@ -123,6 +123,7 @@ export default function ProductRecommendations({
               handleWishlist(product)
             }}
             className="p-2 bg-white rounded-full shadow-md hover:bg-red-50 hover:text-red-600 transition-colors"
+            aria-label="Add to wishlist"
           >
             <Heart size={16} />
           </button>
@@ -132,6 +133,7 @@ export default function ProductRecommendations({
               // Navigate to product detail
             }}
             className="p-2 bg-white rounded-full shadow-md hover:bg-blue-50 hover:text-blue-600 transition-colors"
+            aria-label="View product details"
           >
             <Eye size={16} />
           </button>
@@ -185,6 +187,7 @@ export default function ProductRecommendations({
               handleAddToCart(product)
             }}
             className="w-full bg-brand-600 text-white py-2 rounded-lg hover:bg-brand-700 transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+            aria-label={`Add ${product.name} to cart`}
           >
             <ShoppingCart size={16} />
             {t('products.addToCart', 'Add to Cart')}

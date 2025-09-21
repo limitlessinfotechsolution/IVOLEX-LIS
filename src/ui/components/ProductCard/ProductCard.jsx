@@ -44,6 +44,15 @@ export default function ProductCard({ product }) {
       whileHover={{ scale: 1.05 }}
       transition={{ duration: 0.3 }}
       onClick={onCardClick}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onCardClick()
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={`View details for ${safeProduct.name}`}
     >
       {/* Circular Image Frame */}
       <div className="relative p-4">

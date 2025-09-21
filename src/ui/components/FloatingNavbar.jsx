@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import {
   Search,
   ShoppingBag,
@@ -29,6 +30,7 @@ const NAVIGATION_ITEMS = [
 ]
 
 export default function FloatingNavbar() {
+  const navigate = useNavigate()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -350,6 +352,7 @@ export default function FloatingNavbar() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   aria-label={t('nav.cart')}
+                  onClick={() => navigate('/cart')}
                 >
                   <ShoppingBag size={20} />
                   {cartItemsCount > 0 && (
@@ -376,7 +379,8 @@ export default function FloatingNavbar() {
                   className="lg:hidden p-2 text-foreground/70 hover:text-primary hover:bg-background/50 rounded-full transition-all"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  aria-label="Menu"
+                  aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                  aria-expanded={isMobileMenuOpen}
                 >
                   {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                 </motion.button>

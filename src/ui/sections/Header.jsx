@@ -61,9 +61,11 @@ export default function Header() {
           <Link className="hover:text-brand-600 transition-colors" to="/">
             Home
           </Link>
-          <Link className="hover:text-brand-600 transition-colors" to="/shop">
-            Shop
-          </Link>
+          <a>
+            <Link className="hover:text-brand-600 transition-colors" to="/shop">
+              Shop
+            </Link>
+          </a>
           <a
             className="hover:text-brand-600 transition-colors"
             href="#categories"
