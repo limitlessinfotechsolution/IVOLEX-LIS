@@ -1,4 +1,4 @@
-# IVolex – Leather E‑Commerce MVP
+# IVOLEX – Leather E‑Commerce
 
 Pixel-perfect MVP mirroring the provided design. Built with React + Vite + Tailwind.
 
