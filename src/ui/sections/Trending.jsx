@@ -1,71 +1,74 @@
-import { useMemo } from "react"
-import ProductCard from "../components/ProductCard"
-import { useLocation } from "../contexts/LocationContext.jsx"
+import { useMemo } from 'react'
+import ProductCard from '../components/ProductCard'
+import { useLocation } from '../contexts/LocationContext.jsx'
+import { Link } from 'react-router-dom'
 
 const allProducts = [
   {
-    title: "Classic Bifold Wallet",
-    price: "SAR 450",
-    img: "/images/p1.jpg",
-    tag: "NEW",
+    title: 'Classic Bifold Wallet',
+    price: 'SAR 450',
+    img: '/images/p1.jpg',
+    tag: 'NEW',
     rating: 5,
     reviews: 24,
-    regions: ["Global", "Middle East", "Europe", "Americas"]
+    regions: ['Global', 'Middle East', 'Europe', 'Americas'],
   },
   {
-    title: "Executive Messenger Bag",
-    price: "SAR 1,250",
-    img: "/images/p2.jpg",
+    title: 'Executive Messenger Bag',
+    price: 'SAR 1,250',
+    img: '/images/p2.jpg',
     rating: 5,
     reviews: 18,
-    regions: ["Global", "Middle East", "Europe", "Americas", "Asia Pacific"]
+    regions: ['Global', 'Middle East', 'Europe', 'Americas', 'Asia Pacific'],
   },
   {
-    title: "Premium Dress Belt",
-    price: "SAR 350",
-    img: "/images/p3.jpg",
-    tag: "BESTSELLER",
+    title: 'Premium Dress Belt',
+    price: 'SAR 350',
+    img: '/images/p3.jpg',
+    tag: 'BESTSELLER',
     rating: 5,
     reviews: 32,
-    regions: ["Global", "Middle East", "Europe"]
+    regions: ['Global', 'Middle East', 'Europe'],
   },
   {
-    title: "Designer Keychain",
-    price: "SAR 180",
-    img: "/images/p4.jpg",
+    title: 'Designer Keychain',
+    price: 'SAR 180',
+    img: '/images/p4.jpg',
     rating: 5,
     reviews: 15,
-    regions: ["Global", "Middle East", "Europe", "Americas"]
+    regions: ['Global', 'Middle East', 'Europe', 'Americas'],
   },
   // Additional products for demo
   {
-    title: "Luxury Leather Briefcase",
-    price: "SAR 2,500",
-    img: "/images/p1.jpg",
-    tag: "PREMIUM",
+    title: 'Luxury Leather Briefcase',
+    price: 'SAR 2,500',
+    img: '/images/p1.jpg',
+    tag: 'PREMIUM',
     rating: 5,
     reviews: 8,
-    regions: ["Global", "Middle East", "Europe"]
+    regions: ['Global', 'Middle East', 'Europe'],
   },
   {
-    title: "Vintage Leather Jacket",
-    price: "SAR 1,800",
-    img: "/images/p2.jpg",
+    title: 'Vintage Leather Jacket',
+    price: 'SAR 1,800',
+    img: '/images/p2.jpg',
     rating: 4.5,
     reviews: 12,
-    regions: ["Global", "Europe", "Americas"]
-  }
+    regions: ['Global', 'Europe', 'Americas'],
+  },
 ]
 
-export default function Trending(){
+export default function Trending() {
   const { effectiveRegion } = useLocation()
 
   const filteredProducts = useMemo(() => {
     if (!effectiveRegion || effectiveRegion === 'Global') {
       return allProducts
     }
-    return allProducts.filter(product =>
-      product.regions.includes(effectiveRegion) || product.regions.includes('Global')
+    return allProducts.filter(
+      product =>
+        product.regions.includes(effectiveRegion) ||
+        product.regions.includes('Global')
     )
   }, [effectiveRegion])
 
@@ -88,13 +91,19 @@ export default function Trending(){
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-stone-500 mb-4">No products available in your region.</p>
-            <p className="text-sm text-stone-400">Try selecting a different region or currency.</p>
+            <p className="text-stone-500 mb-4">
+              No products available in your region.
+            </p>
+            <p className="text-sm text-stone-400">
+              Try selecting a different region or currency.
+            </p>
           </div>
         )}
 
         <div className="mt-8 text-center">
-          <a href="#shop" className="btn btn-outline">View All Products</a>
+          <Link to="/shop" className="btn btn-outline">
+            View All Products
+          </Link>
         </div>
       </div>
     </section>

@@ -1,42 +1,56 @@
-import { motion } from "framer-motion"
-import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react"
+import { motion } from 'framer-motion'
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  Youtube,
+  Mail,
+  Phone,
+  MapPin,
+} from 'lucide-react'
+import { useAuth } from '../contexts/AuthContext.jsx'
+import CurrencySelector from '../components/CurrencySelector.jsx'
 
-export default function Footer(){
+export default function Footer() {
+  const { isAuthenticated } = useAuth()
+  
   const socialLinks = [
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Youtube, href: "#", label: "YouTube" }
+    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: Twitter, href: '#', label: 'Twitter' },
+    { icon: Youtube, href: '#', label: 'YouTube' },
   ]
 
   const footerLinks = {
     shop: [
-      { name: "Wallets", href: "#" },
-      { name: "Bags", href: "#" },
-      { name: "Belts", href: "#" },
-      { name: "Footwear", href: "#" },
-      { name: "Accessories", href: "#" }
+      { name: 'Wallets', href: '#' },
+      { name: 'Bags', href: '#' },
+      { name: 'Belts', href: '#' },
+      { name: 'Footwear', href: '#' },
+      { name: 'Accessories', href: '#' },
     ],
     company: [
-      { name: "About Us", href: "#about" },
-      { name: "Customization", href: "#customize" },
-      { name: "Sustainability", href: "#" },
-      { name: "Careers", href: "#" }
+      { name: 'About Us', href: '#about' },
+      { name: 'Customization', href: '#customize' },
+      { name: 'Sustainability', href: '#' },
+      { name: 'Careers', href: '#' },
     ],
     support: [
-      { name: "FAQs", href: "#" },
-      { name: "Shipping & Returns", href: "#" },
-      { name: "Care Guide", href: "#" },
-      { name: "Privacy Policy", href: "#" },
-      { name: "Terms & Conditions", href: "#" }
-    ]
+      { name: 'FAQs', href: '#' },
+      { name: 'Shipping & Returns', href: '#' },
+      { name: 'Care Guide', href: '#' },
+      { name: 'Privacy Policy', href: '#' },
+      { name: 'Terms & Conditions', href: '#' },
+    ],
   }
 
   return (
     <footer id="about" className="bg-stone-900 text-stone-200">
       <div className="container-xl">
         {/* Main Footer Content */}
-        <div className="grid md:grid-cols-4 gap-8 py-12">
+        <div className={`grid gap-8 py-12 ${
+          isAuthenticated ? 'md:grid-cols-4' : 'md:grid-cols-5'
+        }`}>
           {/* Company Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -46,8 +60,8 @@ export default function Footer(){
           >
             <div className="font-bold text-xl text-white mb-4">IVOLEX</div>
             <p className="text-sm text-stone-400 mb-6 leading-relaxed">
-              Crafting premium leather goods with passion and precision since 2010.
-              Each piece tells a story of craftsmanship and elegance.
+              Crafting premium leather goods with passion and precision since
+              2010. Each piece tells a story of craftsmanship and elegance.
             </p>
 
             {/* Contact Info */}
@@ -107,7 +121,10 @@ export default function Footer(){
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                   viewport={{ once: true }}
                 >
-                  <a href={link.href} className="hover:text-white transition-colors duration-200">
+                  <a
+                    href={link.href}
+                    className="hover:text-white transition-colors duration-200"
+                  >
                     {link.name}
                   </a>
                 </motion.li>
@@ -132,7 +149,10 @@ export default function Footer(){
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                   viewport={{ once: true }}
                 >
-                  <a href={link.href} className="hover:text-white transition-colors duration-200">
+                  <a
+                    href={link.href}
+                    className="hover:text-white transition-colors duration-200"
+                  >
                     {link.name}
                   </a>
                 </motion.li>
@@ -157,13 +177,32 @@ export default function Footer(){
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                   viewport={{ once: true }}
                 >
-                  <a href={link.href} className="hover:text-white transition-colors duration-200">
+                  <a
+                    href={link.href}
+                    className="hover:text-white transition-colors duration-200"
+                  >
                     {link.name}
                   </a>
                 </motion.li>
               ))}
             </ul>
           </motion.div>
+
+          {/* Currency Selector - Only shown when not authenticated */}
+          {!isAuthenticated && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <div className="font-semibold text-white mb-4">Preferences</div>
+              <p className="text-sm text-stone-400 mb-4">
+                Set your regional preferences for localized pricing and content.
+              </p>
+              <CurrencySelector variant="footer" showRegion={true} />
+            </motion.div>
+          )}
         </div>
 
         {/* Bottom Bar */}
@@ -183,7 +222,7 @@ export default function Footer(){
             <div className="flex items-center gap-3">
               <div className="text-xs text-stone-500 mr-2">We accept:</div>
               <div className="flex items-center gap-2">
-                {['visa', 'mastercard', 'amex', 'paypal'].map((method) => (
+                {['visa', 'mastercard', 'amex', 'paypal'].map(method => (
                   <div
                     key={method}
                     className="w-8 h-5 bg-stone-700 rounded border border-stone-600 flex items-center justify-center text-[8px] font-bold text-stone-300"

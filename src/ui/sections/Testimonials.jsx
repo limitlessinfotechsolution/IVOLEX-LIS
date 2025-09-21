@@ -1,32 +1,32 @@
-import { motion } from "framer-motion"
-import Stars from "../components/Stars/Stars.jsx"
-import { Quote } from "lucide-react"
+import { motion } from 'framer-motion'
+import Stars from '../components/Stars/Stars.jsx'
+import { Quote } from 'lucide-react'
 
 const testimonials = [
   {
-    name: "Ahmed S.",
-    city: "Riyadh, SA",
-    text: "The quality of my custom messenger bag exceeds all expectations. Attention to detail is remarkable.",
+    name: 'Ahmed S.',
+    city: 'Riyadh, SA',
+    text: 'The quality of my custom messenger bag exceeds all expectations. Attention to detail is remarkable.',
     rating: 5,
-    avatar: "A"
+    avatar: 'A',
   },
   {
-    name: "Sara M.",
-    city: "Jeddah, SA",
-    text: "I ordered a customized wallet with initials. The craftsmanship is exceptional with a beautiful patina.",
+    name: 'Sara M.',
+    city: 'Jeddah, SA',
+    text: 'I ordered a customized wallet with initials. The craftsmanship is exceptional with a beautiful patina.',
     rating: 5,
-    avatar: "S"
+    avatar: 'S',
   },
   {
-    name: "Khalid T.",
-    city: "Dammam, SA",
-    text: "The customer service at IVOLEX is as impressive as their products. Perfect for my professional needs.",
+    name: 'Khalid T.',
+    city: 'Dammam, SA',
+    text: 'The customer service at IVOLEX is as impressive as their products. Perfect for my professional needs.',
     rating: 5,
-    avatar: "K"
+    avatar: 'K',
   },
 ]
 
-export default function Testimonials(){
+export default function Testimonials() {
   return (
     <section className="py-16 bg-gradient-to-b from-stone-50 to-white">
       <div className="container-xl">
@@ -37,9 +37,12 @@ export default function Testimonials(){
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Customers Say</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            What Our Customers Say
+          </h2>
           <p className="text-stone-600 max-w-2xl mx-auto">
-            Don't just take our word for it - hear from our satisfied customers
+            Don&apos;t just take our word for it - hear from our satisfied
+            customers
           </p>
         </motion.div>
 
@@ -60,20 +63,24 @@ export default function Testimonials(){
                 <motion.div
                   className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center text-white font-semibold"
                   whileHover={{ scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                 >
                   {testimonial.avatar}
                 </motion.div>
                 <div>
-                  <div className="font-semibold text-stone-900">{testimonial.name}</div>
-                  <div className="text-sm text-stone-500">{testimonial.city}</div>
+                  <div className="font-semibold text-stone-900">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-sm text-stone-500">
+                    {testimonial.city}
+                  </div>
                 </div>
               </div>
 
               <Stars value={testimonial.rating} size={16} className="mb-3" />
 
               <p className="text-stone-700 leading-relaxed italic">
-                "{testimonial.text}"
+                &quot;{testimonial.text}&quot;
               </p>
             </motion.div>
           ))}

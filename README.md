@@ -1,47 +1,48 @@
-# IVOLEX – Leather E‑Commerce MVP (1:1)
+# IVolex – Leather E‑Commerce MVP
 
-Pixel-perfect MVP that mirrors the provided design.
+Pixel-perfect MVP mirroring the provided design. Built with React + Vite + Tailwind.
 
-## Tech
-- React + Vite
-- Tailwind CSS
+## Tech Stack
+- React 18 + Vite 5
+- Tailwind CSS 3
 - Framer Motion
 - lucide-react
 
-## Quick Start
+## Getting Started
 ```bash
 npm install
 npm run dev
 ```
 
-## Notes
-- Images are placeholders in `/public/images`. Replace with your assets to match the exact design.
-- All sections and copy match the reference: Header, Hero, Featured Categories, Trending Products, Custom CTA, Features, Testimonials, Newsletter, Footer.
-
-
-## Production Build & Deploy (No Docker)
-
-### 1) Local production build (creates ivolex-dist.zip)
+## Scripts
 ```bash
-# from project root
-chmod +x build-prod.sh
-./build-prod.sh
-# result: ivolex-dist.zip (contains `dist/` ready to serve)
+npm run dev       # start dev server
+npm run build     # production build
+npm run preview   # preview production build
+npm run lint      # lint source (after setup)
+npm run lint:fix  # fix lint issues (after setup)
+npm run format    # format with Prettier (after setup)
+npm run test      # unit tests (after setup)
+npm run e2e       # e2e tests (after setup)
 ```
 
-### 2) Serve with Nginx (example)
-1. Copy the contents of `dist/` to your web root, e.g. `/var/www/ivolex`:
-   ```bash
-   unzip ivolex-dist.zip -d /tmp && sudo rsync -a /tmp/dist/ /var/www/ivolex/
-   ```
-2. Place the provided `nginx.conf` into `/etc/nginx/sites-available/ivolex` and symlink to `sites-enabled`:
-   ```bash
-   sudo cp nginx.conf /etc/nginx/sites-available/ivolex
-   sudo ln -s /etc/nginx/sites-available/ivolex /etc/nginx/sites-enabled/ivolex
-   sudo nginx -t && sudo systemctl reload nginx
-   ```
-3. Replace `server_name` in `nginx.conf` with your domain and ensure DNS points to your server.
+## Project Structure (key)
+- `src/main.jsx` – app bootstrap
+- `src/ui/App.jsx` – page composition
+- `src/ui/sections/*` – feature sections
+- `src/ui/components/*` – reusable components
+- `src/ui/contexts/*` – context providers
+- `public/images` – public assets
+- `assets/` – source/original assets
 
-### 3) Optional: CI/CD via GitHub Pages
-- A GitHub Actions workflow `.github/workflows/deploy-gh-pages.yml` is included. Push to `main` to automatically build and publish `dist/` to GitHub Pages.
-- This method doesn't require a Dockerfile—GitHub Pages will serve the static site.
+## Roadmap & Tasks
+See `SUMMARY.md` (overview) and `TODO.md` (actionable, prioritized list).
+
+## Production Build & Deploy
+- Build: `npm run build` (outputs to `dist/`)
+- Nginx example in `nginx.conf`
+- GitHub Pages workflow: `.github/workflows/deploy-gh-pages.yml`
+
+## Notes
+- Replace placeholder images in `public/images` with final assets.
+- Use environment variables via Vite (e.g., `VITE_*`). A `.env.example` will be added.

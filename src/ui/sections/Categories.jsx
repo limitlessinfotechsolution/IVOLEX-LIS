@@ -1,35 +1,43 @@
-import { motion } from "framer-motion"
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const items = [
   {
-    title: "Wallets",
-    img: "/images/cat-wallets.jpg",
-    desc: "Premium leather wallets",
-    count: "24 items"
+    title: 'Wallets',
+    slug: 'wallets',
+    img: '/images/cat-wallets.jpg',
+    desc: 'Premium leather wallets',
+    count: '24 items',
   },
   {
-    title: "Bags",
-    img: "/images/cat-bags.jpg",
-    desc: "Handcrafted leather bags",
-    count: "18 items"
+    title: 'Bags',
+    slug: 'bags',
+    img: '/images/cat-bags.jpg',
+    desc: 'Handcrafted leather bags',
+    count: '18 items',
   },
   {
-    title: "Belts",
-    img: "/images/cat-belts.jpg",
-    desc: "Classic leather belts",
-    count: "15 items"
+    title: 'Belts',
+    slug: 'belts',
+    img: '/images/cat-belts.jpg',
+    desc: 'Classic leather belts',
+    count: '15 items',
   },
   {
-    title: "Footwear",
-    img: "/images/cat-footwear.jpg",
-    desc: "Luxury leather shoes",
-    count: "12 items"
+    title: 'Footwear',
+    slug: 'footwear',
+    img: '/images/cat-footwear.jpg',
+    desc: 'Luxury leather shoes',
+    count: '12 items',
   },
 ]
 
-export default function Categories(){
+export default function Categories() {
   return (
-    <section id="categories" className="py-16 bg-gradient-to-b from-white to-stone-50">
+    <section
+      id="categories"
+      className="py-16 bg-gradient-to-b from-white to-stone-50"
+    >
       <div className="container-xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -38,17 +46,19 @@ export default function Categories(){
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Categories</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Featured Categories
+          </h2>
           <p className="text-stone-600 max-w-2xl mx-auto">
-            Explore our premium leather collections, each crafted with meticulous attention to detail
+            Explore our premium leather collections, each crafted with
+            meticulous attention to detail
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {items.map((item, index) => (
-            <motion.a
+            <motion.div
               key={item.title}
-              href="#shop"
               className="group relative overflow-hidden rounded-2xl bg-white shadow-soft hover:shadow-lg transition-all duration-300"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -56,26 +66,30 @@ export default function Categories(){
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
             >
-              <div className="aspect-[4/3] overflow-hidden">
-                <motion.img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.4 }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <div className="text-sm opacity-90">{item.desc}</div>
-                  <div className="text-xs opacity-75 mt-1">{item.count}</div>
+              <Link to={`/category/${item.slug}`} className="block">
+                <div className="aspect-[4/3] overflow-hidden">
+                  <motion.img
+                    src={item.img}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.4 }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <div className="text-sm opacity-90">{item.desc}</div>
+                    <div className="text-xs opacity-75 mt-1">{item.count}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
-                <p className="text-stone-600 text-sm">{item.desc}</p>
-                <div className="mt-2 text-xs text-stone-500">{item.count}</div>
-              </div>
-            </motion.a>
+                <div className="p-4">
+                  <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
+                  <p className="text-stone-600 text-sm">{item.desc}</p>
+                  <div className="mt-2 text-xs text-stone-500">
+                    {item.count}
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
           ))}
         </div>
 
@@ -86,9 +100,9 @@ export default function Categories(){
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <a href="#shop" className="btn btn-outline">
+          <Link to="/shop" className="btn btn-outline">
             View All Categories
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
