@@ -82,6 +82,8 @@ export const sanitization = {
       .replace(/<script[^>]*>.*?<\/script>/gi, '')
       .replace(/<iframe[^>]*>.*?<\/iframe>/gi, '')
       .replace(/javascript:/gi, '')
+      .replace(/data:/gi, '')
+      .replace(/vbscript:/gi, '')
       .replace(/on\w+\s*=/gi, '')
       .replace(/<.*?>/g, '') // Remove all HTML tags for basic sanitization
   },
