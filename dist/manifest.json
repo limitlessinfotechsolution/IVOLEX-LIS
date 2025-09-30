@@ -1,0 +1,35 @@
+{
+  "short_name": "IVOLEX",
+  "name": "IVOLEX - Premium Leather E-commerce",
+  "description": "Premium leather goods e-commerce platform developed by Limitless Infotech Solution Pvt Ltd.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f5f4",
+  "theme_color": "#78350f",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "developer": {
+    "name": "Limitless Infotech Solution Pvt Ltd.",
+    "url": "https://limitlessinfotech.com"
+  },
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "https://ivolex.com"
+    },
+    {
+      "platform": "vercel",
+      "url": "https://ivolex.vercel.com"
+    }
+  ]
+}

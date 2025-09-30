@@ -1,0 +1,10 @@
+IVOLEX Domain Verification File
+
+This file verifies the ownership of the following domains:
+
+Primary Domain: https://ivolex.com
+Vercel Domain: https://ivolex.vercel.com
+
+Developer: Limitless Infotech Solution Pvt Ltd.
+
+For verification purposes only.

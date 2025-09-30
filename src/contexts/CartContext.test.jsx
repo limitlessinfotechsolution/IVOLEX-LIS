@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@/test/test-utils'
-import { useCart } from '@/ui/contexts/CartContext'
-import { mockProducts } from '@/test/mocks'
+import { render, screen, fireEvent } from '../test/test-utils'
+import { useCart } from './CartContext'
+import { mockProducts } from '../test/mocks'
 
 // Test component to use the Cart context
 function TestCartComponent() {
@@ -69,7 +69,7 @@ describe('CartContext', () => {
     expect(screen.getByTestId('cart-count')).toHaveTextContent('0')
   })
 
-  it('updates item quantity', () => {
+  it('updates item quantity', async () => {
     render(<TestCartComponent />)
 
     // Add item first
@@ -77,6 +77,9 @@ describe('CartContext', () => {
 
     // Set quantity to 3
     fireEvent.click(screen.getByTestId('set-qty'))
+
+    // Wait for the async operation to complete
+    await new Promise(resolve => setTimeout(resolve, 600))
 
     expect(screen.getByTestId('cart-count')).toHaveTextContent('3')
     expect(screen.getByTestId('cart-total')).toHaveTextContent('299.97')

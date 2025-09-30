@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext.jsx'
-import { useAdminAuth } from '../contexts/AdminAuthContext.jsx'
+import { useAuth } from '../../contexts/AuthContext.jsx'
+import { useAdminAuth } from '../../contexts/AdminAuthContext.jsx'
 
 const AdminRoute = ({ children }) => {
   const navigate = useNavigate()

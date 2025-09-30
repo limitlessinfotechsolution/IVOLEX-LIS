@@ -7,36 +7,37 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - '3001:3001'
+    environment:
+      - NODE_ENV=development
     volumes:
       - .:/app
       - /app/node_modules
-    environment:
-      - NODE_ENV=development
-    command: npm run dev
+    depends_on:
+      - database
 
-  # API service
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  # Database service (if needed)
+  database:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ivolex_user
+      POSTGRES_PASSWORD: ivolex_password
+      POSTGRES_DB: ivolex_db
     ports:
-      - '3001:3001'
+      - '5432:5432'
     volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - PORT=3001
-    command: npm run dev:api
+      - postgres_data:/var/lib/postgresql/data
 
-  # Combined service for production
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  # Nginx reverse proxy
+  nginx:
+    image: nginx:alpine
     ports:
-      - '3001:3001'
-    environment:
-      - NODE_ENV=production
-      - PORT=3001
+      - '80:80'
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./dist:/var/www/ivolex
+    depends_on:
+      - frontend
+
+volumes:
+  postgres_data:

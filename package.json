@@ -25,7 +25,9 @@
     "security:audit": "better-npm-audit audit",
     "security:fix": "npm audit fix",
     "security:check": "npm run security:audit && npm outdated",
-    "build:secure": "npm run security:check && npm run lint && npm run test && npm run build"
+    "build:secure": "npm run security:check && npm run lint && npm run test && npm run build",
+    "build:prod": "npm run build:secure",
+    "build:production": "chmod +x build-prod.sh && ./build-prod.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -76,7 +78,7 @@
     "typescript": "^5.6.2",
     "vite": "^7.1.6",
     "vite-plugin-compression": "^0.5.1",
-    "vitest": "^2.1.1"
+    "vitest": "^3.2.4"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [

@@ -1,8 +1,8 @@
 import { render, RenderOptions } from '@testing-library/react'
 import { ReactElement } from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { CartProvider } from '@/ui/contexts/CartContext'
-import { LocationProvider } from '@/ui/contexts/LocationContext'
+import { CartProvider } from '../contexts/CartContext'
+import { LocationProvider } from '../contexts/LocationContext'
 
 // Custom render function with providers
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {

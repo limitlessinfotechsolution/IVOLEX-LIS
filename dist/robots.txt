@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ivolex.com/sitemap.xml
+
+# Domains
+# Primary: https://ivolex.com
+# Vercel: https://ivolex.vercel.com
+
+# Developer: Limitless Infotech Solution Pvt Ltd.

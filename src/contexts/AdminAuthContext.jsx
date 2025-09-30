@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext.jsx'
-import { supabase } from '../../config/supabase.js'
+
+// Try to import Supabase, but handle errors gracefully
+import { supabase as supabaseClient } from '../config/supabase.js'
 
 const AdminAuthContext = createContext()
 
@@ -33,9 +35,9 @@ export const AdminAuthProvider = ({ children }) => {
 
       // Check if user has admin role in Supabase
       try {
-        if (supabase) {
+        if (supabaseClient) {
           // Check user role in database
-          const { data, error } = await supabase
+          const { data, error } = await supabaseClient
             .from('users')
             .select('role, is_admin, is_super_admin')
             .eq('id', user.id)

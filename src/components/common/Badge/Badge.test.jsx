@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { render, screen } from '@/test/test-utils'
-import Badge from '@/ui/components/Badge/Badge'
+import { render, screen } from '../../../test/test-utils'
+import Badge from './Badge'
 
 describe('Badge Component', () => {
   it('renders the badge with correct text', () => {
