@@ -39,14 +39,14 @@ export default function ProductCard({ product }) {
     return true
   }
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = e => {
     e.stopPropagation()
     if (checkAuthAndProceed()) {
       add(safeProduct, 1)
     }
   }
 
-  const handleAddToWishlist = (e) => {
+  const handleAddToWishlist = e => {
     e.stopPropagation()
     if (checkAuthAndProceed()) {
       // For now, we'll just add to wishlist

@@ -45,7 +45,7 @@ export default function Header() {
             </button>
             {isLanguageOpen && (
               <div className="absolute top-full right-0 mt-1 bg-white text-stone-900 rounded-lg shadow-lg py-1 min-w-[100px] z-50">
-                {languages.map((lang) => (
+                {languages.map(lang => (
                   <button
                     key={lang}
                     className="w-full text-left px-3 py-1 text-xs hover:bg-stone-100 transition-colors"
@@ -68,7 +68,7 @@ export default function Header() {
             </button>
             {isCurrencyOpen && (
               <div className="absolute top-full right-0 mt-1 bg-white text-stone-900 rounded-lg shadow-lg py-1 min-w-[80px] z-50">
-                {currencies.map((currency) => (
+                {currencies.map(currency => (
                   <button
                     key={currency}
                     className="w-full text-left px-3 py-1 text-xs hover:bg-stone-100 transition-colors"
@@ -101,22 +101,40 @@ export default function Header() {
 
           {/* Center menu - Desktop */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            <Link className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors" href="/">
+            <Link
+              className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors"
+              href="/"
+            >
               Home
             </Link>
-            <Link className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors" href="/shop">
+            <Link
+              className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors"
+              href="/shop"
+            >
               Shop
             </Link>
-            <Link className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors" href="/category">
+            <Link
+              className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors"
+              href="/category"
+            >
               Categories
             </Link>
-            <Link className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors" href="/customize">
+            <Link
+              className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors"
+              href="/customize"
+            >
               Customize
             </Link>
-            <Link className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors" href="/about">
+            <Link
+              className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors"
+              href="/about"
+            >
               About
             </Link>
-            <Link className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors" href="/contact">
+            <Link
+              className="text-sm font-medium text-stone-700 hover:text-amber-700 transition-colors"
+              href="/contact"
+            >
               Contact
             </Link>
           </nav>
@@ -124,13 +142,17 @@ export default function Header() {
           {/* Right menu - Desktop */}
           <div className="hidden md:flex items-center gap-2 lg:gap-4">
             <div className="hidden lg:flex items-center gap-2 bg-amber-50 rounded-full px-3 py-1">
-              <span className="text-xs font-medium text-amber-800">Leather</span>
+              <span className="text-xs font-medium text-amber-800">
+                Leather
+              </span>
               <span className="text-xs text-stone-400">|</span>
               <span className="text-xs text-stone-600">Electronics</span>
               <span className="text-xs text-stone-400">|</span>
-              <span className="text-xs text-stone-600">Furniture & Interiors</span>
+              <span className="text-xs text-stone-600">
+                Furniture & Interiors
+              </span>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <button className="text-stone-600 hover:text-amber-700 transition-colors">
                 <Search size={20} />
@@ -138,7 +160,7 @@ export default function Header() {
               <button className="text-stone-600 hover:text-amber-700 transition-colors">
                 <User size={20} />
               </button>
-              <button 
+              <button
                 className="relative text-stone-600 hover:text-amber-700 transition-colors"
                 onClick={() => router.push('/cart')}
               >
@@ -155,7 +177,7 @@ export default function Header() {
             <button className="text-stone-600 hover:text-amber-700 transition-colors">
               <Search size={20} />
             </button>
-            <button 
+            <button
               className="relative text-stone-600 hover:text-amber-700 transition-colors"
               onClick={() => router.push('/cart')}
             >
@@ -225,11 +247,17 @@ export default function Header() {
 
               <div className="pt-4 border-t border-stone-200">
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-800 font-medium">Leather</span>
-                  <span className="text-xs px-2 py-1 rounded-full bg-stone-100 text-stone-600">Electronics</span>
-                  <span className="text-xs px-2 py-1 rounded-full bg-stone-100 text-stone-600">Furniture & Interiors</span>
+                  <span className="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-800 font-medium">
+                    Leather
+                  </span>
+                  <span className="text-xs px-2 py-1 rounded-full bg-stone-100 text-stone-600">
+                    Electronics
+                  </span>
+                  <span className="text-xs px-2 py-1 rounded-full bg-stone-100 text-stone-600">
+                    Furniture & Interiors
+                  </span>
                 </div>
-                
+
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Language:</span>

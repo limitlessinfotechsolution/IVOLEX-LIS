@@ -113,27 +113,28 @@ export default function AuthScreen() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-stone-50 p-4 overflow-hidden">
       <SEO
-        title={isLogin ? "Sign In - IVOLEX" : "Create Account - IVOLEX"}
-        description={isLogin 
-          ? "Sign in to your IVOLEX account to access your orders, wishlist, and account settings."
-          : "Join IVOLEX today and enjoy personalized shopping, exclusive offers, and faster checkout."
+        title={isLogin ? 'Sign In - IVOLEX' : 'Create Account - IVOLEX'}
+        description={
+          isLogin
+            ? 'Sign in to your IVOLEX account to access your orders, wishlist, and account settings.'
+            : 'Join IVOLEX today and enjoy personalized shopping, exclusive offers, and faster checkout.'
         }
-        keywords={isLogin 
-          ? "login, sign in, account, ivolex"
-          : "register, sign up, create account, join ivolex"
+        keywords={
+          isLogin
+            ? 'login, sign in, account, ivolex'
+            : 'register, sign up, create account, join ivolex'
         }
       />
-      
+
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">
             {isLogin ? 'Welcome Back' : 'Create Your Account'}
           </h1>
           <p className="text-stone-600">
-            {isLogin 
+            {isLogin
               ? 'Sign in to your account to continue shopping'
-              : 'Join IVOLEX and start your shopping journey'
-            }
+              : 'Join IVOLEX and start your shopping journey'}
           </p>
         </div>
 
@@ -210,10 +211,7 @@ export default function AuthScreen() {
             )}
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium mb-2"
-              >
+              <label htmlFor="email" className="block text-sm font-medium mb-2">
                 Email Address
               </label>
               <div className="relative">
@@ -327,9 +325,7 @@ export default function AuthScreen() {
                   />
                   <button
                     type="button"
-                    onClick={() =>
-                      setShowConfirmPassword(!showConfirmPassword)
-                    }
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 text-stone-400 hover:text-stone-600"
                   >
                     {showConfirmPassword ? (
@@ -360,15 +356,19 @@ export default function AuthScreen() {
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   {isLogin ? 'Signing in...' : 'Creating account...'}
                 </span>
+              ) : isLogin ? (
+                'Sign In'
               ) : (
-                (isLogin ? 'Sign In' : 'Create Account')
+                'Create Account'
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-stone-600">
-              {isLogin ? "Don't have an account? " : 'Already have an account? '}
+              {isLogin
+                ? "Don't have an account? "
+                : 'Already have an account? '}
               <button
                 onClick={() => setIsLogin(!isLogin)}
                 className="text-brand-600 hover:text-brand-700 font-medium"

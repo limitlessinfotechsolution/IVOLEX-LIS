@@ -1,14 +1,7 @@
-  import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import {
-  Search,
-  ShoppingBag,
-  Menu,
-  X,
-  Package,
-  User,
-} from 'lucide-react'
+import { Search, ShoppingBag, Menu, X, Package, User } from 'lucide-react'
 import { FloatingSegmentSwitcher } from '../common/SegmentSwitcher.jsx'
 import { useSegment } from '../../contexts/SegmentContext.jsx'
 import { useI18n } from '../../contexts/I18nContext.jsx'
@@ -34,15 +27,13 @@ export default function FloatingNavbar() {
   const [isInventoryAlertsOpen, setIsInventoryAlertsOpen] = useState(false)
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false)
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false)
-  const [isSegmentSwitcherExpanded, setIsSegmentSwitcherExpanded] = useState(false)
+  const [isSegmentSwitcherExpanded, setIsSegmentSwitcherExpanded] =
+    useState(false)
 
   const { theme } = useSegment()
   const { alerts } = useInventory()
   const { user, isAuthenticated } = useAuth()
-  const {
-    t,
-    isRTL,
-  } = useI18n()
+  const { t, isRTL } = useI18n()
 
   // Handle scroll effect
   useEffect(() => {
@@ -55,9 +46,14 @@ export default function FloatingNavbar() {
   }, [])
 
   // Close dropdowns when clicking outside
-  useEffect(() => {   const handleClickOutside = event => {
+  useEffect(() => {
+    const handleClickOutside = event => {
       // Check if click is outside the dropdowns
-      if (showCurrencyDropdown || showLanguageDropdown || isSegmentSwitcherExpanded) {
+      if (
+        showCurrencyDropdown ||
+        showLanguageDropdown ||
+        isSegmentSwitcherExpanded
+      ) {
         let target = event.target
         let clickedInside = false
 
@@ -149,17 +145,31 @@ export default function FloatingNavbar() {
 
               {/* Segment Switcher - Hidden on mobile, visible on md and larger screens */}
               <div className="hidden md:flex items-center">
-                <FloatingSegmentSwitcher 
-                  className={`transition-all duration-300 ${isSegmentSwitcherExpanded ? 'flex-col bg-surface/90 backdrop-blur-lg p-2 rounded-2xl shadow-lg absolute top-16 left-1/2 transform -translate-x-1/2 w-48 z-50' : ''}`} 
-                  onToggle={() => setIsSegmentSwitcherExpanded(!isSegmentSwitcherExpanded)}
+                <FloatingSegmentSwitcher
+                  className={`transition-all duration-300 ${isSegmentSwitcherExpanded ? 'flex-col bg-surface/90 backdrop-blur-lg p-2 rounded-2xl shadow-lg absolute top-16 left-1/2 transform -translate-x-1/2 w-48 z-50' : ''}`}
+                  onToggle={() =>
+                    setIsSegmentSwitcherExpanded(!isSegmentSwitcherExpanded)
+                  }
                 />
                 {/* Segment Switcher Toggle Button (only visible on mobile) */}
-                <button 
+                <button
                   className="md:hidden ml-2 p-2 text-foreground/70 hover:text-primary hover:bg-background/50 rounded-full transition-all"
-                  onClick={() => setIsSegmentSwitcherExpanded(!isSegmentSwitcherExpanded)}
+                  onClick={() =>
+                    setIsSegmentSwitcherExpanded(!isSegmentSwitcherExpanded)
+                  }
                   aria-label="Toggle categories"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <line x1="3" y1="12" x2="21" y2="12"></line>
                     <line x1="3" y1="18" x2="21" y2="18"></line>
