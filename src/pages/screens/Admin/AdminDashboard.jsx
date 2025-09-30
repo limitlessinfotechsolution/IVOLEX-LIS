@@ -11,8 +11,8 @@ import {
   RefreshCw,
   Eye,
 } from 'lucide-react'
-import { useSegment } from '../../../ui/contexts/SegmentContext.jsx'
-import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
+import { useSegment } from '../../../contexts/SegmentContext.jsx'
+import { useI18n } from '../../../contexts/I18nContext.jsx'
 import AnalyticsExport from '../../../components/analytics/AnalyticsExport.jsx'
 
 const MOCK_ANALYTICS = {

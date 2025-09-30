@@ -21,9 +21,9 @@ import {
   Trash2,
   Copy,
 } from 'lucide-react'
-import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
-import { useOrder } from '../../../ui/contexts/OrderContext.jsx'
-import { useSegment } from '../../../ui/contexts/SegmentContext.jsx'
+import { useI18n } from '../../../contexts/I18nContext.jsx'
+import { useOrder } from '../../../contexts/OrderContext.jsx'
+import { useSegment } from '../../../contexts/SegmentContext.jsx'
 import toast from 'react-hot-toast'
 
 const ACCOUNT_MENU = [

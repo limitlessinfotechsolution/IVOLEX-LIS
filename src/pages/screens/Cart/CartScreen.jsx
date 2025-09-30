@@ -1,5 +1,5 @@
-import Container from '../../../ui/components/Container.jsx'
-import { useCart } from '../../../ui/contexts/CartContext.jsx'
+import Container from '../../../components/common/Container.jsx'
+import { useCart } from '../../../contexts/CartContext.jsx'
 import { Link } from 'react-router-dom'
 import { SEO } from '../../../components/SEO'
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react'

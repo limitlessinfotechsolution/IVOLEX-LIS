@@ -9,7 +9,6 @@ import {
   LogOut,
   Menu,
   X,
-  Bell,
   Search,
   Shield,
   FileText,
@@ -19,11 +18,12 @@ import {
   Brain,
   MapPin,
 } from 'lucide-react'
-import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
-import { useSegment } from '../../../ui/contexts/SegmentContext.jsx'
-import { useAuth } from '../../../ui/contexts/AuthContext.jsx'
+import { useI18n } from '../../../contexts/I18nContext.jsx'
+import { useSegment } from '../../../contexts/SegmentContext.jsx'
+import { useAuth } from '../../../contexts/AuthContext.jsx'
 
-import AdminRoute from '../../../ui/components/AdminRoute.jsx'
+import AdminRoute from '../../../components/common/AdminRoute.jsx'
+import NotificationBell from '../../../components/ui/NotificationBell.jsx'
 import {
   AdminDashboard,
   ProductCatalog,
@@ -289,10 +289,7 @@ const AdminPanelContent = () => {
               </div>
 
               {/* Notifications */}
-              <button className="relative p-2 hover:bg-background rounded-lg transition-colors">
-                <Bell size={20} className="text-foreground/70" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
+              <NotificationBell />
 
               {/* Profile */}
               <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full"></div>

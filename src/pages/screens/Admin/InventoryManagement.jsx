@@ -16,7 +16,7 @@ import {
   RefreshCw,
   Download,
 } from 'lucide-react'
-import { useInventory } from '../../../ui/contexts/InventoryContext'
+import { useInventory } from '../../../contexts/InventoryContext'
 
 const InventoryManagement = () => {
   const {

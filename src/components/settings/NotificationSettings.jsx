@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useNotifications } from '../../ui/contexts/NotificationContext'
-import { useI18n } from '../../ui/contexts/I18nContext'
+import { useNotifications } from '../../contexts/NotificationContext'
+import { useI18n } from '../../contexts/I18nContext'
 
 const NotificationSettings = () => {
   const { preferences, updatePreferences } = useNotifications()

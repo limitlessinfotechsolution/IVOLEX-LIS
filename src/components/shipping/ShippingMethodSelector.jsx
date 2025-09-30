@@ -11,10 +11,10 @@ import {
   Zap,
   Shield,
 } from 'lucide-react'
-import { useShipping } from '../../ui/contexts/ShippingContext'
-import { useCart } from '../../ui/contexts/CartContext'
-import { useSegment } from '../../ui/contexts/SegmentContext'
-import { useI18n } from '../../ui/contexts/I18nContext'
+import { useShipping } from '../../contexts/ShippingContext'
+import { useCart } from '../../contexts/CartContext'
+import { useSegment } from '../../contexts/SegmentContext'
+import { useI18n } from '../../contexts/I18nContext'
 
 const ShippingMethodSelector = ({ deliveryAddress, onMethodSelect }) => {
   const {

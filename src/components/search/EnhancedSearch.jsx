@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, X, Clock, TrendingUp, Filter, ArrowRight } from 'lucide-react'
-import { useSearch } from '../../ui/contexts/SearchContext'
-import { useI18n } from '../../ui/contexts/I18nContext'
-import { useSegment } from '../../ui/contexts/SegmentContext'
+import { useSearch } from '../../contexts/SearchContext'
+import { useI18n } from '../../contexts/I18nContext'
+import { useSegment } from '../../contexts/SegmentContext'
 
 const EnhancedSearch = ({
   onResultSelect,

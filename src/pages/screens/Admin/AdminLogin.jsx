@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Mail, Lock, Shield } from 'lucide-react'
-import { useAuth } from '../../../ui/contexts/AuthContext.jsx'
-import { useAdminAuth } from '../../../ui/contexts/AdminAuthContext.jsx'
+import { useAuth } from '../../../contexts/AuthContext.jsx'
+import { useAdminAuth } from '../../../contexts/AdminAuthContext.jsx'
 import toast from 'react-hot-toast'
 
 const AdminLogin = () => {

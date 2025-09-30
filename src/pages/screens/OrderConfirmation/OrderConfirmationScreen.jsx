@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { CheckCircle, Package, Truck, Mail, Phone } from 'lucide-react'
-import Container from '../../../ui/components/Container.jsx'
+import Container from '../../../components/common/Container.jsx'
 import { SEO } from '../../../components/SEO'
-import { useOrder } from '../../../ui/contexts/OrderContext.jsx'
-import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
+import { useOrder } from '../../../contexts/OrderContext.jsx'
+import { useI18n } from '../../../contexts/I18nContext.jsx'
 import toast from 'react-hot-toast'
 
 export default function OrderConfirmationScreen() {

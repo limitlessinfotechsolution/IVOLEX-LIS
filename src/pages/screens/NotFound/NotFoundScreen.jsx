@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 import { Search, Home, ArrowLeft, FileQuestion } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SEO } from '../../../components/SEO'
-import { useI18n } from '../../../ui/contexts/I18nContext'
-import Container from '../../../ui/components/Container'
+import { useI18n } from '../../../contexts/I18nContext'
+import Container from '../../../components/common/Container'
 
 const NotFoundScreen = () => {
   const navigate = useNavigate()

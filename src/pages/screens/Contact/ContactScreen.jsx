@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Container from '../../../ui/components/Container.jsx'
+import Container from '../../../components/common/Container.jsx'
 import { SEO } from '../../../components/SEO'
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react'
 import toast from 'react-hot-toast'

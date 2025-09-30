@@ -12,8 +12,8 @@ import {
   Download,
   Target,
 } from 'lucide-react'
-import { useSegment } from '../../../ui/contexts/SegmentContext.jsx'
-import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
+import { useSegment } from '../../../contexts/SegmentContext.jsx'
+import { useI18n } from '../../../contexts/I18nContext.jsx'
 
 // Mock India-specific analytics data
 const INDIA_ANALYTICS = {

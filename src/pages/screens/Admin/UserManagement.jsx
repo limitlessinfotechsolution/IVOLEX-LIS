@@ -9,7 +9,7 @@ import {
   Eye,
   CheckCircle,
 } from 'lucide-react'
-import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
+import { useI18n } from '../../../contexts/I18nContext.jsx'
 
 const MOCK_USERS = [
   {

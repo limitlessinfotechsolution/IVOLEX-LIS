@@ -6,8 +6,8 @@ import {
   PERMISSIONS,
   ROLE_PERMISSIONS,
   AUDIT_ACTIONS,
-} from '../../../ui/contexts/AuditContext'
-import { useI18n } from '../../../ui/contexts/I18nContext'
+} from '../../../contexts/AuditContext'
+import { useI18n } from '../../../contexts/I18nContext'
 import {
   Shield,
   User,

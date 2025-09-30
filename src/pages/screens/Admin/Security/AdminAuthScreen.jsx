@@ -12,8 +12,8 @@ import {
   Timer,
   Globe,
 } from 'lucide-react'
-import { useI18n } from '../../../../ui/contexts/I18nContext.jsx'
-import { useAuth } from '../../../../ui/contexts/AuthContext.jsx'
+import { useI18n } from '../../../../contexts/I18nContext.jsx'
+import { useAuth } from '../../../../contexts/AuthContext.jsx'
 
 const AdminAuthScreen = () => {
   const [step, setStep] = useState('password') // password, 2fa, success

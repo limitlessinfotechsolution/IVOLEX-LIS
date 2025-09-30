@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useParams, Link, useSearchParams } from 'react-router-dom'
 import products from '../../../data/products.json'
-import Container from '../../../ui/components/Container.jsx'
-import ProductCard from '../../../ui/components/ProductCard'
+import Container from '../../../components/common/Container.jsx'
+import ProductCard from '../../../components/product/ProductCard'
+import { ProductCardSkeleton } from '../../../components/common/LoadingStates.jsx'
 import { SEO } from '../../../components/SEO'
 
 export default function CategoryScreen({ category: propCategory }) {
@@ -11,6 +12,15 @@ export default function CategoryScreen({ category: propCategory }) {
   const category = (propCategory || params.category || 'all').toLowerCase()
   const q = (searchParams.get('q') || '').toLowerCase()
   const sortBy = searchParams.get('sort') || 'name'
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Simulate loading delay for demonstration
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 800)
+    return () => clearTimeout(timer)
+  }, [])
 
   const filtered = useMemo(() => {
     let list = products
@@ -107,7 +117,13 @@ export default function CategoryScreen({ category: propCategory }) {
             </div>
           </div>
 
-          {filtered.length ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))}
+            </div>
+          ) : filtered.length ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filtered.map(p => (
                 <ProductCard

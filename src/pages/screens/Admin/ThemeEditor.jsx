@@ -19,8 +19,8 @@ import {
   Check,
   X,
 } from 'lucide-react'
-import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
-import { useSegment } from '../../../ui/contexts/SegmentContext.jsx'
+import { useI18n } from '../../../contexts/I18nContext.jsx'
+import { useSegment } from '../../../contexts/SegmentContext.jsx'
 
 // Color palette presets
 const COLOR_PRESETS = {

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import Container from '../../../ui/components/Container.jsx'
+import Container from '../../../components/common/Container.jsx'
 import { SEO } from '../../../components/SEO'
 import { Eye, EyeOff, Mail, Lock, User, Check } from 'lucide-react'
-import { useAuth } from '../../../ui/contexts/AuthContext.jsx'
+import { useAuth } from '../../../contexts/AuthContext.jsx'
 import toast from 'react-hot-toast'
 
 export default function RegisterScreen() {

@@ -10,8 +10,8 @@ import {
   Folder,
   Tag,
 } from 'lucide-react'
-import { useSearch, RESULT_TYPES } from '../../ui/contexts/SearchContext'
-import { useI18n } from '../../ui/contexts/I18nContext'
+import { useSearch, RESULT_TYPES } from '../../contexts/SearchContext'
+import { useI18n } from '../../contexts/I18nContext'
 import EnhancedSearch from '../../components/search/EnhancedSearch'
 
 const SearchResultsScreen = () => {

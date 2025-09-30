@@ -16,8 +16,8 @@ import {
   CheckCircle,
   X,
 } from 'lucide-react'
-import { useSegment } from '../../../ui/contexts/SegmentContext.jsx'
-import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
+import { useSegment } from '../../../contexts/SegmentContext.jsx'
+import { useI18n } from '../../../contexts/I18nContext.jsx'
 
 // Mock recommendation data
 const RECOMMENDATION_DATA = {

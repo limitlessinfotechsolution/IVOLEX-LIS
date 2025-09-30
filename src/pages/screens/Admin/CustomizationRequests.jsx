@@ -12,7 +12,7 @@ import {
   Mail,
   Phone,
 } from 'lucide-react'
-import { useI18n } from '../../../ui/contexts/I18nContext.jsx'
+import { useI18n } from '../../../contexts/I18nContext.jsx'
 
 // Mock data - simplified
 const MOCK_REQUESTS = [

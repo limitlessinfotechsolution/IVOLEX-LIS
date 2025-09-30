@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import products from '../../../data/products.json'
-import Container from '../../../ui/components/Container.jsx'
-import ProductCard from '../../../ui/components/ProductCard'
+import Container from '../../../components/common/Container.jsx'
+import ProductCard from '../../../components/product/ProductCard'
+import { ProductCardSkeleton } from '../../../components/common/LoadingStates.jsx'
 import { SEO } from '../../../components/SEO'
 import { Filter, Search } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -10,6 +11,15 @@ import { motion } from 'framer-motion'
 export default function ShopScreen() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [showFilters, setShowFilters] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Simulate loading delay for demonstration
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 800)
+    return () => clearTimeout(timer)
+  }, [])
 
   const category = searchParams.get('category') || 'all'
   const q = searchParams.get('q') || ''
@@ -200,7 +210,20 @@ export default function ShopScreen() {
                 </select>
               </div>
 
-              {filtered.length > 0 ? (
+              {isLoading ? (
+                <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: index * 0.05 }}
+                    >
+                      <ProductCardSkeleton />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : filtered.length > 0 ? (
                 <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filtered.map((product, index) => (
                     <motion.div

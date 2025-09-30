@@ -13,7 +13,7 @@ import {
   User,
   Briefcase,
 } from 'lucide-react'
-import { useSegment } from '../../../ui/contexts/SegmentContext.jsx'
+import { useSegment } from '../../../contexts/SegmentContext.jsx'
 
 const CUSTOMIZATION_STEPS = [
   { id: 'contact', title: 'Contact Information', icon: User },

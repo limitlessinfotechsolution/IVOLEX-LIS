@@ -1,4 +1,4 @@
-import Container from '../../../ui/components/Container.jsx'
+import Container from '../../../components/common/Container.jsx'
 import { SEO } from '../../../components/SEO'
 import {
   Award,

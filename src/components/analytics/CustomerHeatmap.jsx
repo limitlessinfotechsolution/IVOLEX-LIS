@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Activity } from 'lucide-react'
-import { useI18n } from '../../ui/contexts/I18nContext.jsx'
+import { useI18n } from '../../contexts/I18nContext.jsx'
 
 const CustomerHeatmap = ({
   type = 'geographic', // 'geographic', 'behavioral', 'temporal'

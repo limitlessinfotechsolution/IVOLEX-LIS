@@ -12,8 +12,8 @@ import {
   MapPin,
   Settings,
 } from 'lucide-react'
-import { useI18n } from '../../../../ui/contexts/I18nContext.jsx'
-import { useAdminSecurity } from '../../../../ui/contexts/AdminSecurityContext.jsx'
+import { useI18n } from '../../../../contexts/I18nContext.jsx'
+import { useAdminSecurity } from '../../../../contexts/AdminSecurityContext.jsx'
 
 const SessionManager = () => {
   const [sessions, setSessions] = useState([])

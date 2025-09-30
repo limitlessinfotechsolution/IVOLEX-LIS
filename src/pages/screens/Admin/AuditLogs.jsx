@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useAudit, AUDIT_ACTIONS } from '../../../ui/contexts/AuditContext'
-import { useI18n } from '../../../ui/contexts/I18nContext'
+import { useAudit, AUDIT_ACTIONS } from '../../../contexts/AuditContext'
+import { useI18n } from '../../../contexts/I18nContext'
 import {
   FileText,
   Download,

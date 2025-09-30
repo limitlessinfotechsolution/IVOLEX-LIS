@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { Package, ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import ShippingTracker from '../../components/shipping/ShippingTracker'
-import { useSegment } from '../../ui/contexts/SegmentContext'
+import { useSegment } from '../../contexts/SegmentContext'
 
 const TrackingPage = () => {
   const navigate = useNavigate()

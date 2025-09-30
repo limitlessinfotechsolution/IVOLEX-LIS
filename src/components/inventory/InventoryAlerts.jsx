@@ -10,8 +10,8 @@ import {
   TrendingDown,
   Info,
 } from 'lucide-react'
-import { useInventory } from '../../ui/contexts/InventoryContext'
-import { useSegment } from '../../ui/contexts/SegmentContext'
+import { useInventory } from '../../contexts/InventoryContext'
+import { useSegment } from '../../contexts/SegmentContext'
 
 const InventoryAlerts = ({ isOpen, onClose }) => {
   const { alerts, allAlerts, acknowledgeAlert, clearAlerts } = useInventory()

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Container from '../../../ui/components/Container.jsx'
+import Container from '../../../components/common/Container.jsx'
 import { SEO } from '../../../components/SEO'
-import { LoadingButton } from '../../../ui/components/LoadingStates.jsx'
+import { LoadingButton } from '../../../components/common/LoadingStates.jsx'
 import {
   User,
   Package,
@@ -12,7 +12,7 @@ import {
   Edit2,
   Save,
 } from 'lucide-react'
-import CurrencySelector from '../../../ui/components/CurrencySelector.jsx'
+import CurrencySelector from '../../../components/common/CurrencySelector.jsx'
 import toast from 'react-hot-toast'
 
 export default function ProfileScreen() {
