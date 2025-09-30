@@ -72,6 +72,27 @@ docker-compose up --build
 docker-compose up -d --build
 ```
 
+## CI/CD Validation
+
+To ensure your CI/CD configuration is valid before pushing changes, run the validation scripts:
+
+### Using Bash Script (Linux/macOS/Windows with Git Bash)
+```bash
+chmod +x scripts/validate-ci.sh
+./scripts/validate-ci.sh
+```
+
+### Using PowerShell Script (Windows)
+```powershell
+.\scripts\validate-ci.ps1
+```
+
+These scripts will validate:
+- YAML syntax of all GitHub Actions workflow files
+- Dockerfile structure
+- docker-compose.yml syntax
+- package.json syntax
+
 ## Monitoring
 
 The pipeline includes health checks and monitoring:
@@ -86,6 +107,7 @@ The pipeline includes health checks and monitoring:
 1. **Build failures**: Check for linting errors or failing tests
 2. **Deployment failures**: Verify environment variables are correctly set
 3. **Docker issues**: Ensure DockerHub credentials are correct
+4. **YAML syntax errors**: Use the validation scripts to check configuration files
 
 ### Manual Trigger
 The pipeline can be manually triggered through the GitHub Actions interface for on-demand deployments.

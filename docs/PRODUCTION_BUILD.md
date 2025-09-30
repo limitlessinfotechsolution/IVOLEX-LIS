@@ -18,14 +18,14 @@ Before building for production, ensure you have:
 ### Using Bash Script (Linux/macOS/Windows with Git Bash)
 
 ```bash
-chmod +x build-prod.sh
-./build-prod.sh
+chmod +x scripts/build-prod.sh
+./scripts/build-prod.sh
 ```
 
 ### Using PowerShell Script (Windows)
 
 ```powershell
-.\build-prod.ps1
+.\scripts\build-prod.ps1
 ```
 
 Both scripts will automatically:
@@ -59,6 +59,21 @@ npm test
 
 # Build for production
 npm run build
+```
+
+## CI/CD Validation
+
+To validate your CI/CD configuration before pushing changes:
+
+### Using Bash Script (Linux/macOS/Windows with Git Bash)
+```bash
+chmod +x scripts/validate-ci.sh
+./scripts/validate-ci.sh
+```
+
+### Using PowerShell Script (Windows)
+```powershell
+.\scripts\validate-ci.ps1
 ```
 
 ## Deployment Options

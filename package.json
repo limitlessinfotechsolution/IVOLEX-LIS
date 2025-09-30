@@ -27,7 +27,8 @@
     "security:check": "npm run security:audit && npm outdated",
     "build:secure": "npm run security:check && npm run lint && npm run test && npm run build",
     "build:prod": "npm run build:secure",
-    "build:production": "chmod +x build-prod.sh && ./build-prod.sh"
+    "build:production": "chmod +x scripts/build-prod.sh && ./scripts/build-prod.sh",
+    "ci:validate": "chmod +x scripts/validate-ci.sh && ./scripts/validate-ci.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
