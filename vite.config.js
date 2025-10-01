@@ -31,6 +31,6 @@ export default defineConfig({
     port: 5176,
     open: true,
   },
-  // Use relative paths for deployment
-  base: './',
+  // Use absolute paths for deployment
+  base: '/',
 })
