@@ -29,7 +29,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-16 bg-gradient-to-b from-stone-50 to-white">
+    <section className="py-16 bg-gradient-to-b from-white to-stone-50">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

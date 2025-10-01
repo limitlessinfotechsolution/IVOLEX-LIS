@@ -19,9 +19,24 @@ export default function CurrencySelector({
 
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false)
   const [isRegionOpen, setIsRegionOpen] = useState(false)
+  const [currencyDropdownPosition, setCurrencyDropdownPosition] = useState('bottom') // 'top' or 'bottom'
+  const [regionDropdownPosition, setRegionDropdownPosition] = useState('bottom') // 'top' or 'bottom'
 
   const currencyRef = useRef(null)
   const regionRef = useRef(null)
+
+  // Check if dropdown should open upwards or downwards
+  const calculateDropdownPosition = (buttonRef) => {
+    if (!buttonRef.current) return 'bottom'
+    
+    const buttonRect = buttonRef.current.getBoundingClientRect()
+    const viewportHeight = window.innerHeight
+    const spaceBelow = viewportHeight - buttonRect.bottom
+    const spaceAbove = buttonRect.top
+    
+    // If there's not enough space below (less than 300px) and there's more space above, open upwards
+    return spaceBelow < 300 && spaceAbove > spaceBelow ? 'top' : 'bottom'
+  }
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -36,6 +51,19 @@ export default function CurrencySelector({
 
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Close dropdowns when pressing Escape key
+  useEffect(() => {
+    const handleEscape = event => {
+      if (event.key === 'Escape') {
+        setIsCurrencyOpen(false)
+        setIsRegionOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
   // Get current currency info
@@ -57,17 +85,19 @@ export default function CurrencySelector({
     }
   }
 
-  const getDropdownClasses = () => {
-    const baseClasses =
-      'absolute z-50 mt-1 bg-white border rounded-xl shadow-lg'
+  const getDropdownClasses = (position) => {
+    const baseClasses = 'absolute z-50 bg-white border rounded-xl shadow-lg'
+
+    // Position classes based on calculated position
+    const positionClasses = position === 'top' ? 'bottom-full mb-1' : 'top-full mt-1'
 
     switch (variant) {
       case 'footer':
-        return `${baseClasses} border-stone-600 bg-stone-800 text-stone-200 min-w-[280px] max-h-80 overflow-hidden`
+        return `${baseClasses} ${positionClasses} border-stone-600 bg-stone-800 text-stone-200 min-w-[280px] max-h-80 overflow-hidden`
       case 'profile':
-        return `${baseClasses} min-w-[320px] max-h-96 overflow-hidden`
+        return `${baseClasses} ${positionClasses} min-w-[320px] max-h-96 overflow-hidden`
       default:
-        return `${baseClasses} min-w-[280px] max-h-80 overflow-hidden`
+        return `${baseClasses} ${positionClasses} min-w-[280px] max-h-80 overflow-hidden`
     }
   }
 
@@ -77,6 +107,27 @@ export default function CurrencySelector({
     return variant === 'footer'
       ? `${baseClasses} hover:bg-stone-700 text-stone-200`
       : `${baseClasses} hover:bg-stone-50`
+  }
+
+  // Handle dropdown toggle with proper focus management
+  const handleCurrencyToggle = () => {
+    if (!isCurrencyOpen) {
+      // When opening, calculate position
+      const position = calculateDropdownPosition(currencyRef)
+      setCurrencyDropdownPosition(position)
+    }
+    setIsRegionOpen(false) // Close region dropdown if open
+    setIsCurrencyOpen(!isCurrencyOpen)
+  }
+
+  const handleRegionToggle = () => {
+    if (!isRegionOpen) {
+      // When opening, calculate position
+      const position = calculateDropdownPosition(regionRef)
+      setRegionDropdownPosition(position)
+    }
+    setIsCurrencyOpen(false) // Close currency dropdown if open
+    setIsRegionOpen(!isRegionOpen)
   }
 
   return (
@@ -92,8 +143,10 @@ export default function CurrencySelector({
             Region:
           </label>
           <button
-            onClick={() => setIsRegionOpen(!isRegionOpen)}
+            onClick={handleRegionToggle}
             className={getButtonClasses()}
+            aria-expanded={isRegionOpen}
+            aria-haspopup="listbox"
           >
             <Globe size={16} />
             <span className="flex-1 text-left">
@@ -108,7 +161,7 @@ export default function CurrencySelector({
           </button>
 
           {isRegionOpen && (
-            <div className={getDropdownClasses()}>
+            <div className={getDropdownClasses(regionDropdownPosition)}>
               <div className="p-2 space-y-1 max-h-48 overflow-y-auto">
                 {REGIONS.map(region => (
                   <button
@@ -144,8 +197,10 @@ export default function CurrencySelector({
           Currency:
         </label>
         <button
-          onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
+          onClick={handleCurrencyToggle}
           className={getButtonClasses()}
+          aria-expanded={isCurrencyOpen}
+          aria-haspopup="listbox"
         >
           <span className="text-lg">{currentCurrency.symbol}</span>
           <span className="flex-1 text-left">
@@ -160,7 +215,7 @@ export default function CurrencySelector({
         </button>
 
         {isCurrencyOpen && (
-          <div className={getDropdownClasses()}>
+          <div className={getDropdownClasses(currencyDropdownPosition)}>
             <div className="max-h-64 overflow-y-auto p-2 space-y-1">
               {CURRENCIES.map(currency => (
                 <button

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, X, Clock, TrendingUp, Filter, ArrowRight } from 'lucide-react'
+import { Search, X, Clock, TrendingUp, Filter, ArrowRight, History } from 'lucide-react'
 import { useSearch } from '../../contexts/SearchContext'
 import { useI18n } from '../../contexts/I18nContext'
 import { useSegment } from '../../contexts/SegmentContext'
@@ -143,6 +143,20 @@ const EnhancedSearch = ({
     },
     { label: t('search.newest', 'Newest First'), value: 'newest' },
     { label: t('search.popular', 'Most Popular'), value: 'popular' },
+  ]
+
+  // Popular search terms
+  const popularSearches = [
+    'leather wallet',
+    'gaming setup',
+    'office chair',
+    'headphones',
+    'dining table',
+    'smartphone',
+    'laptop',
+    'backpack',
+    'sunglasses',
+    'watch'
   ]
 
   return (
@@ -381,7 +395,7 @@ const EnhancedSearch = ({
                   <>
                     <div className="px-4 py-2 bg-background/50 border-b border-border flex items-center justify-between">
                       <span className="text-sm font-medium text-foreground/60 flex items-center gap-2">
-                        <Clock size={14} />
+                        <History size={14} />
                         {t('search.recentSearches', 'Recent Searches')}
                       </span>
                       <button
@@ -424,13 +438,7 @@ const EnhancedSearch = ({
                     {t('search.popularSearches', 'Popular Searches')}
                   </span>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    {[
-                      'leather wallet',
-                      'gaming setup',
-                      'office chair',
-                      'headphones',
-                      'dining table',
-                    ].map((term, index) => (
+                    {popularSearches.map((term, index) => (
                       <motion.button
                         key={term}
                         initial={{ opacity: 0, scale: 0.8 }}

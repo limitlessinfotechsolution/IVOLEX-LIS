@@ -46,7 +46,7 @@ export default function Footer() {
   }
 
   return (
-    <footer id="about" className="bg-stone-900 text-stone-200">
+    <footer id="about" className="bg-stone-900 text-stone-200 w-full mt-auto">
       <Container>
         {/* Main Footer Content */}
         <div
@@ -192,7 +192,7 @@ export default function Footer() {
           </motion.div>
 
           {/* Currency Selector - Only shown when not authenticated */}
-          {/* {!isAuthenticated && (
+          {!isAuthenticated && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -205,7 +205,7 @@ export default function Footer() {
               </p>
               <CurrencySelector variant="footer" showRegion={true} />
             </motion.div>
-          )} */}
+          )}
         </div>
 
         {/* Bottom Bar */}

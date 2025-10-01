@@ -49,7 +49,7 @@ export default function Newsletter() {
   }
 
   return (
-    <section className="py-16 bg-gradient-to-r from-brand-50 to-stone-50">
+    <section className="py-16 bg-gradient-to-b from-white to-stone-50">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

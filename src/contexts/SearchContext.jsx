@@ -4,53 +4,15 @@ import React, {
   useReducer,
   useCallback,
 } from 'react'
+import {
+  SEARCH_TYPES,
+  RESULT_TYPES,
+  SEARCH_ACTIONS,
+  fuzzyMatch
+} from '../utils/searchUtils'
 
 // Search context
 const SearchContext = createContext()
-export const SEARCH_TYPES = {
-  PRODUCTS: 'products',
-  CATEGORIES: 'categories',
-  BRANDS: 'brands',
-  COLLECTIONS: 'collections',
-  ALL: 'all',
-}
-
-// Search result types
-export const RESULT_TYPES = {
-  PRODUCT: 'product',
-  CATEGORY: 'category',
-  BRAND: 'brand',
-  COLLECTION: 'collection',
-  SUGGESTION: 'suggestion',
-}
-
-// Search actions
-const SEARCH_ACTIONS = {
-  SET_QUERY: 'SET_QUERY',
-  SET_RESULTS: 'SET_RESULTS',
-  SET_SUGGESTIONS: 'SET_SUGGESTIONS',
-  SET_LOADING: 'SET_LOADING',
-  SET_FILTERS: 'SET_FILTERS',
-  ADD_TO_HISTORY: 'ADD_TO_HISTORY',
-  CLEAR_HISTORY: 'CLEAR_HISTORY',
-  SET_POPULAR_SEARCHES: 'SET_POPULAR_SEARCHES',
-}
-
-const initialState = {
-  query: '',
-  results: [],
-  suggestions: [],
-  loading: false,
-  filters: {
-    type: SEARCH_TYPES.ALL,
-    segment: null,
-    priceRange: null,
-    sortBy: 'relevance',
-  },
-  searchHistory: [],
-  popularSearches: [],
-  totalResults: 0,
-}
 
 // Mock data for demonstration
 const MOCK_PRODUCTS = [
@@ -65,6 +27,7 @@ const MOCK_PRODUCTS = [
     price: 299,
     brand: 'IVOLEX',
     keywords: ['wallet', 'leather', 'premium', 'men', 'brown'],
+    relatedProducts: [2, 3], // IDs of related products
   },
   {
     id: 2,
@@ -76,6 +39,7 @@ const MOCK_PRODUCTS = [
     price: 899,
     brand: 'IVOLEX',
     keywords: ['bag', 'leather', 'handcrafted', 'women', 'black'],
+    relatedProducts: [1, 4],
   },
   {
     id: 3,
@@ -87,6 +51,7 @@ const MOCK_PRODUCTS = [
     price: 1299,
     brand: 'IVOLEX',
     keywords: ['briefcase', 'leather', 'executive', 'business', 'professional'],
+    relatedProducts: [1, 4],
   },
   {
     id: 4,
@@ -98,6 +63,7 @@ const MOCK_PRODUCTS = [
     price: 1899,
     brand: 'IVOLEX',
     keywords: ['jacket', 'leather', 'vintage', 'clothing', 'style'],
+    relatedProducts: [2, 3],
   },
 
   // Electronics products
@@ -111,6 +77,7 @@ const MOCK_PRODUCTS = [
     price: 599,
     brand: 'TechPro',
     keywords: ['headphones', 'wireless', 'smart', 'audio', 'bluetooth'],
+    relatedProducts: [6, 7],
   },
   {
     id: 6,
@@ -122,6 +89,7 @@ const MOCK_PRODUCTS = [
     price: 1499,
     brand: 'ViewMaster',
     keywords: ['monitor', '4k', 'display', 'uhd', 'gaming'],
+    relatedProducts: [5, 7, 8],
   },
   {
     id: 7,
@@ -133,6 +101,7 @@ const MOCK_PRODUCTS = [
     price: 399,
     brand: 'GameTech',
     keywords: ['keyboard', 'mechanical', 'gaming', 'rgb', 'switches'],
+    relatedProducts: [5, 6],
   },
   {
     id: 8,
@@ -144,6 +113,7 @@ const MOCK_PRODUCTS = [
     price: 2299,
     brand: 'SkyTech',
     keywords: ['drone', 'camera', 'professional', 'aerial', 'photography'],
+    relatedProducts: [6],
   },
 
   // Furniture products
@@ -157,6 +127,7 @@ const MOCK_PRODUCTS = [
     price: 1899,
     brand: 'ModernSpace',
     keywords: ['desk', 'executive', 'modern', 'office', 'workspace'],
+    relatedProducts: [10, 11],
   },
   {
     id: 10,
@@ -168,6 +139,7 @@ const MOCK_PRODUCTS = [
     price: 3499,
     brand: 'LuxeHome',
     keywords: ['dining', 'table', 'luxury', 'set', 'wooden'],
+    relatedProducts: [9, 12],
   },
   {
     id: 11,
@@ -179,6 +151,7 @@ const MOCK_PRODUCTS = [
     price: 899,
     brand: 'ComfortPlus',
     keywords: ['chair', 'office', 'ergonomic', 'comfortable', 'adjustable'],
+    relatedProducts: [9],
   },
   {
     id: 12,
@@ -190,6 +163,7 @@ const MOCK_PRODUCTS = [
     price: 2799,
     brand: 'StyleHome',
     keywords: ['sofa', 'contemporary', 'living room', 'comfort', 'fabric'],
+    relatedProducts: [10],
   },
 ]
 
@@ -218,55 +192,20 @@ const MOCK_BRANDS = [
   { id: 'modernspace', name: 'ModernSpace', segment: 'furniture' },
 ]
 
-// Fuzzy matching algorithm
-const fuzzyMatch = (query, target, threshold = 0.6) => {
-  if (!query || !target) return { match: false, score: 0 }
-
-  const queryLower = query.toLowerCase()
-  const targetLower = target.toLowerCase()
-
-  // Exact match
-  if (targetLower.includes(queryLower)) {
-    return { match: true, score: 1 }
-  }
-
-  // Levenshtein distance-based fuzzy matching
-  const distance = levenshteinDistance(queryLower, targetLower)
-  const maxLength = Math.max(queryLower.length, targetLower.length)
-  const similarity = 1 - distance / maxLength
-
-  return {
-    match: similarity >= threshold,
-    score: similarity,
-  }
-}
-
-const levenshteinDistance = (str1, str2) => {
-  const matrix = []
-
-  for (let i = 0; i <= str2.length; i++) {
-    matrix[i] = [i]
-  }
-
-  for (let j = 0; j <= str1.length; j++) {
-    matrix[0][j] = j
-  }
-
-  for (let i = 1; i <= str2.length; i++) {
-    for (let j = 1; j <= str1.length; j++) {
-      if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-        matrix[i][j] = matrix[i - 1][j - 1]
-      } else {
-        matrix[i][j] = Math.min(
-          matrix[i - 1][j - 1] + 1, // substitution
-          matrix[i][j - 1] + 1, // insertion
-          matrix[i - 1][j] + 1 // deletion
-        )
-      }
-    }
-  }
-
-  return matrix[str2.length][str1.length]
+const initialState = {
+  query: '',
+  results: [],
+  suggestions: [],
+  loading: false,
+  filters: {
+    type: SEARCH_TYPES.ALL,
+    segment: null,
+    priceRange: null,
+    sortBy: 'relevance',
+  },
+  searchHistory: [],
+  popularSearches: [],
+  totalResults: 0,
 }
 
 // Search reducer
@@ -518,7 +457,7 @@ export const SearchProvider = ({ children }) => {
     return score
   }
 
-  // Generate search suggestions
+  // Generate search suggestions with related products
   const generateSuggestions = useCallback(
     async query => {
       if (!query.trim() || query.length < 2) {
@@ -566,6 +505,31 @@ export const SearchProvider = ({ children }) => {
           })
         }
       })
+
+      // Add related product suggestions if we have a matching product
+      const matchingProducts = MOCK_PRODUCTS.filter(product => {
+        const name = language === 'ar' ? product.nameAr : product.name
+        return name.toLowerCase().includes(queryLower)
+      })
+      
+      if (matchingProducts.length > 0) {
+        // Get related products for the first matching product
+        const relatedProductIds = matchingProducts[0].relatedProducts || []
+        const relatedProducts = MOCK_PRODUCTS.filter(product => 
+          relatedProductIds.includes(product.id)
+        )
+        
+        relatedProducts.forEach(product => {
+          const name = language === 'ar' ? product.nameAr : product.name
+          suggestions.push({
+            text: `Related to ${matchingProducts[0].name}: ${name}`,
+            type: 'product',
+            id: product.id,
+            segment: product.segment,
+            isRelated: true
+          })
+        })
+      }
 
       // Remove duplicates and limit results
       const uniqueSuggestions = suggestions

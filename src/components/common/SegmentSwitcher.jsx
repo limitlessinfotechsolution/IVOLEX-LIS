@@ -139,6 +139,7 @@ export default function SegmentSwitcher({
 export function FloatingSegmentSwitcher({
   className = '',
   isExpanded = false,
+  onSegmentClick, // Add this prop
 }) {
   const { activeSegment, segments, setSegment, theme } = useSegment()
 
@@ -156,7 +157,13 @@ export function FloatingSegmentSwitcher({
         return (
           <motion.button
             key={segment.id}
-            onClick={() => setSegment(segment.id)}
+            onClick={() => {
+              setSegment(segment.id)
+              // Call the onSegmentClick callback if provided
+              if (onSegmentClick) {
+                onSegmentClick(segment.id)
+              }
+            }}
             className={`relative flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
               isActive
                 ? 'text-white shadow-sm'

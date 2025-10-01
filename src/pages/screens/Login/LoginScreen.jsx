@@ -66,7 +66,7 @@ export default function LoginScreen() {
                 </p>
               </div>
 
-              {/* Demo credentials notice */}
+             {/* Demo credentials notice */}
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
                 <p className="text-sm text-blue-800">
                   <strong>Demo Account:</strong>

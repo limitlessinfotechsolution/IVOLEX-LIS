@@ -25,7 +25,7 @@ const feats = [
 
 export default function Features() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-gradient-to-b from-white to-stone-50">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

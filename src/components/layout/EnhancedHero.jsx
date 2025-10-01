@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { ArrowRight, Play, Sparkles, ShoppingBag } from 'lucide-react'
 import { useSegment } from '../../contexts/SegmentContext.jsx'
-import SegmentSwitcher from '../common/SegmentSwitcher.jsx'
 
 const SEGMENT_HERO_CONTENT = {
   leather: {
@@ -75,7 +74,7 @@ export default function EnhancedHero() {
   return (
     <section
       ref={heroRef}
-      className="relative h-screen max-h-[1000px] flex items-center justify-center overflow-hidden"
+      className="relative h-screen max-h-[1000px] flex items-center justify-center overflow-hidden pb-0"
       style={{
         background: `linear-gradient(135deg, ${theme.colors.background}80 0%, ${theme.colors.primary}20 100%)`,
       }}
@@ -109,16 +108,6 @@ export default function EnhancedHero() {
 
       {/* Main Content */}
       <div className="relative z-20 max-w-7xl mx-auto px-6 text-center">
-        {/* Segment Switcher */}
-        <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-8"
-        >
-          <SegmentSwitcher variant="pills" className="justify-center" />
-        </motion.div>
-
         {/* Main Headline */}
         <motion.h1
           className="text-6xl md:text-8xl font-bold mb-6 leading-tight"

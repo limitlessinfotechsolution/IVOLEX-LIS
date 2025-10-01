@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { Search, ShoppingBag, Menu, X, Package, User } from 'lucide-react'
@@ -27,8 +27,11 @@ export default function FloatingNavbar() {
   const [isInventoryAlertsOpen, setIsInventoryAlertsOpen] = useState(false)
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false)
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false)
-  const [isSegmentSwitcherExpanded, setIsSegmentSwitcherExpanded] =
-    useState(false)
+  const [isSegmentSwitcherExpanded, setIsSegmentSwitcherExpanded] = useState(false)
+  const [isCategoriesActive, setIsCategoriesActive] = useState(false)
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false)
+  const [isSearchFocused, setIsSearchFocused] = useState(false)
+  const searchInputRef = useRef(null)
 
   const { theme } = useSegment()
   const { alerts } = useInventory()
@@ -52,7 +55,8 @@ export default function FloatingNavbar() {
       if (
         showCurrencyDropdown ||
         showLanguageDropdown ||
-        isSegmentSwitcherExpanded
+        isSegmentSwitcherExpanded ||
+        isSearchExpanded
       ) {
         let target = event.target
         let clickedInside = false
@@ -62,7 +66,8 @@ export default function FloatingNavbar() {
           if (
             target.classList &&
             (target.classList.contains('relative') ||
-              target.tagName === 'BUTTON')
+              target.tagName === 'BUTTON' ||
+              target.tagName === 'INPUT')
           ) {
             clickedInside = true
             break
@@ -74,33 +79,65 @@ export default function FloatingNavbar() {
           setShowCurrencyDropdown(false)
           setShowLanguageDropdown(false)
           setIsSegmentSwitcherExpanded(false)
+          setIsCategoriesActive(false)
+          setIsSearchExpanded(false)
+          setIsSearchFocused(false)
         }
       }
     }
 
     document.addEventListener('click', handleClickOutside)
     return () => document.removeEventListener('click', handleClickOutside)
-  }, [showCurrencyDropdown, showLanguageDropdown, isSegmentSwitcherExpanded])
+  }, [showCurrencyDropdown, showLanguageDropdown, isSegmentSwitcherExpanded, isSearchExpanded])
+
+  // Focus search input when expanded
+  useEffect(() => {
+    if (isSearchExpanded && searchInputRef.current) {
+      // Delay focus to ensure the element is rendered
+      setTimeout(() => {
+        if (searchInputRef.current) {
+          searchInputRef.current.focus()
+        }
+      }, 100);
+    }
+  }, [isSearchExpanded])
 
   const cartItemsCount = 3
 
   // Check if user is admin/super_admin
   const isAdmin = user?.role === 'admin' || user?.role === 'super_admin'
 
+  // Find the categories item index
+  const categoriesItemIndex = NAVIGATION_ITEMS.findIndex(item => item.label === 'nav.categories')
+
   return (
     <>
+      {/* Blur overlay when search is focused */}
+      <AnimatePresence>
+        {isSearchFocused && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/0 backdrop-blur-sm z-30 pointer-events-none"
+            style={{ backdropFilter: 'blur(4px)' }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Main Floating Navbar */}
       <motion.nav
-        className={`fixed top-4 z-40 transition-all duration-300 ${
-          isScrolled ? 'top-0.5' : 'top-0.5'
+        className={`fixed top-6 z-40 transition-all duration-300 ${
+          isScrolled ? 'top-1' : 'top-6'
         } left-0 right-0 px-4`}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
         <div className="max-w-7xl mx-auto">
+          {/* Navbar container that expands when needed */}
           <div
-            className="backdrop-blur-xl bg-surface/40 border border-border/50 rounded-2xl shadow-segment-xl px-6 py-4"
+            className={`backdrop-blur-xl bg-surface/40 border border-border/50 rounded-2xl shadow-segment-xl transition-all duration-300 px-6 py-4`}
             style={{
               background: `linear-gradient(135deg, ${theme.colors.surface}CC 0%, ${theme.colors.background}E6 100%)`,
               backdropFilter: 'blur(50px)',
@@ -130,51 +167,64 @@ export default function FloatingNavbar() {
               <div
                 className={`hidden lg:flex items-center gap-8 ${isRTL ? 'flex-row-reverse' : ''}`}
               >
-                {NAVIGATION_ITEMS.map(item => (
-                  <motion.a
-                    key={item.label}
-                    href={item.href}
-                    className="text-foreground/70 hover:text-primary transition-colors font-medium"
-                    whileHover={{ y: -2 }}
-                    whileTap={{ y: 0 }}
-                  >
-                    {t(item.label)}
-                  </motion.a>
+                {NAVIGATION_ITEMS.map((item, index) => (
+                  <div key={item.label} className="relative flex flex-col items-center">
+                    {index === categoriesItemIndex ? (
+                      <>
+                        <motion.a
+                          href={item.href}
+                          className="text-foreground/70 hover:text-primary transition-colors font-medium"
+                          whileHover={{ y: -2 }}
+                          whileTap={{ y: 0 }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            // Navigate to categories page and toggle segment switcher
+                            navigate('/categories');
+                            setIsCategoriesActive(!isCategoriesActive);
+                          }}
+                        >
+                          {t(item.label)}
+                        </motion.a>
+                        {/* Inline Segment Switcher for Categories - shown only on click */}
+                        <AnimatePresence>
+                          {isCategoriesActive && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="overflow-hidden mt-2"
+                            >
+                              <FloatingSegmentSwitcher 
+                                className="justify-center" 
+                                isExpanded={false}
+                                onSegmentClick={(segment) => {
+                                  // Navigate to the specific segment category page
+                                  if (segment === 'all') {
+                                    navigate('/categories');
+                                  } else {
+                                    navigate(`/category/${segment}`);
+                                  }
+                                  setIsCategoriesActive(false);
+                                }}
+                              />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </>
+                    ) : (
+                      <motion.a
+                        key={item.label}
+                        href={item.href}
+                        className="text-foreground/70 hover:text-primary transition-colors font-medium"
+                        whileHover={{ y: -2 }}
+                        whileTap={{ y: 0 }}
+                      >
+                        {t(item.label)}
+                      </motion.a>
+                    )}
+                  </div>
                 ))}
-              </div>
-
-              {/* Segment Switcher - Hidden on mobile, visible on md and larger screens */}
-              <div className="hidden md:flex items-center">
-                <FloatingSegmentSwitcher
-                  className={`transition-all duration-300 ${isSegmentSwitcherExpanded ? 'flex-col bg-surface/90 backdrop-blur-lg p-2 rounded-2xl shadow-lg absolute top-16 left-1/2 transform -translate-x-1/2 w-48 z-50' : ''}`}
-                  onToggle={() =>
-                    setIsSegmentSwitcherExpanded(!isSegmentSwitcherExpanded)
-                  }
-                />
-                {/* Segment Switcher Toggle Button (only visible on mobile) */}
-                <button
-                  className="md:hidden ml-2 p-2 text-foreground/70 hover:text-primary hover:bg-background/50 rounded-full transition-all"
-                  onClick={() =>
-                    setIsSegmentSwitcherExpanded(!isSegmentSwitcherExpanded)
-                  }
-                  aria-label="Toggle categories"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                  </svg>
-                </button>
               </div>
 
               {/* Actions */}
@@ -213,16 +263,69 @@ export default function FloatingNavbar() {
                   </motion.button>
                 )}
 
-                {/* Search */}
-                <motion.button
-                  onClick={() => setIsSearchOpen(!isSearchOpen)}
-                  className="p-2 text-foreground/70 hover:text-primary hover:bg-background/50 rounded-full transition-all"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label={t('nav.search')}
-                >
-                  <Search size={20} />
-                </motion.button>
+                {/* Search - Inline expanded search bar with hover functionality */}
+                <div className="relative flex items-center">
+                  <motion.button
+                    onClick={() => setIsSearchExpanded(!isSearchExpanded)}
+                    onMouseEnter={() => setIsSearchExpanded(true)}
+                    className="p-2 text-foreground/70 hover:text-primary hover:bg-background/50 rounded-full transition-all"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    aria-label={t('nav.search')}
+                  >
+                    <Search size={20} />
+                  </motion.button>
+                  
+                  <AnimatePresence>
+                    {isSearchExpanded && (
+                      <motion.div
+                        initial={{ opacity: 0, width: 0 }}
+                        animate={{ opacity: 1, width: 'auto' }}
+                        exit={{ opacity: 0, width: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="flex items-center overflow-hidden ml-2"
+                        onMouseLeave={() => {
+                          // Only collapse if not focused
+                          if (!isSearchFocused) {
+                            setIsSearchExpanded(false)
+                          }
+                        }}
+                      >
+                        <div className="relative">
+                          <input
+                            ref={searchInputRef}
+                            type="text"
+                            placeholder={t('search.placeholder', 'Search products, categories, or brands...')}
+                            className="px-4 py-2 rounded-full bg-surface/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary w-64 border-0"
+                            onFocus={() => setIsSearchFocused(true)}
+                            onBlur={() => {
+                              setIsSearchFocused(false)
+                              // Collapse search bar when losing focus
+                              setTimeout(() => {
+                                if (!searchInputRef.current || searchInputRef.current !== document.activeElement) {
+                                  setIsSearchExpanded(false)
+                                }
+                              }, 100)
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Escape') {
+                                setIsSearchFocused(false)
+                                setIsSearchExpanded(false)
+                              }
+                            }}
+                          />
+                          {/* Only show search icon inside input when focused */}
+                          {isSearchFocused && (
+                            <Search 
+                              size={16} 
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/40 pointer-events-none" 
+                            />
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 {/* Profile Icon */}
                 {isAuthenticated ? (
@@ -333,7 +436,7 @@ export default function FloatingNavbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className={`fixed top-16 z-30 lg:hidden left-0 right-0 px-4`}
+            className={`fixed top-20 z-30 lg:hidden left-0 right-0 px-4`}
           >
             <div className="max-w-7xl mx-auto">
               <div

@@ -3,6 +3,7 @@ import ProductCard from '../product/ProductCard'
 import { ProductCardSkeleton } from '../common/LoadingStates.jsx'
 import { useLocation } from '../../contexts/LocationContext.jsx'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import Container from '../common/Container.jsx'
 
 const allProducts = [
@@ -61,67 +62,23 @@ const allProducts = [
 ]
 
 export default function Trending() {
-  const { effectiveRegion } = useLocation()
-  const [isLoading, setIsLoading] = useState(true)
-
-  // Simulate loading delay for demonstration
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 800)
-    return () => clearTimeout(timer)
-  }, [])
-
-  const filteredProducts = useMemo(() => {
-    if (!effectiveRegion || effectiveRegion === 'Global') {
-      return allProducts
-    }
-    return allProducts.filter(
-      product =>
-        product.regions.includes(effectiveRegion) ||
-        product.regions.includes('Global')
-    )
-  }, [effectiveRegion])
-
   return (
-    <section id="shop" className="py-12 bg-white">
+    <section className="py-16 bg-white">
       <Container>
-        <h2 className="text-2xl mb-2">Trending Products</h2>
-        <p className="text-sm text-stone-600 mb-6">
-          Our most popular items this season
-          {effectiveRegion && effectiveRegion !== 'Global' && (
-            <span> in {effectiveRegion}</span>
-          )}
-        </p>
-
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <ProductCardSkeleton key={index} />
-            ))}
-          </div>
-        ) : filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredProducts.map(p => (
-              <ProductCard key={p.title} product={p} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-stone-500 mb-4">
-              No products available in your region.
-            </p>
-            <p className="text-sm text-stone-400">
-              Try selecting a different region or currency.
-            </p>
-          </div>
-        )}
-
-        <div className="mt-8 text-center">
-          <Link to="/shop" className="btn btn-outline">
-            View All Products
-          </Link>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Trending Now
+          </h2>
+          <p className="text-stone-600 max-w-2xl mx-auto">
+            Discover our most popular products
+          </p>
+        </motion.div>
       </Container>
     </section>
   )

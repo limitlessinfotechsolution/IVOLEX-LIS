@@ -30,7 +30,7 @@ export default function Hero() {
   const ArrowIcon = isRTL ? ArrowLeft : ArrowRight
 
   return (
-    <section className="relative bg-segment-texture overflow-hidden">
+    <section className="relative bg-segment-texture overflow-hidden w-full">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-10 w-32 h-32 border border-foreground/20 rounded-full"></div>
@@ -38,22 +38,22 @@ export default function Hero() {
         <div className="absolute bottom-20 left-1/4 w-16 h-16 border border-foreground/20 rounded-full"></div>
       </div>
 
-      <div className="container-xl relative">
+      <div className="container-xl relative w-full max-w-full px-4 mx-auto">
         <div
-          className={`grid lg:grid-cols-2 gap-12 items-center py-20 lg:py-28 ${isRTL ? 'lg:grid-flow-col-dense' : ''}`}
+          className={`grid lg:grid-cols-2 gap-12 items-center py-20 lg:py-28 ${isRTL ? 'lg:grid-flow-col-dense' : ''} w-full`}
         >
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: isRTL ? 50 : -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className={`space-y-8 ${isRTL ? 'lg:col-start-2 text-right' : 'text-left'}`}
+            className={`space-y-8 ${isRTL ? 'lg:col-start-2 text-right' : 'text-left'} w-full min-w-0`}
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className={`flex items-center gap-2 text-foreground/70 ${isRTL ? 'justify-end flex-row-reverse' : 'justify-start'}`}
+              className={`flex items-center gap-2 text-foreground/70 ${isRTL ? 'justify-end flex-row-reverse' : 'justify-start'} w-full`}
             >
               <Star
                 className="w-5 h-5 fill-current"
@@ -68,7 +68,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-4xl md:text-6xl lg:text-7xl leading-tight font-bold text-foreground"
+              className="text-4xl md:text-6xl lg:text-7xl leading-tight font-bold text-foreground w-full min-w-0"
               dir={isRTL ? 'rtl' : 'ltr'}
             >
               {content.headline.split(' ').map((word, index) => (
@@ -89,7 +89,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-lg text-foreground/70 max-w-xl leading-relaxed"
+              className="text-lg text-foreground/70 max-w-xl leading-relaxed w-full min-w-0"
               dir={isRTL ? 'rtl' : 'ltr'}
             >
               {content.subheadline}
@@ -99,11 +99,11 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
-              className={`flex flex-col sm:flex-row gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}
+              className={`flex flex-col sm:flex-row gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''} w-full min-w-0`}
             >
               <motion.a
                 href="#shop"
-                className={`btn btn-primary text-lg px-8 py-4 flex items-center justify-center gap-2 group ${isRTL ? 'flex-row-reverse' : ''}`}
+                className={`btn btn-primary text-lg px-8 py-4 flex items-center justify-center gap-2 group ${isRTL ? 'flex-row-reverse' : ''} w-full sm:w-auto`}
                 style={{ backgroundColor: theme.colors.primary }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -119,7 +119,7 @@ export default function Hero() {
               </motion.a>
               <motion.a
                 href="#customize"
-                className="btn btn-outline text-lg px-8 py-4"
+                className="btn btn-outline text-lg px-8 py-4 w-full sm:w-auto"
                 style={{
                   borderColor: theme.colors.secondary,
                   color: theme.colors.secondary,
@@ -136,9 +136,9 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
-              className="grid grid-cols-3 gap-8 pt-8 border-t border-border"
+              className="grid grid-cols-3 gap-8 pt-8 border-t border-border w-full min-w-0"
             >
-              <div className={`${isRTL ? 'text-right' : 'text-center'}`}>
+              <div className={`${isRTL ? 'text-right' : 'text-center'} w-full min-w-0`}>
                 <div
                   className="text-2xl font-bold"
                   style={{ color: theme.colors.primary }}
@@ -149,7 +149,7 @@ export default function Hero() {
                   {content.stats.customers}
                 </div>
               </div>
-              <div className={`${isRTL ? 'text-right' : 'text-center'}`}>
+              <div className={`${isRTL ? 'text-right' : 'text-center'} w-full min-w-0`}>
                 <div
                   className="text-2xl font-bold"
                   style={{ color: theme.colors.primary }}
@@ -160,7 +160,7 @@ export default function Hero() {
                   {content.stats.products}
                 </div>
               </div>
-              <div className={`${isRTL ? 'text-right' : 'text-center'}`}>
+              <div className={`${isRTL ? 'text-right' : 'text-center'} w-full min-w-0`}>
                 <div
                   className="text-2xl font-bold"
                   style={{ color: theme.colors.primary }}
@@ -179,10 +179,10 @@ export default function Hero() {
             initial={{ opacity: 0, x: isRTL ? -50 : 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className={`relative ${isRTL ? 'lg:col-start-1' : ''}`}
+            className={`relative ${isRTL ? 'lg:col-start-1' : ''} w-full min-w-0`}
           >
             <motion.div
-              className="relative rounded-3xl overflow-hidden shadow-2xl"
+              className="relative rounded-3xl overflow-hidden shadow-2xl w-full min-w-0"
               whileHover={{ scale: 1.02 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >

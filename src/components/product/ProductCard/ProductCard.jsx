@@ -66,7 +66,7 @@ export default function ProductCard({ product }) {
 
   return (
     <motion.div
-      className="relative overflow-hidden rounded-2xl bg-white shadow-soft cursor-pointer group"
+      className="relative overflow-hidden rounded-2xl bg-transparent shadow-soft cursor-pointer group w-full min-w-0"
       whileHover={{ scale: 1.05 }}
       transition={{ duration: 0.3 }}
       onClick={onCardClick}
@@ -81,7 +81,7 @@ export default function ProductCard({ product }) {
       aria-label={`View details for ${safeProduct.name}`}
     >
       {/* Circular Image Frame */}
-      <div className="relative p-4">
+      <div className="relative p-4 w-full min-w-0">
         <div className="relative w-full aspect-square rounded-full overflow-hidden bg-stone-100">
           <img
             src={safeProduct.image}
@@ -126,8 +126,8 @@ export default function ProductCard({ product }) {
       </div>
 
       {/* Product Info */}
-      <div className="p-4 space-y-2">
-        <h3 className="font-medium text-stone-900 line-clamp-2">
+      <div className="p-4 space-y-2 w-full min-w-0">
+        <h3 className="font-medium text-stone-900 line-clamp-2 w-full min-w-0">
           {safeProduct.name}
         </h3>
         <Stars value={product.rating || 5} />

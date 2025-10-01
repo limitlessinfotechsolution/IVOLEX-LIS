@@ -4,7 +4,7 @@ import Container from '../common/Container.jsx'
 
 export default function BrandStory() {
   return (
-    <section className="py-16 bg-gradient-to-br from-stone-50 to-stone-100">
+    <section className="py-16 bg-gradient-to-b from-white to-stone-50">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
