@@ -29,14 +29,11 @@ export function SecurityProvider({ children }) {
       referrerMeta.content = 'strict-origin-when-cross-origin'
       head.appendChild(referrerMeta)
 
-      // Viewport security
+      // Viewport security - only modify if it doesn't already have our enhanced settings
       const viewportMeta = document.querySelector('meta[name="viewport"]')
-      if (viewportMeta && !viewportMeta.content.includes('user-scalable=no')) {
-        // Ensure viewport allows user scaling for accessibility
-        viewportMeta.content = viewportMeta.content.replace(
-          /user-scalable=no/g,
-          'user-scalable=yes'
-        )
+      if (viewportMeta && !viewportMeta.content.includes('maximum-scale=1.0')) {
+        // Enhance viewport for better security and responsive control
+        viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
       }
     }
 
@@ -73,35 +70,10 @@ export function SecurityProvider({ children }) {
           logSecurityEvent({
             type: 'suspicious_paste',
             severity: 'medium',
-            details: 'Large or potentially malicious content pasted',
+            details: `Large or suspicious paste detected: ${pastedData.substring(0, 100)}...`,
           })
         }
       })
-
-      // Monitor for developer tools usage (basic detection)
-      let devtools = {
-        open: false,
-        orientation: null,
-      }
-      const threshold = 160
-
-      setInterval(() => {
-        if (
-          window.outerHeight - window.innerHeight > threshold ||
-          window.outerWidth - window.innerWidth > threshold
-        ) {
-          if (!devtools.open) {
-            devtools.open = true
-            logSecurityEvent({
-              type: 'devtools_detected',
-              severity: 'low',
-              details: 'Developer tools may be open',
-            })
-          }
-        } else {
-          devtools.open = false
-        }
-      }, 500)
     }
 
     monitorActivity()

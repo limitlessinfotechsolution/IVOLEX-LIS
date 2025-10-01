@@ -40,6 +40,10 @@ export function SEO({
     'premium leather',
     'handcrafted leather',
     'luxury accessories',
+    'handmade leather',
+    'handmade leather goods',
+    'handmade leather wallets',
+
   ]
   const finalKeywords = keywords
     ? [...keywords, ...defaultKeywords]
