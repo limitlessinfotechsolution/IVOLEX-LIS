@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "vercel-build": "set HUSKY=0 && npm run build",
+    "vercel-build": "npm run build",
     "preview": "vite preview",
     "start": "node src/api/server.js",
     "dev:api": "nodemon src/api/server.js",
