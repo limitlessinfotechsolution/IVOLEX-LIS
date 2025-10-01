@@ -267,6 +267,8 @@
 }
 
 /* Custom animation utilities */
+/* Commented out to align with user preference for static visual elements */
+/*
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
@@ -284,6 +286,7 @@
     transform: translateY(0);
   }
 }
+*/
 
 .animate-pulse-slow {
   animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;

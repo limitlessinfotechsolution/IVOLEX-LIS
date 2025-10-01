@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 export function usePerformance() {
   const [metrics, setMetrics] = useState({
@@ -8,6 +8,8 @@ export function usePerformance() {
     cls: null, // Cumulative Layout Shift
     ttfb: null, // Time to First Byte
   })
+  
+  const hasLogged = useRef(false)
 
   useEffect(() => {
     // Only run in browser environment
@@ -84,9 +86,10 @@ export function usePerformance() {
     }
   }, [])
 
-  // Log performance metrics in development
+  // Log performance metrics in development - only once
   useEffect(() => {
-    if (import.meta.env?.DEV && Object.values(metrics).some(Boolean)) {
+    if (import.meta.env?.DEV && Object.values(metrics).some(Boolean) && !hasLogged.current) {
+      hasLogged.current = true
       console.group('🚀 Performance Metrics')
       console.log(
         'First Contentful Paint (FCP):',

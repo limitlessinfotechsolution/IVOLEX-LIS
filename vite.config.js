@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { fileURLToPath } from 'url' // Add this import for ES module compatibility
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // Create __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url)
@@ -10,6 +11,13 @@ const __dirname = path.dirname(__filename)
 export default defineConfig({
   plugins: [
     react(),
+    // Add visualizer plugin for bundle analysis
+    visualizer({
+      filename: 'dist/stats.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    })
   ],
   resolve: {
     alias: {

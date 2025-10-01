@@ -16,7 +16,7 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "allowJs": true,
-    "baseUrl": "ivolex.vercel.app",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
@@ -28,7 +28,7 @@
       }
     ]
   },
-  "include": ["src", ".next/types/**/*.ts"],
+  "include": ["src"],
   "references": [
     {
       "path": "./tsconfig.node.json"

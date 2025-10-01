@@ -80,7 +80,7 @@ export default function EnhancedHero() {
       }}
     >
       {/* Background Parallax Layers */}
-      <motion.div className="absolute inset-0 z-0" style={{ y }}>
+      <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 opacity-30"
           style={{ backgroundImage: theme.texture.overlay }}
@@ -89,39 +89,32 @@ export default function EnhancedHero() {
         <div className="absolute inset-0">
           {/* Animated background dots removed */}
         </div>
-      </motion.div>
+      </div>
 
       {/* Video Background */}
       {isVideoPlaying && (
-        <motion.video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
-          loop
-          muted
-          playsInline
-        >
-          <source src={content.videoUrl} type="video/mp4" />
-        </motion.video>
+        <div className="absolute inset-0 w-full h-full object-cover z-10 opacity-30">
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            loop
+            muted
+            playsInline
+          >
+            <source src={content.videoUrl} type="video/mp4" />
+          </video>
+        </div>
       )}
 
       {/* Main Content */}
       <div className="relative z-20 max-w-7xl mx-auto px-6 text-center">
         {/* Main Headline */}
-        <motion.h1
+        <h1
           className="text-6xl md:text-8xl font-bold mb-6 leading-tight"
           style={{ color: theme.colors.foreground }}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.4 }}
         >
-          <motion.span
+          <span
             className="inline-block"
-            animate={{
-              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
             style={{
               background: `linear-gradient(90deg, ${theme.colors.primary}, ${theme.colors.accent}, ${theme.colors.primary})`,
               backgroundSize: '200% 100%',
@@ -131,127 +124,86 @@ export default function EnhancedHero() {
             }}
           >
             {content.headline}
-          </motion.span>
-        </motion.h1>
+          </span>
+        </h1>
 
         {/* Subheadline */}
-        <motion.p
+        <p
           className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed"
           style={{ color: theme.colors.muted }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.6 }}
         >
           {content.subheadline}
-        </motion.p>
+        </p>
 
         {/* Features */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-6 mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
+        <div className="flex flex-wrap justify-center gap-6 mb-12">
           {content.features.map((feature, index) => (
-            <motion.div
+            <div
               key={feature}
               className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface/80 backdrop-blur-sm shadow-segment-sm"
-              whileHover={{ scale: 1.05 }}
-              transition={{ delay: index * 0.1 }}
             >
               <Sparkles size={16} style={{ color: theme.colors.accent }} />
               <span className="text-sm font-medium text-foreground">
                 {feature}
               </span>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* CTA Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 1 }}
-        >
-          <motion.button
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button
             onClick={handleCTAClick}
             className="group flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg shadow-segment-lg transition-all duration-300"
             style={{
               backgroundColor: theme.colors.primary,
               color: 'white',
             }}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
             aria-label={`Shop now: ${content.cta}`}
           >
             <ShoppingBag size={20} />
             {content.cta}
-            <motion.div
-              className="group-hover:translate-x-1 transition-transform"
-              animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
+            <div className="group-hover:translate-x-1 transition-transform">
               <ArrowRight size={20} />
-            </motion.div>
-          </motion.button>
+            </div>
+          </button>
 
-          <motion.button
+          <button
             onClick={handleVideoPlay}
             className="group flex items-center gap-3 px-6 py-4 rounded-2xl border border-border bg-surface/50 backdrop-blur-sm text-foreground font-medium transition-all duration-300 hover:bg-surface/80"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             aria-label="Watch our story video"
           >
-            <motion.div
-              className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white"
-              whileHover={{ rotate: 180 }}
-              transition={{ duration: 0.3 }}
-            >
+            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
               <Play size={16} fill="currentColor" />
-            </motion.div>
+            </div>
             Watch Our Story
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
 
         {/* Stats */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-8 border-t border-border/50"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 1.2 }}
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-8 border-t border-border/50">
           {[
             { label: 'Happy Customers', value: '50K+' },
             { label: 'Products Sold', value: '100K+' },
             { label: 'Years Experience', value: '20+' },
             { label: 'Global Reach', value: '30+' },
           ].map((stat, index) => (
-            <motion.div
+            <div
               key={stat.label}
               className="text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 1.4 + index * 0.1 }}
             >
-              <motion.div
+              <div
                 className="text-3xl md:text-4xl font-bold mb-2"
                 style={{ color: theme.colors.primary }}
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: index * 0.2,
-                }}
               >
                 {stat.value}
-              </motion.div>
+              </div>
               <div className="text-foreground/60 text-sm uppercase tracking-wide">
                 {stat.label}
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* Scroll Indicator removed */}
