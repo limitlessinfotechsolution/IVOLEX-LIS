@@ -3,3 +3,10 @@
 #Ignore vscode AI rules
 .github\instructions\codacy.instructions.md
 node_modules
+
+# Build artifacts
+dist
+*.log
+.env
+.env.local
+.env.*.local
