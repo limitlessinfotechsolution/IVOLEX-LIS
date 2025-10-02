@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Play, Sparkles, ShoppingBag } from 'lucide-react'
 import { useSegment } from '../../contexts/SegmentContext.jsx'
+import { useNavigate } from 'react-router-dom'
 
 const SEGMENT_HERO_CONTENT = {
   leather: {
@@ -41,6 +42,7 @@ export default function EnhancedHero() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
   const heroRef = useRef(null)
   const videoRef = useRef(null)
+  const navigate = useNavigate()
   const content = SEGMENT_HERO_CONTENT[activeSegment]
 
   useEffect(() => {
@@ -54,15 +56,24 @@ export default function EnhancedHero() {
   const handleVideoPlay = () => {
     setIsVideoPlaying(true)
     if (videoRef.current) {
-      videoRef.current.play()
+      // Add error handling for video play
+      videoRef.current.play().catch(error => {
+        console.warn('Video play failed:', error)
+      })
     }
   }
 
   const handleCTAClick = () => {
-    const productsSection = document.getElementById('featured-products')
-    if (productsSection) {
-      productsSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    // Use navigate for better SPA navigation
+    navigate('/shop')
+    
+    // Fallback to scroll if navigation fails
+    setTimeout(() => {
+      const productsSection = document.getElementById('featured-products')
+      if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 100)
   }
 
   return (
@@ -148,7 +159,7 @@ export default function EnhancedHero() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={handleCTAClick}
-            className="group flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg shadow-segment-lg transition-all duration-300"
+            className="group flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg shadow-segment-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             style={{
               backgroundColor: theme.colors.primary,
               color: 'white',
@@ -164,7 +175,7 @@ export default function EnhancedHero() {
 
           <button
             onClick={handleVideoPlay}
-            className="group flex items-center gap-3 px-6 py-4 rounded-2xl border border-border bg-surface/50 backdrop-blur-sm text-foreground font-medium transition-all duration-300 hover:bg-surface/80"
+            className="group flex items-center gap-3 px-6 py-4 rounded-2xl border border-border bg-surface/50 backdrop-blur-sm text-foreground font-medium transition-all duration-300 hover:bg-surface/80 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             aria-label="Watch our story video"
           >
             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">

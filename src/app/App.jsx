@@ -27,8 +27,10 @@ import { usePerformance } from '../hooks/usePerformance'
 import { SEOProvider } from '../components/SEO'
 import MinimalLayout from '../layouts/MinimalLayout.jsx'
 
-// Lazy load route components for better performance
-const Home = lazy(() => import('../pages/screens/Home'))
+// Preload critical components for better performance
+import HomeScreen from '../pages/screens/Home/HomeScreen.jsx'
+
+// Lazy load route components for better performance (non-critical routes)
 const CategoryScreen = lazy(() => import('../pages/screens/Category/CategoryScreen'))
 const Shop = lazy(() => import('../pages/screens/Shop'))
 const Product = lazy(() => import('../pages/screens/Product'))
@@ -113,11 +115,7 @@ export default function App() {
                                                   className="w-full flex-grow min-w-0 pt-0 pb-0"
                                                 >
                                                   <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Home />
-                                                    </Suspense>
+                                                    <HomeScreen />
                                                   </ErrorBoundary>
                                                 </main>
                                                 <Footer />
@@ -136,11 +134,7 @@ export default function App() {
                                                   className="w-full flex-grow min-w-0 pt-0 pb-0"
                                                 >
                                                   <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Home />
-                                                    </Suspense>
+                                                    <HomeScreen />
                                                   </ErrorBoundary>
                                                 </main>
                                                 <Footer />
@@ -159,11 +153,7 @@ export default function App() {
                                                   className="w-full flex-grow min-w-0 pt-0 pb-0"
                                                 >
                                                   <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Home />
-                                                    </Suspense>
+                                                    <HomeScreen />
                                                   </ErrorBoundary>
                                                 </main>
                                                 <Footer />
@@ -182,11 +172,7 @@ export default function App() {
                                                   className="w-full flex-grow min-w-0 pt-0 pb-0"
                                                 >
                                                   <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Home />
-                                                    </Suspense>
+                                                    <HomeScreen />
                                                   </ErrorBoundary>
                                                 </main>
                                                 <Footer />

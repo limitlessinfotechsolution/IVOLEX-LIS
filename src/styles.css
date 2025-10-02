@@ -62,6 +62,17 @@
     min-width: 0;
     flex: 1 0 auto;
   }
+  
+  /* Mobile-specific fixes */
+  @media (width <= 768px) {
+    main {
+      @apply pt-16;
+    }
+    
+    .container-xl {
+      @apply px-4;
+    }
+  }
 }
 
 /* Screen-reader only utility and focus reset for Skip to content */
@@ -162,7 +173,7 @@
 }
 
 /* Tablet */
-@media (width >= 768px) and (width <= 1023px) {
+@media (768px <= width <= 1023px) {
   .match-parent {
     width: -webkit-fill-available;
     height: -webkit-fill-available;
@@ -184,6 +195,15 @@
   .ios-fix {
     height: -webkit-fill-available;
     min-height: -webkit-fill-available;
+  }
+  
+  /* Mobile-specific button fixes */
+  .btn {
+    @apply px-3 py-2 text-sm rounded-xl;
+  }
+  
+  .btn-primary, .btn-outline {
+    @apply px-4 py-2;
   }
 }
 

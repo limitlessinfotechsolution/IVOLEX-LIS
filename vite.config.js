@@ -17,7 +17,7 @@ export default defineConfig({
     },
   },
   build: {
-    sourcemap: true,
+    sourcemap: false, // Disable sourcemaps in production for better performance
     rollupOptions: {
       output: {
         manualChunks: {
@@ -27,6 +27,10 @@ export default defineConfig({
           forms: ['react-hook-form', '@hookform/resolvers', 'zod'],
           toast: ['react-hot-toast'],
         },
+        // Optimize chunk naming
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
     chunkSizeWarningLimit: 1000,
@@ -35,13 +39,34 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
+        pure_funcs: ['console.info', 'console.debug'], // Remove specific console methods
       },
+      mangle: {
+        properties: {
+          regex: /^__/,
+        }
+      },
+      format: {
+        comments: false, // Remove comments
+      }
     },
   },
   server: {
     port: 5176,
     open: true,
+    // Optimize for development
+    hmr: {
+      overlay: false, // Disable error overlay for better performance
+    },
   },
   // Use absolute paths for deployment
   base: '/',
+  // Optimize CSS
+  css: {
+    postcss: {
+      plugins: [
+        // Add any PostCSS plugins here if needed
+      ]
+    }
+  }
 })
