@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { useScroll } from 'framer-motion'
 import { ArrowRight, Play, Sparkles, ShoppingBag } from 'lucide-react'
 import { useSegment } from '../../contexts/SegmentContext.jsx'
 
@@ -42,11 +41,6 @@ export default function EnhancedHero() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
   const heroRef = useRef(null)
   const videoRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    container: heroRef,
-    target: heroRef,
-    offset: ['start end', 'end start'],
-  })
   const content = SEGMENT_HERO_CONTENT[activeSegment]
 
   useEffect(() => {

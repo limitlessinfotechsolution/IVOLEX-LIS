@@ -163,11 +163,12 @@ export function withInputSanitization(WrappedComponent) {
     Object.keys(sanitizedProps).forEach(key => {
       const value = sanitizedProps[key]
       if (typeof value === 'string') {
-        // Basic sanitization
+        // Improved sanitization with better multi-character handling
         sanitizedProps[key] = value
-          .replace(/<script[^>]*>.*?<\/script>/gi, '')
+          .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // More complete script tag removal
           .replace(/javascript:/gi, '')
-          .replace(/on\w+\s*=/gi, '')
+          .replace(/\bon\w+\s*=/gi, '') // Better event handler removal
+          .replace(/<[^>]*>/g, '') // Remove all HTML tags
       }
     })
 
@@ -183,15 +184,15 @@ export function SecurityValidator({ children, onViolation }) {
       const target = event.target
       if (target && target.value) {
         const suspiciousPatterns = [
-          /<script/i,
+          /<script\b/i, // Better script detection
           /javascript:/i,
           /vbscript:/i,
-          /on\w+\s*=/i,
+          /\bon\w+\s*=/i, // Better event handler detection
         ]
 
         if (suspiciousPatterns.some(pattern => pattern.test(target.value))) {
           event.preventDefault()
-          target.value = target.value.replace(/[<>"']/g, '')
+          target.value = target.value.replace(/[<>"'&]/g, '') // Better character sanitization
 
           if (onViolation) {
             onViolation({

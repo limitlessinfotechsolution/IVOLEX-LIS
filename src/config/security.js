@@ -79,13 +79,13 @@ export const sanitization = {
   html: input => {
     if (typeof input !== 'string') return ''
     return input
-      .replace(/<script[^>]*>.*?<\/script>/gi, '')
-      .replace(/<iframe[^>]*>.*?<\/iframe>/gi, '')
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // More complete script tag removal
+      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '') // More complete iframe tag removal
       .replace(/javascript:/gi, '')
       .replace(/data:/gi, '')
       .replace(/vbscript:/gi, '')
-      .replace(/on\w+\s*=/gi, '')
-      .replace(/<.*?>/g, '') // Remove all HTML tags for basic sanitization
+      .replace(/\bon\w+\s*=/gi, '') // Better event handler removal
+      .replace(/<[^>]*>/g, '') // Remove all HTML tags for basic sanitization
   },
 
   // Sanitize user input for safe database storage
@@ -93,7 +93,7 @@ export const sanitization = {
     if (typeof input !== 'string') return ''
     return input
       .trim()
-      .replace(/[<>"']/g, '') // Remove potentially dangerous characters
+      .replace(/[<>"'&]/g, '') // Added & character
       .substring(0, 1000) // Limit length
   },
 
@@ -116,7 +116,7 @@ export const sanitization = {
     if (typeof input !== 'string') return ''
     return input
       .trim()
-      .replace(/[<>"';&]/g, '') // Remove SQL injection and XSS characters
+      .replace(/[<>"';&|]/g, '') // Added | character for better SQL injection protection
       .substring(0, 100)
   },
 
@@ -165,13 +165,13 @@ export const validation = {
   // Validate that input doesn't contain suspicious patterns
   checkSuspiciousPatterns: input => {
     const suspiciousPatterns = [
-      /<script/i,
+      /<script\b/i, // Better script detection
       /javascript:/i,
       /vbscript:/i,
       /data:text\/html/i,
-      /on\w+\s*=/i,
-      /style\s*=.*expression/i,
-      /['"]\\s*j\\s*a\\s*v\\s*a\\s*s\\s*c\\s*r\\s*i\\s*p\\s*t/i,
+      /\bon\w+\s*=/i, // Better event handler detection
+      /style\s*=\s*["']?[^"']*expression/i, // Better CSS expression detection
+      /['"]\s*j\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t/i, // Better obfuscated JS detection
     ]
 
     return !suspiciousPatterns.some(pattern => pattern.test(input))

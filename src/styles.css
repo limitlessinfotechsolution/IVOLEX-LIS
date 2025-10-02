@@ -267,7 +267,9 @@
 }
 
 /* Custom animation utilities */
+
 /* Commented out to align with user preference for static visual elements */
+
 /*
 .animate-float {
   animation: float 3s ease-in-out infinite;
