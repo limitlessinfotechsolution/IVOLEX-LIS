@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import { useScroll } from 'framer-motion'
 import { ArrowRight, Play, Sparkles, ShoppingBag } from 'lucide-react'
 import { useSegment } from '../../contexts/SegmentContext.jsx'
 
@@ -42,11 +42,11 @@ export default function EnhancedHero() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
   const heroRef = useRef(null)
   const videoRef = useRef(null)
-  const isInView = useInView(heroRef, { once: true })
-
-  const { scrollY } = useScroll()
-  const y = useTransform(scrollY, [0, 500], [0, 150])
-
+  const { scrollYProgress } = useScroll({
+    container: heroRef,
+    target: heroRef,
+    offset: ['start end', 'end start'],
+  })
   const content = SEGMENT_HERO_CONTENT[activeSegment]
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function EnhancedHero() {
   const handleCTAClick = () => {
     const productsSection = document.getElementById('featured-products')
     if (productsSection) {
-      productsSection.scrollIntoView({ behavior: 'smooth' })
+      productsSection.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
@@ -137,7 +137,7 @@ export default function EnhancedHero() {
 
         {/* Features */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">
-          {content.features.map((feature, index) => (
+          {content.features.map((feature) => (
             <div
               key={feature}
               className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface/80 backdrop-blur-sm shadow-segment-sm"
@@ -187,7 +187,7 @@ export default function EnhancedHero() {
             { label: 'Products Sold', value: '100K+' },
             { label: 'Years Experience', value: '20+' },
             { label: 'Global Reach', value: '30+' },
-          ].map((stat, index) => (
+          ].map((stat) => (
             <div
               key={stat.label}
               className="text-center"

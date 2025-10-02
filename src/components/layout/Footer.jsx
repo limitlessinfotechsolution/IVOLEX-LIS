@@ -51,7 +51,7 @@ export default function Footer() {
         {/* Main Footer Content */}
         <div
           className={`grid gap-8 py-12 ${
-            isAuthenticated ? 'md:grid-cols-4' : 'md:grid-cols-5'
+            isAuthenticated ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-2 lg:grid-cols-5'
           }`}
         >
           {/* Company Info */}
@@ -60,6 +60,7 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
+            className="lg:col-span-1"
           >
             <div className="font-bold text-xl text-white mb-4">IVOLEX</div>
             <p className="text-sm text-stone-400 mb-6 leading-relaxed">
@@ -198,6 +199,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
+              className="lg:col-span-1"
             >
               <div className="font-semibold text-white mb-4">Preferences</div>
               <p className="text-sm text-stone-400 mb-4">
@@ -229,7 +231,7 @@ export default function Footer() {
             )}
 
             {/* Developer Information */}
-            <div className="text-sm text-stone-500">
+            <div className="text-sm text-stone-500 text-center md:text-right">
               Developed by Limitless Infotech Solution Pvt Ltd.
             </div>
 

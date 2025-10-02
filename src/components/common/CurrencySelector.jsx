@@ -130,8 +130,13 @@ export default function CurrencySelector({
     setIsRegionOpen(!isRegionOpen)
   }
 
+  // Only apply spacing when both region and currency selectors are shown
+  const containerClasses = showRegion 
+    ? `space-y-3 ${className}`
+    : className;
+
   return (
-    <div className={`space-y-3 ${className}`}>
+    <div className={containerClasses}>
       {/* Region Selector */}
       {showRegion && (
         <div className="relative" ref={regionRef}>
