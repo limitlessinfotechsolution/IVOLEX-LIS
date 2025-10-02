@@ -8,16 +8,19 @@ import { visualizer } from 'rollup-plugin-visualizer'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     react(),
-    // Add visualizer plugin for bundle analysis
-    visualizer({
-      filename: 'dist/stats.html',
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-    })
+    // Add visualizer plugin for bundle analysis only in build mode, not in Vercel
+    ...(command === 'build' && !process.env.VERCEL 
+      ? [visualizer({
+          filename: 'dist/stats.html',
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+        })]
+      : []
+    )
   ],
   resolve: {
     alias: {
@@ -52,4 +55,4 @@ export default defineConfig({
   },
   // Use absolute paths for deployment
   base: '/',
-})
+}))
