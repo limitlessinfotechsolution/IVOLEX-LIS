@@ -9,8 +9,8 @@ import {
 } from '../components/SafeComponents.jsx'
 import {
   SecurityProvider,
-  SecurityValidator,
 } from '../components/SecurityProvider.jsx'
+import { SecurityValidator } from '../components/SecurityComponents.jsx'
 
 describe('Security Configuration', () => {
   describe('Input Sanitization', () => {

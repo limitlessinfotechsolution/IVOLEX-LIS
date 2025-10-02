@@ -14,8 +14,8 @@ import { I18nProvider } from '../contexts/I18nContext.jsx'
 import {
   SecurityProvider,
   RateLimitProvider,
-  SecurityValidator,
 } from '../components/SecurityProvider.jsx'
+import { SecurityValidator } from '../components/SecurityComponents.jsx'
 import { RecommendationProvider } from '../contexts/RecommendationContext.jsx'
 import { SearchProvider } from '../contexts/SearchContext.jsx'
 import SkipToContent from '../components/common/SkipToContent.jsx'
