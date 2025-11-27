@@ -37,12 +37,12 @@ export default function FeaturedProducts() {
   return (
     <section
       className="py-24 relative overflow-hidden"
-      style={{ backgroundColor: theme.colors.background }}
+      style={{ backgroundColor: theme.colors.background || '#F5E9DA' }}
     >
       {/* Background Pattern */}
       <div
         className="absolute inset-0 opacity-5"
-        style={{ backgroundImage: theme.texture.overlay }}
+        style={{ backgroundImage: theme.texture?.overlay || 'none' }}
       />
 
       <Container>
@@ -56,8 +56,8 @@ export default function FeaturedProducts() {
           <motion.div
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4"
             style={{
-              backgroundColor: `${theme.colors.primary}15`,
-              color: theme.colors.primary,
+              backgroundColor: `${theme.colors.primary || '#4E342E'}15`,
+              color: theme.colors.primary || '#4E342E',
             }}
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
@@ -65,21 +65,21 @@ export default function FeaturedProducts() {
           >
             <div
               className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: theme.colors.primary }}
+              style={{ backgroundColor: theme.colors.primary || '#4E342E' }}
             />
-            Featured {segmentLabels[activeSegment]}
+            Featured {segmentLabels[activeSegment] || 'Products'}
           </motion.div>
 
           <h2
             className="text-4xl md:text-6xl font-bold mb-6 leading-tight"
-            style={{ color: theme.colors.foreground }}
+            style={{ color: theme.colors.foreground || '#2E2E2E' }}
           >
             Discover Our
             <motion.span
               className="block"
-              style={{ color: theme.colors.primary }}
-              animate={{ scale: [1, 1.02, 1] }}
-              transition={{ duration: 3, repeat: Infinity }}
+              style={{ color: theme.colors.primary || '#4E342E' }}
+              animate={{ scale: [1, 1.005, 1] }}
+              transition={{ duration: 4, repeat: Infinity }}
             >
               Premium Collection
             </motion.span>
@@ -87,7 +87,7 @@ export default function FeaturedProducts() {
 
           <p
             className="text-xl max-w-3xl mx-auto leading-relaxed"
-            style={{ color: theme.colors.muted }}
+            style={{ color: theme.colors.muted || '#6B4423' }}
           >
             {activeSegment === 'leather' &&
               'Handpicked selection of premium leather goods, each piece crafted with exceptional attention to detail and quality.'}
@@ -95,6 +95,8 @@ export default function FeaturedProducts() {
               'Cutting-edge electronic devices that blend innovation with premium design for the modern lifestyle.'}
             {activeSegment === 'furniture' &&
               'Elegant furniture pieces that transform your space with sophisticated design and lasting quality.'}
+            {!['leather', 'electronics', 'furniture'].includes(activeSegment) &&
+              'Discover our premium collection of handcrafted products designed with quality and elegance in mind.'}
           </p>
         </motion.div>
 
@@ -106,8 +108,8 @@ export default function FeaturedProducts() {
           viewport={{ once: true }}
         >
           {isLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mb-16">
-              {Array.from({ length: 8 }).map((_, index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-16">
+              {Array.from({ length: 4 }).map((_, index) => (
                 <CircularProductCardSkeleton key={index} />
               ))}
             </div>
@@ -120,27 +122,25 @@ export default function FeaturedProducts() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
           className="text-center"
         >
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              to={`/${activeSegment}`}
+              to={`/${activeSegment || 'products'}`}
               className="group flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg shadow-segment-lg transition-all duration-300 hover:shadow-segment-xl"
               style={{
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors.primary || '#4E342E',
                 color: 'white',
               }}
             >
-              View All {segmentLabels[activeSegment]}
+              View All {segmentLabels[activeSegment] || 'Products'}
               <motion.svg
                 className="w-5 h-5 group-hover:translate-x-1 transition-transform"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
               >
                 <path
                   strokeLinecap="round"
@@ -153,14 +153,18 @@ export default function FeaturedProducts() {
 
             <Link
               to="/customize"
-              className="group flex items-center gap-3 px-6 py-4 rounded-2xl border border-border bg-surface/50 backdrop-blur-sm font-medium transition-all duration-300 hover:bg-surface/80"
-              style={{ color: theme.colors.foreground }}
+              className="group flex items-center gap-3 px-6 py-4 rounded-2xl border font-medium transition-all duration-300 hover:bg-opacity-80"
+              style={{ 
+                borderColor: theme.colors.border || '#D4B896',
+                backgroundColor: theme.colors.surface || '#FFFFFF',
+                color: theme.colors.foreground || '#2E2E2E',
+              }}
             >
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center"
                 style={{
-                  backgroundColor: `${theme.colors.accent}20`,
-                  color: theme.colors.accent,
+                  backgroundColor: `${theme.colors.accent || '#C6A15B'}20`,
+                  color: theme.colors.accent || '#C6A15B',
                 }}
               >
                 <svg

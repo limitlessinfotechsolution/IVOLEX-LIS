@@ -65,15 +65,15 @@ export default function EnhancedHero() {
 
   // Ensure all required theme colors have fallbacks
   const themeColors = {
-    primary: safeTheme.colors.primary || '#4E342E',
-    secondary: safeTheme.colors.secondary || '#8D6E63',
-    accent: safeTheme.colors.accent || '#C6A15B',
-    background: safeTheme.colors.background || '#F5E9DA',
-    surface: safeTheme.colors.surface || '#FFFFFF',
-    foreground: safeTheme.colors.foreground || '#2E2E2E',
-    muted: safeTheme.colors.muted || '#6B4423',
-    border: safeTheme.colors.border || '#D4B896',
-    ring: safeTheme.colors.ring || '#C6A15B',
+    primary: safeTheme.colors?.primary || '#4E342E',
+    secondary: safeTheme.colors?.secondary || '#8D6E63',
+    accent: safeTheme.colors?.accent || '#C6A15B',
+    background: safeTheme.colors?.background || '#F5E9DA',
+    surface: safeTheme.colors?.surface || '#FFFFFF',
+    foreground: safeTheme.colors?.foreground || '#2E2E2E',
+    muted: safeTheme.colors?.muted || '#6B4423',
+    border: safeTheme.colors?.border || '#D4B896',
+    ring: safeTheme.colors?.ring || '#C6A15B',
   }
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export default function EnhancedHero() {
       <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 opacity-30"
-          style={{ backgroundImage: safeTheme.texture.overlay || 'none' }}
+          style={{ backgroundImage: safeTheme.texture?.overlay || 'none' }}
         />
 
         <div className="absolute inset-0">
@@ -173,10 +173,11 @@ export default function EnhancedHero() {
 
         {/* Features */}
         <div className="flex flex-wrap justify-center gap-4 mb-10">
-          {content.features.map((feature, index) => (
+          {(content.features || []).map((feature, index) => (
             <div
               key={index}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm shadow-segment-sm border border-border"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm shadow-segment-sm border"
+              style={{ borderColor: themeColors.border }}
             >
               <Sparkles size={16} style={{ color: themeColors.accent }} />
               <span className="text-sm font-medium" style={{ color: themeColors.foreground }}>
@@ -243,7 +244,7 @@ export default function EnhancedHero() {
               >
                 {stat.value}
               </div>
-              <div className="text-foreground/60 text-xs uppercase tracking-wide">
+              <div className="text-foreground/60 text-xs uppercase tracking-wide" style={{ color: themeColors.muted }}>
                 {stat.label}
               </div>
             </div>

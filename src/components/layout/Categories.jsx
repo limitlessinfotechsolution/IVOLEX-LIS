@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useSegment } from '../../contexts/SegmentContext.jsx'
 import Container from '../common/Container.jsx'
 
 const items = [
@@ -35,15 +36,27 @@ const items = [
 ]
 
 export default function Categories() {
+  const { theme } = useSegment()
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Show only first 2 items when not expanded
   const displayedItems = isExpanded ? items : items.slice(0, 2)
+  
+  // Theme colors with fallbacks
+  const themeColors = {
+    primary: theme?.colors?.primary || '#4E342E',
+    background: theme?.colors?.background || '#F5E9DA',
+    surface: theme?.colors?.surface || '#FFFFFF',
+    foreground: theme?.colors?.foreground || '#2E2E2E',
+    muted: theme?.colors?.muted || '#6B4423',
+    border: theme?.colors?.border || '#D4B896',
+  }
 
   return (
     <section
       id="categories"
-      className="py-16 bg-gradient-to-b from-white to-stone-50"
+      className="py-16"
+      style={{ backgroundColor: themeColors.surface }}
     >
       <Container>
         <motion.div
@@ -53,12 +66,17 @@ export default function Categories() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 
+            className="text-3xl md:text-4xl font-bold mb-4"
+            style={{ color: themeColors.foreground }}
+          >
             Featured Categories
           </h2>
-          <p className="text-stone-600 max-w-2xl mx-auto">
-            Explore our premium leather collections, each crafted with
-            meticulous attention to detail
+          <p 
+            className="max-w-2xl mx-auto"
+            style={{ color: themeColors.muted }}
+          >
+            Explore our premium collections, each crafted with meticulous attention to detail
           </p>
         </motion.div>
 
@@ -66,7 +84,8 @@ export default function Categories() {
           {displayedItems.map((item, index) => (
             <motion.div
               key={item.title}
-              className="group relative overflow-hidden rounded-2xl bg-white shadow-soft hover:shadow-lg transition-all duration-300"
+              className="group relative overflow-hidden rounded-2xl shadow-segment-sm hover:shadow-segment-lg transition-all duration-300"
+              style={{ backgroundColor: themeColors.surface }}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -79,19 +98,35 @@ export default function Categories() {
                     src={item.img}
                     alt={item.title}
                     className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.4 }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+                    style={{ backgroundColor: `${themeColors.primary}80` }}
+                  />
                   <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                     <div className="text-sm opacity-90">{item.desc}</div>
                     <div className="text-xs opacity-75 mt-1">{item.count}</div>
                   </div>
                 </div>
                 <div className="p-4">
-                  <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
-                  <p className="text-stone-600 text-sm">{item.desc}</p>
-                  <div className="mt-2 text-xs text-stone-500">
+                  <h3 
+                    className="font-semibold text-lg mb-1"
+                    style={{ color: themeColors.foreground }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p 
+                    className="text-sm"
+                    style={{ color: themeColors.muted }}
+                  >
+                    {item.desc}
+                  </p>
+                  <div 
+                    className="mt-2 text-xs"
+                    style={{ color: themeColors.muted }}
+                  >
                     {item.count}
                   </div>
                 </div>
@@ -110,7 +145,12 @@ export default function Categories() {
         >
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="btn btn-outline flex items-center justify-center mx-auto"
+            className="flex items-center justify-center mx-auto px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
+            style={{
+              backgroundColor: themeColors.surface,
+              color: themeColors.foreground,
+              border: `1px solid ${themeColors.border}`,
+            }}
           >
             {isExpanded ? 'Show Less' : 'Show More Categories'}
             <svg
@@ -137,7 +177,14 @@ export default function Categories() {
           viewport={{ once: true }}
           className="text-center mt-8"
         >
-          <Link to="/shop" className="btn btn-outline">
+          <Link 
+            to="/shop" 
+            className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
+            style={{
+              backgroundColor: themeColors.primary,
+              color: 'white',
+            }}
+          >
             View All Categories
           </Link>
         </motion.div>

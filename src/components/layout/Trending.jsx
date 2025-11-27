@@ -1,5 +1,6 @@
 import ProductCard from '../product/ProductCard'
 import { motion } from 'framer-motion'
+import { useSegment } from '../../contexts/SegmentContext.jsx'
 import Container from '../common/Container.jsx'
 
 const allProducts = [
@@ -64,8 +65,23 @@ const allProducts = [
 ]
 
 export default function Trending() {
+  const { theme } = useSegment()
+  
+  // Theme colors with fallbacks
+  const themeColors = {
+    primary: theme?.colors?.primary || '#4E342E',
+    background: theme?.colors?.background || '#F5E9DA',
+    surface: theme?.colors?.surface || '#FFFFFF',
+    foreground: theme?.colors?.foreground || '#2E2E2E',
+    muted: theme?.colors?.muted || '#6B4423',
+    border: theme?.colors?.border || '#D4B896',
+  }
+
   return (
-    <section className="py-16 bg-white">
+    <section 
+      className="py-16"
+      style={{ backgroundColor: themeColors.surface }}
+    >
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -74,10 +90,16 @@ export default function Trending() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 
+            className="text-3xl md:text-4xl font-bold mb-4"
+            style={{ color: themeColors.foreground }}
+          >
             Trending Now
           </h2>
-          <p className="text-stone-600 max-w-2xl mx-auto">
+          <p 
+            className="max-w-2xl mx-auto"
+            style={{ color: themeColors.muted }}
+          >
             Discover our most popular products
           </p>
         </motion.div>

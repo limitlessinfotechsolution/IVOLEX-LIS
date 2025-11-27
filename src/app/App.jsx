@@ -70,9 +70,21 @@ function HomeScreenFallback() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50">
       <h1 className="text-3xl font-bold text-stone-800 mb-4">Welcome to IVOLEX</h1>
-      <p className="text-stone-600 mb-8">Premium Products & Accessories</p>
+      <p className="text-stone-600 mb-8">Premium Products &amp; Accessories</p>
       <div className="bg-stone-200 border-2 border-dashed rounded-xl w-16 h-16 mb-4" />
-      <p className="text-stone-500">Loading content...</p>
+      <p className="text-stone-500">Content is loading...</p>
+    </div>
+  )
+}
+
+// Global error fallback
+function GlobalErrorFallback() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50">
+      <h1 className="text-3xl font-bold text-stone-800 mb-4">Something went wrong</h1>
+      <p className="text-stone-600 mb-8">We&#39;re working on fixing the issue</p>
+      <div className="bg-stone-200 border-2 border-dashed rounded-xl w-16 h-16 mb-4" />
+      <p className="text-stone-500">Please try refreshing the page</p>
     </div>
   )
 }
@@ -82,503 +94,505 @@ export default function App() {
   usePerformance()
 
   return (
-    <SecurityProvider>
-      <RateLimitProvider>
-        <I18nProvider>
-          <RecommendationProvider>
-            <SegmentProvider>
-              <ThemeProvider>
-                <SEOProvider>
-                  <LocationProvider>
-                    <AuthProvider>
-                      <NotificationProvider>
-                        <AuditProvider>
-                          <InventoryProvider>
-                            <ShippingProvider>
-                              <OrderProvider>
-                                <CartProvider>
-                                  <BrowserRouter
-                                    future={{
-                                      v7_startTransition: true,
-                                      v7_relativeSplatPath: true,
-                                      v7_partialHydration: true,
-                                    }}
-                                  >
-                                    <SearchProvider>
-                                      <SecurityValidator>
-                                        <Routes>
-                                          {/* Minimal layout for auth pages - no header/footer */}
-                                          <Route element={<MinimalLayout />}>
-                                            <Route path="/login" element={<Login />} />
-                                            <Route path="/register" element={<Register />} />
-                                            <Route path="/auth" element={<AuthScreen />} />
-                                            <Route path="/admin/login" element={<AdminLogin />} />
-                                          </Route>
-                                          
-                                          {/* Full layout with header and footer */}
-                                          <Route
-                                            path="/"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary fallback={<HomeScreenFallback />}>
-                                                    <HomeScreen />
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/leather"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary fallback={<HomeScreenFallback />}>
-                                                    <HomeScreen />
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/electronics"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary fallback={<HomeScreenFallback />}>
-                                                    <HomeScreen />
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/furniture"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary fallback={<HomeScreenFallback />}>
-                                                    <HomeScreen />
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/shop"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Shop />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/categories"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <CategoryScreen />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/category/:segment"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <CategoryScreen />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/product/:id"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Product />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/cart"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Cart />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/checkout"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Checkout />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/customize"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Customize />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/about"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <About />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/contact"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Contact />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/profile"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <Profile />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/account/*"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <MyAccount />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/track/:requestId"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <RequestTracking />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/track-shipment"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <TrackingPage />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/order-confirmation"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <OrderConfirmation />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          <Route
-                                            path="/admin/*"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <AdminPanel />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                          {/* 404 Catch-all route - must be last */}
-                                          <Route
-                                            path="*"
-                                            element={
-                                              <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
-                                                <SkipToContent />
-                                                <FloatingNavbar />
-                                                <main
-                                                  id="main"
-                                                  className="w-full flex-grow min-w-0 pt-0 pb-0"
-                                                >
-                                                  <ErrorBoundary>
-                                                    <Suspense
-                                                      fallback={<LoadingSpinner />}
-                                                    >
-                                                      <NotFound />
-                                                    </Suspense>
-                                                  </ErrorBoundary>
-                                                </main>
-                                                <Footer />
-                                                <ToastProvider />
-                                              </div>
-                                            }
-                                          />
-                                        </Routes>
-                                      </SecurityValidator>
-                                    </SearchProvider>
-                                  </BrowserRouter>
-                                </CartProvider>
-                              </OrderProvider>
-                            </ShippingProvider>
-                          </InventoryProvider>
-                        </AuditProvider>
-                      </NotificationProvider>
-                    </AuthProvider>
-                  </LocationProvider>
-                </SEOProvider>
-              </ThemeProvider>
-            </SegmentProvider>
-          </RecommendationProvider>
-        </I18nProvider>
-      </RateLimitProvider>
-    </SecurityProvider>
+    <ErrorBoundary fallback={<GlobalErrorFallback />}>
+      <SecurityProvider>
+        <RateLimitProvider>
+          <I18nProvider>
+            <RecommendationProvider>
+              <SegmentProvider>
+                <ThemeProvider>
+                  <SEOProvider>
+                    <LocationProvider>
+                      <AuthProvider>
+                        <NotificationProvider>
+                          <AuditProvider>
+                            <InventoryProvider>
+                              <ShippingProvider>
+                                <OrderProvider>
+                                  <CartProvider>
+                                    <BrowserRouter
+                                      future={{
+                                        v7_startTransition: true,
+                                        v7_relativeSplatPath: true,
+                                        v7_partialHydration: true,
+                                      }}
+                                    >
+                                      <SearchProvider>
+                                        <SecurityValidator>
+                                          <Routes>
+                                            {/* Minimal layout for auth pages - no header/footer */}
+                                            <Route element={<MinimalLayout />}>
+                                              <Route path="/login" element={<Login />} />
+                                              <Route path="/register" element={<Register />} />
+                                              <Route path="/auth" element={<AuthScreen />} />
+                                              <Route path="/admin/login" element={<AdminLogin />} />
+                                            </Route>
+                                            
+                                            {/* Full layout with header and footer */}
+                                            <Route
+                                              path="/"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary fallback={<HomeScreenFallback />}>
+                                                      <HomeScreen />
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/leather"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary fallback={<HomeScreenFallback />}>
+                                                      <HomeScreen />
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/electronics"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary fallback={<HomeScreenFallback />}>
+                                                      <HomeScreen />
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/furniture"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary fallback={<HomeScreenFallback />}>
+                                                      <HomeScreen />
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/shop"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <Shop />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/categories"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <CategoryScreen />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/category/:segment"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <CategoryScreen />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/product/:id"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <Product />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/cart"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <Cart />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/checkout"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <Checkout />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/customize"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <Customize />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/about"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <About />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/contact"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <Contact />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/profile"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <Profile />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/account/*"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <MyAccount />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/track/:requestId"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <RequestTracking />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/track-shipment"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <TrackingPage />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/order-confirmation"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <OrderConfirmation />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            <Route
+                                              path="/admin/*"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <AdminPanel />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                            {/* 404 Catch-all route - must be last */}
+                                            <Route
+                                              path="*"
+                                              element={
+                                                <div className="min-h-screen w-full h-full transition-all duration-500 flex flex-col">
+                                                  <SkipToContent />
+                                                  <FloatingNavbar />
+                                                  <main
+                                                    id="main"
+                                                    className="w-full flex-grow min-w-0 pt-0 pb-0"
+                                                  >
+                                                    <ErrorBoundary>
+                                                      <Suspense
+                                                        fallback={<LoadingSpinner />}
+                                                      >
+                                                        <NotFound />
+                                                      </Suspense>
+                                                    </ErrorBoundary>
+                                                  </main>
+                                                  <Footer />
+                                                  <ToastProvider />
+                                                </div>
+                                              }
+                                            />
+                                          </Routes>
+                                        </SecurityValidator>
+                                      </SearchProvider>
+                                    </BrowserRouter>
+                                  </CartProvider>
+                                </OrderProvider>
+                              </ShippingProvider>
+                            </InventoryProvider>
+                          </AuditProvider>
+                        </NotificationProvider>
+                      </AuthProvider>
+                    </LocationProvider>
+                  </SEOProvider>
+                </ThemeProvider>
+              </SegmentProvider>
+            </RecommendationProvider>
+          </I18nProvider>
+        </RateLimitProvider>
+      </SecurityProvider>
+    </ErrorBoundary>
   )
 }

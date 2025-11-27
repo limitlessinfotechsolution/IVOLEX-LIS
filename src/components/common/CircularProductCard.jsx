@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Heart, ShoppingBag, Star, Eye, ArrowRight, Plus } from 'lucide-react'
+import { useSegment } from '../../contexts/SegmentContext.jsx'
 
 // Product card with circular image
 export default function CircularProductCard({
@@ -8,9 +9,21 @@ export default function CircularProductCard({
   variant = 'default',
   className = '',
 }) {
+  const { theme } = useSegment()
   const [isHovered, setIsHovered] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+  // Theme colors with fallbacks
+  const themeColors = {
+    primary: theme?.colors?.primary || '#4E342E',
+    background: theme?.colors?.background || '#F5E9DA',
+    surface: theme?.colors?.surface || '#FFFFFF',
+    foreground: theme?.colors?.foreground || '#2E2E2E',
+    muted: theme?.colors?.muted || '#6B4423',
+    border: theme?.colors?.border || '#D4B896',
+    accent: theme?.colors?.accent || '#C6A15B',
+  }
 
   const handleAddToCart = e => {
     e.preventDefault()
@@ -37,11 +50,16 @@ export default function CircularProductCard({
         size={12}
         className={`${
           i < Math.floor(rating)
-            ? 'text-yellow-400 fill-current'
+            ? 'fill-current'
             : i < rating
-              ? 'text-yellow-400 fill-current opacity-50'
-              : 'text-foreground/20'
+              ? 'fill-current opacity-50'
+              : ''
         }`}
+        style={{ 
+          color: i < Math.floor(rating) || i < rating 
+            ? '#fbbf24' // yellow-400
+            : `${themeColors.foreground}33` 
+        }}
       />
     ))
   }
@@ -57,7 +75,8 @@ export default function CircularProductCard({
         <div className="relative">
           <div className="relative w-40 h-40 mx-auto mb-4">
             <motion.div
-              className="w-full h-full rounded-full overflow-hidden bg-segment-card shadow-segment-md group-hover:shadow-segment-lg transition-all duration-300"
+              className="w-full h-full rounded-full overflow-hidden shadow-segment-md group-hover:shadow-segment-lg transition-all duration-300"
+              style={{ backgroundColor: themeColors.surface }}
               whileHover={{ scale: 1.05, rotate: 2 }}
             >
               <img
@@ -77,7 +96,11 @@ export default function CircularProductCard({
                 >
                   <motion.button
                     onClick={handleAddToCart}
-                    className="w-12 h-12 bg-primary text-white rounded-full shadow-segment-lg flex items-center justify-center hover:bg-primary/80 transition-colors"
+                    className="w-12 h-12 rounded-full flex items-center justify-center transition-colors shadow-segment-lg"
+                    style={{ 
+                      backgroundColor: themeColors.primary,
+                      color: 'white',
+                    }}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
@@ -89,10 +112,18 @@ export default function CircularProductCard({
           </div>
 
           <div className="text-center">
-            <h3 className="font-medium text-foreground mb-1 line-clamp-1">
+            <h3 
+              className="font-medium mb-1 line-clamp-1"
+              style={{ color: themeColors.foreground }}
+            >
               {product.name}
             </h3>
-            <p className="text-primary font-bold">{product.price} SAR</p>
+            <p 
+              className="font-bold"
+              style={{ color: themeColors.primary }}
+            >
+              {product.price} SAR
+            </p>
           </div>
         </div>
       </motion.div>
@@ -101,7 +132,13 @@ export default function CircularProductCard({
 
   return (
     <motion.div
-      className={`group bg-surface border border-border rounded-segment-2xl shadow-segment-sm hover:shadow-segment-lg transition-all duration-300 overflow-hidden cursor-pointer ${className}`}
+      className={`transition-all duration-300 overflow-hidden cursor-pointer ${className}`}
+      style={{
+        backgroundColor: themeColors.surface,
+        borderColor: themeColors.border,
+        borderRadius: '1.5rem',
+        boxShadow: '0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%)',
+      }}
       whileHover={{ y: -8 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
@@ -110,7 +147,11 @@ export default function CircularProductCard({
       <div className="p-6">
         <div className="flex justify-between items-start mb-4">
           <motion.div
-            className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-semibold"
+            className="px-3 py-1 rounded-full text-sm font-semibold"
+            style={{ 
+              backgroundColor: `${themeColors.primary}15`,
+              color: themeColors.primary,
+            }}
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.1 }}
@@ -121,11 +162,11 @@ export default function CircularProductCard({
           <div className="flex gap-2">
             <motion.button
               onClick={handleToggleLike}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                isLiked
-                  ? 'bg-red-100 text-red-500'
-                  : 'bg-background/50 text-foreground/40 hover:bg-background hover:text-foreground'
-              }`}
+              className="w-8 h-8 rounded-full flex items-center justify-center transition-all"
+              style={{ 
+                backgroundColor: isLiked ? '#fee2e2' : `${themeColors.background}80`,
+                color: isLiked ? '#ef4444' : `${themeColors.foreground}66`,
+              }}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
@@ -136,7 +177,11 @@ export default function CircularProductCard({
               {isHovered && (
                 <motion.button
                   onClick={handleQuickView}
-                  className="w-8 h-8 rounded-full bg-background/50 text-foreground/40 hover:bg-background hover:text-foreground flex items-center justify-center transition-all"
+                  className="w-8 h-8 rounded-full flex items-center justify-center transition-all"
+                  style={{ 
+                    backgroundColor: `${themeColors.background}80`,
+                    color: `${themeColors.foreground}66`,
+                  }}
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 10 }}
@@ -152,7 +197,8 @@ export default function CircularProductCard({
 
         <div className="relative mb-6">
           <motion.div
-            className="w-32 h-32 mx-auto rounded-full overflow-hidden bg-segment-card shadow-segment-md"
+            className="w-32 h-32 mx-auto rounded-full overflow-hidden shadow-segment-md"
+            style={{ backgroundColor: themeColors.surface }}
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
@@ -169,19 +215,27 @@ export default function CircularProductCard({
                 <button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    index === currentImageIndex
-                      ? 'bg-primary scale-110'
-                      : 'bg-foreground/20 hover:bg-foreground/40'
-                  }`}
+                  className="w-2 h-2 rounded-full transition-all"
+                  style={{ 
+                    backgroundColor: index === currentImageIndex 
+                      ? themeColors.primary 
+                      : `${themeColors.foreground}33`,
+                    transform: index === currentImageIndex ? 'scale(1.1)' : 'scale(1)',
+                  }}
                 />
               ))}
             </div>
           )}
 
           {!product.inStock && (
-            <div className="absolute inset-0 bg-background/80 rounded-full flex items-center justify-center">
-              <span className="text-foreground/60 font-medium text-sm">
+            <div 
+              className="absolute inset-0 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${themeColors.background}CC` }}
+            >
+              <span 
+                className="font-medium text-sm"
+                style={{ color: `${themeColors.foreground}99` }}
+              >
                 Out of Stock
               </span>
             </div>
@@ -189,12 +243,18 @@ export default function CircularProductCard({
         </div>
 
         <div className="text-center mb-4">
-          <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
+          <h3 
+            className="font-semibold mb-2 line-clamp-2"
+            style={{ color: themeColors.foreground }}
+          >
             {product.name}
           </h3>
 
           {product.short && (
-            <p className="text-foreground/60 text-sm mb-3 line-clamp-2">
+            <p 
+              className="text-sm mb-3 line-clamp-2"
+              style={{ color: `${themeColors.foreground}99` }}
+            >
               {product.short}
             </p>
           )}
@@ -204,7 +264,10 @@ export default function CircularProductCard({
               <div className="flex items-center gap-0.5">
                 {renderStars(product.rating)}
               </div>
-              <span className="text-foreground/60 text-sm">
+              <span 
+                className="text-sm"
+                style={{ color: `${themeColors.foreground}99` }}
+              >
                 ({product.reviews || 0})
               </span>
             </div>
@@ -215,7 +278,11 @@ export default function CircularProductCard({
               {product.tags.slice(0, 2).map(tag => (
                 <span
                   key={tag}
-                  className="px-2 py-1 bg-accent/10 text-accent text-xs rounded-full"
+                  className="px-2 py-1 text-xs rounded-full"
+                  style={{ 
+                    backgroundColor: `${themeColors.accent}15`,
+                    color: themeColors.accent,
+                  }}
                 >
                   {tag}
                 </span>
@@ -227,11 +294,14 @@ export default function CircularProductCard({
         <motion.button
           onClick={handleAddToCart}
           disabled={!product.inStock}
-          className={`w-full py-3 rounded-segment-lg font-medium transition-all flex items-center justify-center gap-2 ${
-            product.inStock
-              ? 'bg-primary text-white hover:bg-primary/80 shadow-segment-sm hover:shadow-segment-md'
-              : 'bg-foreground/10 text-foreground/40 cursor-not-allowed'
-          }`}
+          className="w-full py-3 rounded-segment-lg font-medium transition-all flex items-center justify-center gap-2"
+          style={{ 
+            backgroundColor: product.inStock ? themeColors.primary : `${themeColors.foreground}15`,
+            color: product.inStock ? 'white' : `${themeColors.foreground}66`,
+            boxShadow: product.inStock 
+              ? '0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%)' 
+              : 'none',
+          }}
           whileHover={product.inStock ? { scale: 1.02 } : {}}
           whileTap={product.inStock ? { scale: 0.98 } : {}}
         >
@@ -256,6 +326,19 @@ export default function CircularProductCard({
 }
 
 export function ProductGrid({ products, variant = 'default', className = '' }) {
+  const { theme } = useSegment()
+  
+  // Theme colors with fallbacks
+  const themeColors = {
+    primary: theme?.colors?.primary || '#4E342E',
+    background: theme?.colors?.background || '#F5E9DA',
+    surface: theme?.colors?.surface || '#FFFFFF',
+    foreground: theme?.colors?.foreground || '#2E2E2E',
+    muted: theme?.colors?.muted || '#6B4423',
+    border: theme?.colors?.border || '#D4B896',
+    accent: theme?.colors?.accent || '#C6A15B',
+  }
+
   return (
     <div
       className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ${className}`}
@@ -275,12 +358,34 @@ export function ProductGrid({ products, variant = 'default', className = '' }) {
 }
 
 export function CompactProductCard({ product, className = '' }) {
+  const { theme } = useSegment()
+  
+  // Theme colors with fallbacks
+  const themeColors = {
+    primary: theme?.colors?.primary || '#4E342E',
+    background: theme?.colors?.background || '#F5E9DA',
+    surface: theme?.colors?.surface || '#FFFFFF',
+    foreground: theme?.colors?.foreground || '#2E2E2E',
+    muted: theme?.colors?.muted || '#6B4423',
+    border: theme?.colors?.border || '#D4B896',
+    accent: theme?.colors?.accent || '#C6A15B',
+  }
+
   return (
     <motion.div
-      className={`flex items-center gap-4 bg-surface border border-border rounded-segment-lg p-4 hover:shadow-segment-md transition-all duration-300 cursor-pointer ${className}`}
+      className={`flex items-center gap-4 p-4 transition-all duration-300 cursor-pointer ${className}`}
+      style={{
+        backgroundColor: themeColors.surface,
+        borderColor: themeColors.border,
+        borderRadius: '1rem',
+        boxShadow: '0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%)',
+      }}
       whileHover={{ x: 4 }}
     >
-      <div className="w-16 h-16 rounded-full overflow-hidden bg-segment-card shadow-segment-sm flex-shrink-0">
+      <div 
+        className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-segment-sm"
+        style={{ backgroundColor: themeColors.surface }}
+      >
         <img
           src={product.image}
           alt={product.name}
@@ -289,21 +394,33 @@ export function CompactProductCard({ product, className = '' }) {
       </div>
 
       <div className="flex-1 min-w-0">
-        <h3 className="font-medium text-foreground mb-1 truncate">
+        <h3 
+          className="font-medium mb-1 truncate"
+          style={{ color: themeColors.foreground }}
+        >
           {product.name}
         </h3>
-        <p className="text-foreground/60 text-sm mb-2 line-clamp-1">
+        <p 
+          className="text-sm mb-2 line-clamp-1"
+          style={{ color: `${themeColors.foreground}99` }}
+        >
           {product.short}
         </p>
         <div className="flex items-center justify-between">
-          <span className="text-primary font-semibold">
+          <span 
+            className="font-semibold"
+            style={{ color: themeColors.primary }}
+          >
             {product.price} SAR
           </span>
 
           {product.rating && (
             <div className="flex items-center gap-1">
-              <Star size={12} className="text-yellow-400 fill-current" />
-              <span className="text-foreground/60 text-xs">
+              <Star size={12} className="fill-current" style={{ color: '#fbbf24' }} />
+              <span 
+                className="text-xs"
+                style={{ color: `${themeColors.foreground}99` }}
+              >
                 {product.rating}
               </span>
             </div>
@@ -312,7 +429,11 @@ export function CompactProductCard({ product, className = '' }) {
       </div>
 
       <motion.button
-        className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-segment-sm hover:shadow-segment-md transition-all"
+        className="w-10 h-10 rounded-full flex items-center justify-center shadow-segment-sm transition-all"
+        style={{ 
+          backgroundColor: themeColors.primary,
+          color: 'white',
+        }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
