@@ -13,17 +13,20 @@ import { useSegment } from '../../../contexts/SegmentContext.jsx'
 export default function HomeScreen() {
   const { activeSegment } = useSegment()
 
+  // Defensive check for activeSegment
+  const segment = activeSegment || 'leather'
+
   return (
     <>
       <SEO
-        title={`IVOLEX ${activeSegment.charAt(0).toUpperCase() + activeSegment.slice(1)} - Premium Products & Accessories`}
-        description={`Discover our curated collection of premium ${activeSegment} products. Experience unmatched quality with secure shopping and fast delivery.`}
-        keywords={`${activeSegment}, premium products, luxury goods, handcrafted accessories, e-commerce, online shopping, IVOLEX`}
+        title={`IVOLEX ${segment.charAt(0).toUpperCase() + segment.slice(1)} - Premium Products & Accessories`}
+        description={`Discover our curated collection of premium ${segment} products. Experience unmatched quality with secure shopping and fast delivery.`}
+        keywords={`${segment}, premium products, luxury goods, handcrafted accessories, e-commerce, online shopping, IVOLEX`}
         structuredData={{
           '@context': 'https://schema.org',
           '@type': 'Store',
           name: 'IVOLEX',
-          description: `Premium ${activeSegment} products and accessories`,
+          description: `Premium ${segment} products and accessories`,
           url: typeof window !== 'undefined' ? window.location.origin : '',
           logo: `${typeof window !== 'undefined' ? window.location.origin : ''}/images/logo.png`,
         }}

@@ -167,7 +167,7 @@ const SEGMENT_ACTIONS = {
   SET_ERROR: 'SET_ERROR',
 }
 
-// Initial state
+// Initial state with better fallbacks
 const initialState = {
   activeSegment: 'leather',
   theme: SEGMENT_THEMES.leather,
@@ -181,8 +181,8 @@ function segmentReducer(state, action) {
     case SEGMENT_ACTIONS.SET_SEGMENT:
       return {
         ...state,
-        activeSegment: action.payload,
-        theme: SEGMENT_THEMES[action.payload],
+        activeSegment: action.payload || 'leather',
+        theme: SEGMENT_THEMES[action.payload] || SEGMENT_THEMES.leather,
         error: null,
       }
     case SEGMENT_ACTIONS.SET_LOADING:
@@ -202,7 +202,12 @@ function segmentReducer(state, action) {
 }
 
 // Context
-const SegmentContext = createContext()
+const SegmentContext = createContext({
+  ...initialState,
+  segments: Object.values(SEGMENT_THEMES),
+  setSegment: () => {},
+  isCurrentSegment: () => false,
+})
 
 // Provider component
 export function SegmentProvider({ children }) {
@@ -210,79 +215,96 @@ export function SegmentProvider({ children }) {
 
   // Load segment from URL or localStorage on mount
   useEffect(() => {
-    const currentPath = window.location.pathname
-    const urlSegment = currentPath.split('/')[1]
+    try {
+      const currentPath = window.location.pathname
+      const urlSegment = currentPath.split('/')[1]
 
-    if (SEGMENT_THEMES[urlSegment]) {
-      dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: urlSegment })
-      localStorage.setItem('ivolex_segment', urlSegment)
-    } else {
-      const savedSegment = localStorage.getItem('ivolex_segment')
-      if (savedSegment && SEGMENT_THEMES[savedSegment]) {
-        dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: savedSegment })
+      if (SEGMENT_THEMES[urlSegment]) {
+        dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: urlSegment })
+        localStorage.setItem('ivolex_segment', urlSegment)
+      } else {
+        const savedSegment = localStorage.getItem('ivolex_segment')
+        if (savedSegment && SEGMENT_THEMES[savedSegment]) {
+          dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: savedSegment })
+        } else {
+          // Ensure we always have a valid segment
+          dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: 'leather' })
+        }
       }
+    } catch (error) {
+      console.warn('Error loading segment from URL or localStorage:', error)
+      // Fallback to default segment
+      dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: 'leather' })
     }
   }, [])
 
   // Apply CSS custom properties when theme changes
   useEffect(() => {
-    const root = document.documentElement
-    const theme = state.theme
+    try {
+      const root = document.documentElement
+      const theme = state.theme
 
-    if (theme) {
-      // Apply color variables
-      Object.entries(theme.colors).forEach(([key, value]) => {
-        root.style.setProperty(`--color-${key}`, value)
-      })
+      if (theme) {
+        // Apply color variables
+        Object.entries(theme.colors).forEach(([key, value]) => {
+          root.style.setProperty(`--color-${key}`, value || '')
+        })
 
-      // Apply shadow variables
-      Object.entries(theme.shadows).forEach(([key, value]) => {
-        root.style.setProperty(`--shadow-${key}`, value)
-      })
+        // Apply shadow variables
+        Object.entries(theme.shadows).forEach(([key, value]) => {
+          root.style.setProperty(`--shadow-${key}`, value || '')
+        })
 
-      // Apply motion variables
-      Object.entries(theme.motion.duration).forEach(([key, value]) => {
-        root.style.setProperty(`--duration-${key}`, value)
-      })
+        // Apply motion variables
+        Object.entries(theme.motion.duration).forEach(([key, value]) => {
+          root.style.setProperty(`--duration-${key}`, value || '')
+        })
 
-      Object.entries(theme.motion.easing).forEach(([key, value]) => {
-        root.style.setProperty(`--easing-${key}`, value)
-      })
+        Object.entries(theme.motion.easing).forEach(([key, value]) => {
+          root.style.setProperty(`--easing-${key}`, value || '')
+        })
 
-      // Apply border radius variables
-      Object.entries(theme.borderRadius).forEach(([key, value]) => {
-        root.style.setProperty(`--radius-${key}`, value)
-      })
+        // Apply border radius variables
+        Object.entries(theme.borderRadius).forEach(([key, value]) => {
+          root.style.setProperty(`--radius-${key}`, value || '')
+        })
 
-      // Apply spacing variables
-      Object.entries(theme.spacing).forEach(([key, value]) => {
-        root.style.setProperty(`--spacing-${key}`, value)
-      })
+        // Apply spacing variables
+        Object.entries(theme.spacing).forEach(([key, value]) => {
+          root.style.setProperty(`--spacing-${key}`, value || '')
+        })
 
-      // Apply texture backgrounds
-      root.style.setProperty('--bg-texture', theme.texture.background)
-      root.style.setProperty('--bg-overlay', theme.texture.overlay)
-      root.style.setProperty('--bg-card', theme.texture.card)
+        // Apply texture backgrounds
+        root.style.setProperty('--bg-texture', theme.texture.background || '')
+        root.style.setProperty('--bg-overlay', theme.texture.overlay || '')
+        root.style.setProperty('--bg-card', theme.texture.card || '')
 
-      // Update body class for segment-specific styling
-      document.body.className = document.body.className.replace(
-        /segment-\w+/g,
-        ''
-      )
-      document.body.classList.add(`segment-${state.activeSegment}`)
+        // Update body class for segment-specific styling
+        document.body.className = document.body.className.replace(
+          /segment-\w+/g,
+          ''
+        )
+        document.body.classList.add(`segment-${state.activeSegment || 'leather'}`)
+      }
+    } catch (error) {
+      console.warn('Error applying theme CSS custom properties:', error)
     }
   }, [state.theme, state.activeSegment])
 
   const setSegment = segment => {
-    if (SEGMENT_THEMES[segment]) {
-      dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: segment })
-      localStorage.setItem('ivolex_segment', segment)
+    try {
+      if (SEGMENT_THEMES[segment]) {
+        dispatch({ type: SEGMENT_ACTIONS.SET_SEGMENT, payload: segment })
+        localStorage.setItem('ivolex_segment', segment)
 
-      // Update URL without page reload
-      const newPath = `/${segment}`
-      if (window.location.pathname !== newPath) {
-        window.history.pushState({}, '', newPath)
+        // Update URL without page reload
+        const newPath = `/${segment}`
+        if (window.location.pathname !== newPath) {
+          window.history.pushState({}, '', newPath)
+        }
       }
+    } catch (error) {
+      console.warn('Error setting segment:', error)
     }
   }
 
@@ -290,7 +312,7 @@ export function SegmentProvider({ children }) {
     ...state,
     segments: Object.values(SEGMENT_THEMES),
     setSegment,
-    isCurrentSegment: segment => state.activeSegment === segment,
+    isCurrentSegment: segment => (state.activeSegment || 'leather') === segment,
   }
 
   return (
@@ -302,7 +324,14 @@ export function SegmentProvider({ children }) {
 export function useSegment() {
   const context = useContext(SegmentContext)
   if (!context) {
-    throw new Error('useSegment must be used within a SegmentProvider')
+    // Return a default context if used outside provider
+    return {
+      activeSegment: 'leather',
+      theme: SEGMENT_THEMES.leather,
+      segments: Object.values(SEGMENT_THEMES),
+      setSegment: () => {},
+      isCurrentSegment: () => false,
+    }
   }
   return context
 }

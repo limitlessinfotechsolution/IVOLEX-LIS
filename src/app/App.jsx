@@ -65,6 +65,18 @@ function LoadingSpinner() {
   )
 }
 
+// Fallback component for when HomeScreen fails
+function HomeScreenFallback() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50">
+      <h1 className="text-3xl font-bold text-stone-800 mb-4">Welcome to IVOLEX</h1>
+      <p className="text-stone-600 mb-8">Premium Products & Accessories</p>
+      <div className="bg-stone-200 border-2 border-dashed rounded-xl w-16 h-16 mb-4" />
+      <p className="text-stone-500">Loading content...</p>
+    </div>
+  )
+}
+
 export default function App() {
   // Monitor performance in development
   usePerformance()
@@ -114,7 +126,7 @@ export default function App() {
                                                   id="main"
                                                   className="w-full flex-grow min-w-0 pt-0 pb-0"
                                                 >
-                                                  <ErrorBoundary>
+                                                  <ErrorBoundary fallback={<HomeScreenFallback />}>
                                                     <HomeScreen />
                                                   </ErrorBoundary>
                                                 </main>
@@ -133,7 +145,7 @@ export default function App() {
                                                   id="main"
                                                   className="w-full flex-grow min-w-0 pt-0 pb-0"
                                                 >
-                                                  <ErrorBoundary>
+                                                  <ErrorBoundary fallback={<HomeScreenFallback />}>
                                                     <HomeScreen />
                                                   </ErrorBoundary>
                                                 </main>
@@ -152,7 +164,7 @@ export default function App() {
                                                   id="main"
                                                   className="w-full flex-grow min-w-0 pt-0 pb-0"
                                                 >
-                                                  <ErrorBoundary>
+                                                  <ErrorBoundary fallback={<HomeScreenFallback />}>
                                                     <HomeScreen />
                                                   </ErrorBoundary>
                                                 </main>
@@ -171,7 +183,7 @@ export default function App() {
                                                   id="main"
                                                   className="w-full flex-grow min-w-0 pt-0 pb-0"
                                                 >
-                                                  <ErrorBoundary>
+                                                  <ErrorBoundary fallback={<HomeScreenFallback />}>
                                                     <HomeScreen />
                                                   </ErrorBoundary>
                                                 </main>

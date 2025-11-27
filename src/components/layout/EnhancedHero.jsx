@@ -43,7 +43,38 @@ export default function EnhancedHero() {
   const heroRef = useRef(null)
   const videoRef = useRef(null)
   const navigate = useNavigate()
-  const content = SEGMENT_HERO_CONTENT[activeSegment]
+  const content = SEGMENT_HERO_CONTENT[activeSegment] || SEGMENT_HERO_CONTENT.leather
+
+  // Defensive check for theme values with better fallbacks
+  const safeTheme = theme || {
+    colors: {
+      primary: '#4E342E',
+      secondary: '#8D6E63',
+      accent: '#C6A15B',
+      background: '#F5E9DA',
+      surface: '#FFFFFF',
+      foreground: '#2E2E2E',
+      muted: '#6B4423',
+      border: '#D4B896',
+      ring: '#C6A15B',
+    },
+    texture: {
+      overlay: '',
+    }
+  }
+
+  // Ensure all required theme colors have fallbacks
+  const themeColors = {
+    primary: safeTheme.colors.primary || '#4E342E',
+    secondary: safeTheme.colors.secondary || '#8D6E63',
+    accent: safeTheme.colors.accent || '#C6A15B',
+    background: safeTheme.colors.background || '#F5E9DA',
+    surface: safeTheme.colors.surface || '#FFFFFF',
+    foreground: safeTheme.colors.foreground || '#2E2E2E',
+    muted: safeTheme.colors.muted || '#6B4423',
+    border: safeTheme.colors.border || '#D4B896',
+    ring: safeTheme.colors.ring || '#C6A15B',
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -71,7 +102,7 @@ export default function EnhancedHero() {
     setTimeout(() => {
       const productsSection = document.getElementById('featured-products')
       if (productsSection) {
-        productsSection.scrollIntoView({ behavior: 'smooth' })
+        productsSection.scrollIntoView({ behavior: 'smooth' });
       }
     }, 100)
   }
@@ -81,23 +112,23 @@ export default function EnhancedHero() {
       ref={heroRef}
       className="relative h-screen max-h-[1000px] flex items-center justify-center overflow-hidden pb-0"
       style={{
-        background: `linear-gradient(135deg, ${theme.colors.background}80 0%, ${theme.colors.primary}20 100%)`,
+        background: `linear-gradient(135deg, ${themeColors.background}80 0%, ${themeColors.primary}20 100%)`,
       }}
     >
       {/* Background Parallax Layers */}
       <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 opacity-30"
-          style={{ backgroundImage: theme.texture.overlay }}
+          style={{ backgroundImage: safeTheme.texture.overlay || 'none' }}
         />
 
         <div className="absolute inset-0">
-          {/* Animated background dots removed */}
+          {/* Animated background dots removed to align with user preference for static visual elements */}
         </div>
       </div>
 
       {/* Video Background */}
-      {isVideoPlaying && (
+      {isVideoPlaying && content.videoUrl && (
         <div className="absolute inset-0 w-full h-full object-cover z-10 opacity-30">
           <video
             ref={videoRef}
@@ -115,13 +146,13 @@ export default function EnhancedHero() {
       <div className="relative z-20 max-w-7xl mx-auto px-6 text-center">
         {/* Main Headline */}
         <h1
-          className="text-6xl md:text-8xl font-bold mb-6 leading-tight"
-          style={{ color: theme.colors.foreground }}
+          className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+          style={{ color: themeColors.foreground }}
         >
           <span
             className="inline-block"
             style={{
-              background: `linear-gradient(90deg, ${theme.colors.primary}, ${theme.colors.accent}, ${theme.colors.primary})`,
+              background: `linear-gradient(90deg, ${themeColors.primary}, ${themeColors.accent}, ${themeColors.primary})`,
               backgroundSize: '200% 100%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -134,21 +165,21 @@ export default function EnhancedHero() {
 
         {/* Subheadline */}
         <p
-          className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed"
-          style={{ color: theme.colors.muted }}
+          className="text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed"
+          style={{ color: themeColors.muted }}
         >
           {content.subheadline}
         </p>
 
         {/* Features */}
-        <div className="flex flex-wrap justify-center gap-6 mb-12">
-          {content.features.map((feature) => (
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
+          {content.features.map((feature, index) => (
             <div
-              key={feature}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface/80 backdrop-blur-sm shadow-segment-sm"
+              key={index}
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm shadow-segment-sm border border-border"
             >
-              <Sparkles size={16} style={{ color: theme.colors.accent }} />
-              <span className="text-sm font-medium text-foreground">
+              <Sparkles size={16} style={{ color: themeColors.accent }} />
+              <span className="text-sm font-medium" style={{ color: themeColors.foreground }}>
                 {feature}
               </span>
             </div>
@@ -159,9 +190,9 @@ export default function EnhancedHero() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={handleCTAClick}
-            className="group flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg shadow-segment-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            className="group flex items-center gap-3 px-6 py-3 rounded-xl font-semibold text-lg shadow-segment-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
             style={{
-              backgroundColor: theme.colors.primary,
+              backgroundColor: themeColors.primary,
               color: 'white',
             }}
             aria-label={`Shop now: ${content.cta}`}
@@ -173,37 +204,46 @@ export default function EnhancedHero() {
             </div>
           </button>
 
-          <button
-            onClick={handleVideoPlay}
-            className="group flex items-center gap-3 px-6 py-4 rounded-2xl border border-border bg-surface/50 backdrop-blur-sm text-foreground font-medium transition-all duration-300 hover:bg-surface/80 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-            aria-label="Watch our story video"
-          >
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
-              <Play size={16} fill="currentColor" />
-            </div>
-            Watch Our Story
-          </button>
+          {content.videoUrl && (
+            <button
+              onClick={handleVideoPlay}
+              className="group flex items-center gap-3 px-6 py-3 rounded-xl border bg-white/50 backdrop-blur-sm font-medium transition-all duration-300 hover:bg-white/80 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
+              style={{ 
+                borderColor: themeColors.border,
+                color: themeColors.foreground,
+              }}
+              aria-label="Watch our story video"
+            >
+              <div 
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white"
+                style={{ backgroundColor: themeColors.primary }}
+              >
+                <Play size={16} fill="currentColor" />
+              </div>
+              Watch Our Story
+            </button>
+          )}
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-8 border-t border-border/50">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 pt-6 border-t border-border/50">
           {[
             { label: 'Happy Customers', value: '50K+' },
             { label: 'Products Sold', value: '100K+' },
             { label: 'Years Experience', value: '20+' },
             { label: 'Global Reach', value: '30+' },
-          ].map((stat) => (
+          ].map((stat, index) => (
             <div
-              key={stat.label}
+              key={index}
               className="text-center"
             >
               <div
-                className="text-3xl md:text-4xl font-bold mb-2"
-                style={{ color: theme.colors.primary }}
+                className="text-2xl md:text-3xl font-bold mb-1"
+                style={{ color: themeColors.primary }}
               >
                 {stat.value}
               </div>
-              <div className="text-foreground/60 text-sm uppercase tracking-wide">
+              <div className="text-foreground/60 text-xs uppercase tracking-wide">
                 {stat.label}
               </div>
             </div>
@@ -211,7 +251,7 @@ export default function EnhancedHero() {
         </div>
       </div>
 
-      {/* Scroll Indicator removed */}
+      {/* Scroll Indicator removed to align with user preference for static visual elements */}
     </section>
   )
 }

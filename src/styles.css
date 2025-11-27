@@ -32,6 +32,9 @@
     padding: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    
+    /* Fallback background color */
+    background-color: #f5e9da;
   }
 
   h1,
@@ -433,11 +436,11 @@
 
 /* Custom background utilities */
 .bg-gradient-diagonal {
-  background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+  background: linear-gradient(135deg, var(--brand-500, #8e623f), var(--brand-700, #563a25));
 }
 
 .bg-gradient-radial {
-  background: radial-gradient(circle, var(--brand-500), var(--brand-700));
+  background: radial-gradient(circle, var(--brand-500, #8e623f), var(--brand-700, #563a25));
 }
 
 /* Custom opacity utilities */
